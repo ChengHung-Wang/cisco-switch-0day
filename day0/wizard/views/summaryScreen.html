@@ -1,0 +1,314 @@
+
+<div ng-controller="SummaryScreenCtrl" class="container">
+	<div class="description summary-description">
+		{{'day0_wizard_summary_text' | translate}}
+	</div>
+	<ul kendo-panel-bar class="panelbar" id="summaryTabs" ng-click="tabTog()">
+		<li>
+			<span class="panelbar__header panel-gradient-blue clearfix">
+				<div class="panelbar__open-icon">
+					<i class="icon-chevron"></i>
+				</div>
+				<div class="panelbar__title">
+					{{'day0_wizard_basic_config' | translate}}
+				</div> 
+			</span>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_basic_config_hostname' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label" >: {{basicSummary.hostName}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_basic_config_username' | translate}} </span>
+					</div>	
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{basicSummary.userName}}</span>
+					</div>
+				</div>				
+			</div>			
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_basic_config_clock' | translate}} </span>
+					</div>	
+					<div class="col-sm-6 text-left">
+						<span class="label">: &nbsp;{{basicSummary.clock}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_advance_config_enable_VTP_transparent' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label" >: {{basicSummary.enableVTPTransparent}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_advance_config_telnet' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label" >: {{basicSummary.enableTelnet}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_advance_config_ssh' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{basicSummary.enableSSH}}</span>
+					</div>
+				</div>				
+			</div>			
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_advance_config_domain_name' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{basicSummary.domainName}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_advance_config_rsa_key_length' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{basicSummary.RSAKey}}</span>
+					</div>
+				</div>				
+			</div>			
+			<div class="row form-group" ng-show="showDeviceStatus">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_advance_config_autoqos_phones' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{basicSummary.enableQosPhones}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group" ng-show="showDeviceStatus">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_advance_config_autoqos_uplink' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{basicSummary.enableQosUplink}}</span>
+					</div>
+				</div>				
+			</div>
+		</li>
+		<li>
+			<span class="panelbar__header panel-gradient-blue clearfix">
+				<div class="panelbar__open-icon">
+					<i class="icon-chevron"></i>
+				</div>
+				<div class="panelbar__title">
+					{{'day0_wizard_interface_config' | translate}}
+				</div> 
+			</span>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'switch_mgmt' | translate}} </span>
+					</div>
+					<div class="col-sm-3 text-left">
+						<span class="label">: {{interSummary.vlan}}  {{interSummary.newIpAddress}} {{interSummary.subnetMask}}</span>
+					</div>		
+				</div>						
+			</div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6 text-left">
+						<span class="label">{{'day0_wizard_interface_config_datavlan' | translate}} </span>
+					</div>
+					<div class="col-sm-3 text-left">
+						<span class="label">: 
+							<span ng-show="interSummary.dataVlan">Vlan{{interSummary.dataVlan}}  {{interSummary.dataVlanIpAddress}} {{interSummary.dataVlanSubnetMask}}</span>
+						</span>
+					</div>
+					<div class="col-sm-3 text-left">
+						<span class="label ">{{'day0_enable_dhcp' | translate}}  :  {{interSummary.vlanDhcpEnable == true ? enabledStr : disabledStr }}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wireless_vlan' | translate}} </span>
+					</div>
+					<div class="col-sm-3 text-left">
+						<span class="label">: 
+							<span ng-show="interSummary.wirelessVlan">Vlan{{interSummary.wirelessVlan}}  {{interSummary.vlanIpAddress}}  {{interSummary.vlanSubnetMask}}</span>
+						</span>
+					</div>
+					<div class="col-sm-3 text-left">
+						<span class="label">{{'day0_enable_dhcp' | translate}}  :  {{interSummary.wirelessDhcpEnable == true ? enabledStr : disabledStr }}</span>
+					</div>
+				</div>				
+			</div>			
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_interface_config_access_port' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						: <span style="font-size:16px; word-break:break-all;">{{convertArrayToString(interSummary.accessPorts)}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'day0_wizard_interface_config_portfast' | translate}} </span>
+					</div>					
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{interSummary.portfast == true ? enabledStr : disabledStr }}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'switch_uplink_ports' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{interSummary.uplinkPort}}</span>
+					</div>
+				</div>				
+			</div>
+			
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label">{{'switch_default' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{interSummary.defaultGateway}}</span>
+					</div>
+				</div>				
+			</div>
+						
+		</li>
+		<li ng-show="enableWirelessr && wirelesspossible">
+			<span class="panelbar__header panel-gradient-blue clearfix">
+				<div class="panelbar__open-icon">
+					<i class="icon-chevron"></i>
+				</div>
+				<div class="panelbar__title">
+					{{'dayzero_wireless_sum_title' | translate}}
+				</div> 
+			</span>
+			<div class="row">
+				<div class="col-sm-6 webui-centerpanel-label-latest">
+				   <h2 class="stepTitle" style="font-size:14px">
+					  <span class="ccpexpCSSReplaceClass331 fontCiscoSansLight" id="wizardTitle">{{::'day0_wizard_basic_wireless_config' | translate}}</span>
+				   </h2>
+				</div>
+			 </div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label labelcustom">{{::'day0_wizard_basic_config_username' | translate }} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label" >: {{wireless.wifi.adminUserName}}</span>
+					</div>
+				</div>				
+			</div>			
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label labelcustom">{{::'day0_wireless_country' | translate }} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label" >: {{wireless.country}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label labelcustom">{{::'day0_wireless_mgmt_address_subnet' | translate }} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label" >: {{wireless.wifi.mgmtIpAddress}} / {{wireless.wifi.mgmtSubnetMask}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row">
+				<div class="col-sm-5 webui-centerpanel-label-latest">
+				   <h2 class="stepTitle" style="font-size:14px">
+					  <span class="ccpexpCSSReplaceClass331 fontCiscoSansLight" id="wizardTitle">{{::'day0_wireless_network' | translate}}</span>
+				   </h2>
+				</div>
+			 </div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label labelcustom">{{::'network_name' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{wireless.wifi.networkName}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label labelcustom">{{::'network_security' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{wireless.networkSecurity}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group" ng-show="wireless.wifi.networkSecurity == 'enterprise'">
+				<div class="row col-sm-12 webui-centerpanel-label">
+				    <div class="col-sm-6">
+						<span class="label labelcustom">{{::'day0_wireless_radius_Server' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{wireless.wifi.radiusServer}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group" ng-show="wireless.wifi.networkSecurity == 'enterprise'">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label labelcustom">{{::'day0_wireless_shared_key' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{wireless.wifi.sharedKey}}</span>
+					</div>
+				</div>				
+			</div>
+			<div class="row form-group" ng-show="wireless.wifi.networkSecurity == 'not-suppoerted-now'">
+				<div class="row col-sm-12 webui-centerpanel-label">
+					<div class="col-sm-6">
+						<span class="label labelcustom">{{::'aaa_authport' | translate}} </span>
+					</div>
+					<div class="col-sm-6 text-left">
+						<span class="label">: {{wireless.wifi.authPort}}</span>
+					</div>
+				</div>				
+			</div>			
+		</li>
+	</ul>
+</div>

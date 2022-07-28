@@ -1,0 +1,28 @@
+###
+show power inline
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show power inline</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="Remaining" alias = "entry" dynamic = "true">
+<Property name="Remaining:" alias="remainingPower" distance = "1" length = "1" type = "String"/>
+<Container name="ShowPower">
+<Table  name="PowerTable">
+<Header name = "Interface" alias="interfaceName" start = "0" end = "9" type = "String"/>
+<Header name = "Power" alias="powerValue" start = "27" end = "35" type = "String"/>
+<Header name = "Max" alias="maxValue" start = "62" end = "66" type = "String"/>
+</Table>
+</Container>
+
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->
+
+

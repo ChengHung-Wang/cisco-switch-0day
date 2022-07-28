@@ -1,0 +1,15 @@
+###
+show spanning-tree summary
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show spanning-tree summary</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowSTP">
+<Property name="Switch is in" alias="modeType" distance = "1" length = "1" type = "String"/>
+</Container>
+</DataModel>
+</ODMSpec>
+

@@ -1,0 +1,21 @@
+###
+show running-config int *
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show running-config int *</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowRun">
+<Container name="wnwebdata">
+<Property name="ip address" alias = "ipAddress" distance = "1" length = "2" type = "String"/>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

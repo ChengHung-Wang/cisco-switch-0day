@@ -1,0 +1,42 @@
+/**
+ Description: CSS Specific to Bootstrap Customizations
+ June 2015
+ Copyright (c) 2015 by Cisco Systems, Inc.
+ All rights reserved.
+ */
+
+.btn {
+	border-radius: @btnBorderRadius;
+}
+.btn-primary {
+	background-color: @btnPrimaryBackground;
+	border-color: inherit;
+	padding: 7px 20px;
+	font-size: 12px;
+	color: @btnColor;
+
+	&:active,
+	&:focus,
+	&:hover {
+	background-color: lighten(@btnPrimaryBackground, 10%);
+	outline: none;
+}
+}
+
+.form-control {
+	height: 33px;
+	border: @inputBorder;
+	border-radius: @inputBorderRadius;
+	font-weight: 600;
+	box-shadow: none;&:focus {
+	border: @inputBorder;
+	box-shadow: none;
+}
+}
+.form-horizontal .form-group {
+	margin: 0;
+	margin-bottom: 10px;
+}
+.field {
+	line-height: 1;
+}

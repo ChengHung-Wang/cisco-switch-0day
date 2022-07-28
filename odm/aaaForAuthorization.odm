@@ -1,0 +1,78 @@
+###
+show running-config aaa authorization
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show running-config aaa authorization</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowRunningconfigAaa">
+<Container name="wnwebdata">
+
+<Container name="aaa authorization" alias = "entry" dynamic="true">
+
+<Container name="aaa authorization login" alias = "loginauthorization" dynamic = "true">
+<Property name="aaa authorization login" alias = "listname" distance = "1" length = "1" type = "String"/>
+<Property name="aaa authorization login" alias = "grouptype" distance = "2" length = "1" type = "String"/>
+<Property name="aaa authorization login" alias = "fallback" distance = "2" length="-1" type = "String"/>
+<Property name="aaa authorization" alias = "type" distance = "1" length="1" type = "String"/>
+<Container name="group">
+<Property name="group" alias="group1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="group2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="group3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="group4" distance = "7" length = "1" type = "String"/>
+</Container>
+
+</Container>
+<Container name="aaa authorization exec" alias = "execauthorization" dynamic = "true">
+<Property name="aaa authorization exec" alias = "listname" distance = "1" length = "1" type = "String"/>
+<Property name="aaa authorization exec" alias = "grouptype" distance = "2" length = "1" type = "String"/>
+<Property name="aaa authorization exec" alias = "fallback" distance = "2" length="-1" type = "String"/>
+<Property name="aaa authorization" alias = "type" distance = "1" length="1" type = "String"/>
+<Container name="group">
+<Property name="group" alias="group1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="group2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="group3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="group4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+
+<Container name="aaa authorization network" alias = "networkauthorization" dynamic = "true">
+<Property name="aaa authorization network" alias = "listname" distance = "1" length = "1" type = "String"/>
+<Property name="aaa authorization network" alias = "grouptype" distance = "2" length = "1" type = "String"/>
+<Property name="aaa authorization network" alias = "fallback" distance = "2" length="-1" type = "String"/>
+<Property name="aaa authorization" alias = "type" distance = "1" length="1" type = "String"/>
+<Container name="group">
+<Property name="group" alias="group1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="group2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="group3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="group4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+
+<Container name="aaa authorization credential-download" alias = "credential-downloadauthorization" dynamic = "true">
+<Property name="aaa authorization credential-download" alias = "listname" distance = "1" length = "1" type = "String"/>
+<Property name="aaa authorization credential-download" alias = "grouptype" distance = "2" length = "1" type = "String"/>
+<Property name="aaa authorization credential-download" alias = "fallback" distance = "2" length="-1" type = "String"/>
+<Property name="aaa authorization" alias = "type" distance = "1" length="1" type = "String"/>
+<Container name="group">
+<Property name="group" alias="group1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="group2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="group3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="group4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+
+</Container>
+
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+
+
+<!--
+Copyright (c) 2014,2015,2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

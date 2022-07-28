@@ -1,0 +1,32 @@
+###
+show cluster members
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show cluster members</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowClusterMember">
+<Table  name="MemberTable">
+<Header name = "SN" alias="snValue" start = "0" end = "2" type = "String"/>
+<Header name = "MAC Address" alias="macAddress" start = "3" end = "17" type = "String"/>
+<Header name = "Name" alias="name" start = "18" end = "31" type = "String"/>
+<Header name = "Hops" alias="hops" start = "43" end = "47" type = "String"/>
+<Header name = "State" alias="state" start = "65" end = "70" type = "String"/>
+
+</Table>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+
+
+
+
+
+
+

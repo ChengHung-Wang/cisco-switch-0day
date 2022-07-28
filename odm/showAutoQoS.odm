@@ -1,0 +1,21 @@
+###
+show auto qos interface *
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show auto qos interface *</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowAutoQoS">
+<Container name="wnwebdata">
+<Property name="auto qos" alias="autoQOS" distance = "1" length = "2" type = "String"/>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

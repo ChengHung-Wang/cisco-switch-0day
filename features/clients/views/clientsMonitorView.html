@@ -1,0 +1,20 @@
+<div>
+    <!--
+       Description: Clients Monitoring html
+       Copyright (c) 2016 by Cisco Systems, Inc.
+       All rights reserved.
+       -->
+    <div class="pageTitle" ng-bind="'clients_monitoring' | translate">
+    </div>
+    <div class="pageContent">
+        <div class="gridActionButtons">
+            <button id="clientsExportButton" class="btn btn-primary pull-right"
+                    ng-csv="getArray()" csv-header="getHeader()" filename="{{clientsFileName}}.csv">
+                <i class="fa fa-file-text-o"></i>
+				<span ng-bind="'clients_export' | translate"></span>
+            </button>
+        </div>
+        <div kendo-grid="clientGrid" id="clientGrid" name="clientGrid"
+             k-options="portsGridOptions"></div>
+    </div>
+</div>

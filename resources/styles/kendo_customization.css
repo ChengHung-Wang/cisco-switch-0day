@@ -1,0 +1,158 @@
+/**
+ Description: CSS specific to Kendo UI customizations
+ June 2015
+ Copyright (c) 2015 by Cisco Systems, Inc.
+ All rights reserved.
+ */
+
+/** Kendo Grid Customization */
+.k-header {
+	background-color: #F9F9F8;
+}
+.k-alt {
+	background-color: #FDFDFD;
+}
+
+.k-grid .k-state-selected {
+	background-color: #3995CF;
+	color: #000000;
+}
+
+/** Kendo Grid Customization - ends*/
+
+.k-grid thead {
+	background-color: #EEF4F6;
+	color: #454645;
+	line-height: 30px;
+	vertical-align: middle;
+}
+
+.header {
+	background-color: #FAFCFD;
+	line-height: 60px;
+}
+
+.move-left {
+	margin-left: -25%
+}
+
+span.k-tooltip {
+	border-radius: 0;
+	font-weight: @fwBold;
+	position: absolute;
+	top: 1px;
+	width: 200px;
+	padding: 6px 15px;
+	text-align: left;
+	margin-left: 15px;&:before {
+	content: "";
+	display: block;
+	width: 9px;
+	height: 9px;
+	top: 11px;
+	left: -6px;
+	position: absolute;
+	background-color: inherit;
+	border-left: 1px solid #c7c118;
+	border-bottom: 1px solid #c7c118;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+}
+.k-widget.k-tooltip-validation {
+	background-color: #fffab3;
+	border-color: #c7c118;
+	color: #000;
+}
+.k-tooltip-validation .k-warning {
+	vertical-align: text-bottom;
+}
+
+.fieldinput {.k-autocomplete.k-state-default, .k-picker-wrap.k-state-default, .k-numeric-wrap.k-state-default, .k-dropdown-wrap.k-state-default, .k-multiselect.k-header {
+	border: @inputBorder;
+}
+.k-picker-wrap, .k-dropdown-wrap {
+	border-radius: @inputBorderRadius;
+}
+.k-dropdown-wrap .k-input {
+	height: @inputHeight;
+	line-height: @inputHeight;
+	padding: 0;
+}
+.k-state-default > .k-select {
+	border-color: #8cafbf;
+}
+.k-i-arrow-s {
+	background-image: none;&:after {
+	content: "\e614";
+	font-family: icomoon;
+	display: inline-block;
+	font-size: 12px;
+	line-height: 1;
+}
+}
+.k-picker-wrap.k-state-active, .k-picker-wrap.k-state-hover, .k-dropdown-wrap.k-state-active, .k-dropdown-wrap.k-state-hover {
+	background-color: #fff;
+}
+.k-picker-wrap.k-state-active, .k-picker-wrap.k-state-focused, .k-dropdown-wrap.k-state-focused, .k-dropdown-wrap.k-state-active.k-state-border-down {
+	box-shadow: none;
+	padding-bottom: 0;
+}
+}
+.k-calendar-container.k-state-border-up, .k-list-container.k-state-border-up {
+	border-radius: 0 0 @inputBorderRadius @inputBorderRadius;
+}
+.k-widget, .k-popup {
+	box-shadow: none;
+}
+.k-calendar-container.k-state-border-up, .k-popup.k-list-container {
+	margin-top: -1px;
+	border: @inputBorder;
+
+	.k-list .k-state-focused,
+	.k-list .k-state-selected {
+	border-radius: @inputBorderRadius;
+	}
+}
+.k-calendar th {
+	border-color: #8cafbf;
+}
+td.k-state-focused, td.k-state-focused.k-state-selected {
+	box-shadow: none;
+}
+
+.k-panelbar > .k-item > .k-link {
+	padding: 0;
+}
+
+.k-widget * {
+	box-sizing: border-box;
+}
+
+.k-widget.k-window  * {
+	box-sizing: inherit;
+}
+
+.top-tab-pane {
+	margin: 0;
+}
+
+.handler {
+	cursor: move;
+}
+
+.k-ff {
+	overflow: inherit !important;
+}
+
+/* Kendo Grid Column alignment*/
+.k-grid  .k-grid-header  .k-header  .k-link {
+	height: auto;
+}
+
+.k-grid  .k-grid-header  .k-header {
+	white-space: normal;
+}

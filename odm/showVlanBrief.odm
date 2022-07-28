@@ -1,0 +1,24 @@
+###
+show vlan brief
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show vlan brief</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowVlanBrief">
+<Table  name="VlanBriefTable">
+<Header name = "VLAN" alias="vlan" start = "0" end = "4" type = "String"/>
+<Header name = "Name" alias="name" start = "5" end = "32" type = "String"/>
+<Header name = "Status" alias = "status" start = "36" end = "46" type = "String"/>
+<Header name = "Ports" alias = "ports"   start = "47" end="-1"/>
+</Table>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+

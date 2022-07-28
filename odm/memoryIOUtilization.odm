@@ -1,0 +1,21 @@
+###
+show processes memory sorted
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>sh processes memory sorted</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="I/O Pool " alias = "entry" dynamic = "true">
+<Property name="Total:" alias="IOTotal" distance = "1" length = "1" type = "String"/>
+<Property name="Used:" alias="IOUsed" distance = "1" length = "1" type = "String"/>
+<Property name="Free:" alias="IOFree" distance = "1" length = "1" type = "String"/>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+

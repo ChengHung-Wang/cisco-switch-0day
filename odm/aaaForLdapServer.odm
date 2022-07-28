@@ -1,0 +1,39 @@
+###
+show running-config aaa ldap
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show running-config aaa ldap</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowRunningconfigAaa">
+<Container name="wnwebdata">
+
+<Container name="ldap server" alias = "entry" dynamic = "true">
+<Property name="ldap server" alias = "ldapServerName" distance = "1" length = "1" type = "String"/>
+<Property name="ipv4" alias = "ldapServerAddress" distance = "1" length = "1" type = "String"/>
+<Property name="attribute map" alias = "userattr" distance = "1" length = "1" type = "String"/>
+<Property name="transport" alias = "ldapServerPortNumber" distance = "2" length = "1" type = "String"/>
+<Property name="timeout retransmit" alias = "ldapServerTimeout" distance = "1" length = "1" type = "String"/>
+<Property name="bind authenticate root-dn" alias="ldapServerBindUserName" distance = "1" length = "1" type = "String"/>
+<Property name="bind authenticate root-dn" alias="ldapServerBindPassword" distance = "3" length = "1" type = "String"/>
+<Property name="base-dn"  alias="ldapServerUserBaseDN" distance = "1" length = "1" type = "String"/>
+
+<Container name="search-filter" alias="ldapServerUserObjectType" dynamic="true">
+<Property name="search-filter user-object-type" alias="userObjectType" distance = "1" length = "1" type = "String"/>
+</Container>
+<Property name="mode" alias="ldapServerSecureMode" distance = "1" length = "1" type = "String"/>
+<Property name="trustpoint" alias="ldapServerTrustPoint" distance = "1" length = "1" type = "String"/>
+</Container>
+
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+
+
+<!--
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->

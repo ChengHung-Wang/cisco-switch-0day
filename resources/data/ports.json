@@ -1,0 +1,175 @@
+[{
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/1",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/2",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/3",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/4",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/5",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/6",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/7",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/8",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/9",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/10",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/11",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/12",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/13",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/14",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/15",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/16",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/17",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/18",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/19",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/20",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/21",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/22",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/23",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Gi1\/0\/24",
+	"Status": "notconnect",
+	"Type": "10\/100\/1000BaseTX",
+	"Vlan": "1",
+	"Speed": "auto"
+}, {
+	"Duplex": "auto",
+	"Port": "Po6",
+	"Status": "notconnect",
+	"Vlan": "unassigned",
+	"Speed": "auto"
+}]

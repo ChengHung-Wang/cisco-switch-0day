@@ -1,0 +1,24 @@
+###
+show spanning-tree vlan *
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show spanning-tree vlan *</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="showSpanningTreeVlan">
+<Container name="wnwebdata">
+<Container name="VLAN">
+<Container name="Bridge ID">
+<Property name="Priority" alias="priority" distance = "3" length = "1" type = "String"/>
+</Container>
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

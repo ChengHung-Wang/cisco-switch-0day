@@ -1,0 +1,1118 @@
+<!--
+	Description: Port Configuration file.
+	Copyright (c) 2016 by Cisco Systems, Inc.
+	All rights reserved.
+-->
+
+<div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+<div>
+    <div class="pageTitle" ng-bind="'ports_config' | translate">
+    </div>
+    <div class="pageContent">    															
+        <!-------------------------------------Insert the switch view first-------------------------------------------->
+        <div ng-include="'features/common/stackConf/views/switchView.html'" class="portSwitchContainer"></div>
+		
+		<div class="txtBold" ng-if="currentPortconfig">{{'management_snmp_host_port' | translate}} : <span>{{currentPortSelected}}</span></div>
+		
+        <!-----------------------------------form for the ports configuration------------------------------------------>
+            <div kendo-tab-strip="portsConfigTab">
+                <!----------------------------------------Tab names---------------------------------------------------->
+                <ul>
+                    <li class="k-state-active" ng-show="true">
+                        {{'portconfig_general' | translate}}
+                    </li>
+                    <li>
+                        {{'portconfig_port' | translate}}
+                    </li>
+                    <li>
+                        {{'portconfig_adv' | translate}}
+                    </li>
+                </ul>
+                <!-------------------------------------------General Settings------------------------------------------>
+                <div name="genSection" id="genSection">
+                    <!--------------------------General Settings Form Page Container----------------------------------->
+                    <form name="PortsConfigGenform" id="portsConfigGenForm" kendo-validator="portsGenValidator" k-options="portGenValidations">
+                        <!-------------------------------General Settings Fields Container----------------------------->
+                        <div class="">
+                            <!---------------------------------------Interface----------------------------------------->
+                            <div class="row form-group" ng-hide="true">
+                                <div class="col-sm-6 fieldinput-right">
+                                    <span class="label">{{'portconfig_general_interface' | translate }}</span>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <span class="label">{{interfaceId}}</span>
+                                </div>
+                            </div>
+                            <!------------------------------------Description------------------------------------------>
+                            <div class="row form-group">
+                                <div class="col-sm-6 fieldinput-right">
+                                    <span class="label">{{'portconfig_general_description' | translate}} </span>
+                                </div>
+                                <div class="col-sm-6">
+                                    <textarea class="k-textbox description-text" name="description" id="description"  ng-model="portsDescription" k-ng-delay="portsDescription"
+                                              ng-change="disablePortConfGlbApplyBtn =disablePortConfGlbCancelBtn= false " data-check data-check-msg="{{'portconfig_invalid_desc' | translate}}" maxlength="200">
+                                </textarea>
+                                </div>
+                            </div>
+                            <!------------------------------------Speed------------------------------------------------>
+                            <div class="row form-group">
+                                <div class="col-sm-6 fieldinput-right">
+                                    <span class="label ">{{'portconfig_general_speed' | translate}}</span>
+                                </div>
+                                <div class="col-sm-6 checkbox-styled">
+                                    <select kendo-drop-down-list="SpeedDropDown" name="speed" id="speed"
+                                            ng-model="portsSpeed"
+                                            k-data-source="speedOptions"
+                                            k-data-text-field="'speedText'"
+                                            k-data-value-field="'speedValue'"
+                                            k-ng-delay="portsSpeed" ng-disabled="speedDisable"
+                                            ng-change="speedNegoOnChange()">
+                                    </select>
+									<tooltip helptext="{{'help_ports_speed' | translate}}"></tooltip>
+                                </div>
+                            </div>
+                            <!--for auto-negotiation limit  -->
+                            <div class="row form-group" ng-hide="autoNegotiationStatus=true">
+                                <div class="col-sm-6 fieldinput-right">
+                                    <span class="label ">{{'portconfig_auto_negotiation' | translate}}</span>
+                                </div>
+                                <div class="col-sm-6 checkbox-styled">
+                                    <select kendo-drop-down-list="autoSpeed" name="speed" id="speed"
+                                            ng-model="portsAutoSpeed"
+                                            k-data-source="autoNegoLimitOptions"
+                                            k-data-text-field="'speedText'"
+                                            k-data-value-field="'speedValue'"
+                                            k-ng-delay="portsSpeed" ng-disabled="autoNegotiation" 
+                                            ng-change="disablePortConfGlbApplyBtn = disablePortConfGlbCancelBtn = false">
+                                     </select>			
+                                </div>
+                            </div>
+                            <!----------------------------------------Duplex------------------------------------------->
+                            <div class="row form-group">
+                                <div class="col-sm-6 fieldinput-right">
+                                    <span class="label ">{{'portconfig_general_duplex' | translate}}</span>
+                                </div>
+                                <div class="col-sm-6 checkbox-styled">
+                                    <select kendo-drop-down-list="duplexDropDown"
+                                            name="duplex" id="duplex"
+                                            ng-model="portsDuplex"
+                                            k-data-source="duplexOptions"
+                                            k-data-text-field="'duplexText'"
+                                            k-data-value-field="'duplexValue'"
+                                            ng-change="disablePortConfGlbApplyBtn= disablePortConfGlbCancelBtn= false" ng-disabled="duplexDisable"
+                                            k-ng-delay="portsDuplex"></select>
+					<tooltip helptext="{{'help_ports_duplex' | translate}}"></tooltip>
+                                </div>
+                            </div>
+                            <!----------------------------------------Default------------------------------------------->
+                            <div class="row form-group" ng-hide="defaultStatus=true">
+                                <div class="col-sm-6 fieldinput-right">
+                                    <span class="label ">{{'port_config_default' | translate}}</span>
+                                </div>
+                                <div class="col-sm-6 custom-checkbox">
+                                    <input type="checkbox" name="portConfDefault" id="portConfDefault" 
+                                    ng-change="disablePortConfGlbApplyBtn= disablePortConfGlbCancelBtn= false"
+                                    class="k-checkbox form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="portConfDefault" ng-disabled="vrfCheckbox">
+                                    <label class="k-checkbox-label" for="portConfDefault"></label>
+                                </div>
+                            </div>
+                            <!-----------------------------------Status----------------------------------------------->
+                            <div class="row form-group">
+                                <div class="col-sm-6 fieldinput-right">
+                                    <span class="label">{{'portconfig_general_status' | translate}}</span>
+                                </div>
+                                <div class="col-sm-6">
+				   <span class="toggleClass">
+                                     <toggle-button
+                                             ng-change="disablePortConfGlbApplyBtn= disablePortConfGlbCancelBtn = false "
+                                             button-options="{{'toggle_up' | translate}},{{'toggle_down' | translate}}"
+                                             ng-model="portsStatus"></toggle-button>
+				  </span>
+				  <tooltip helptext="{{'help_ports_status' | translate}}"></tooltip>
+                                </div>
+                            </div>
+                          </div>
+                        <!----------------------------General Settings Save and Cancel button Container-------------------------------->
+                        <div class="formActionButtons fieldinput-center">
+                            <!-----------------------------------------------Save------------------------------------------------------>
+                            <button kendo-button="doneButton" class="btn btn-primary" ng-disabled="disablePortConfGlbApplyBtn" ng-click="saveGlobalPortConfig()">
+                                <span class="fa pl-apply"></span> {{'com_apply' | translate}}
+                            </button>
+                            <!-----------------------------------------------Cancel---------------------------------------------------->
+                            <button kendo-button="cancelButton" class="btn btn-primary" ng-disabled="disablePortConfGlbCancelBtn" ng-click="cancelPortsGenConf()">
+                                <span class="fa pl-cancel"></span> {{'com_cancel' | translate}}
+                            </button>
+                        </div>
+                        </form>
+                </div>
+                <!----------------------------------------------Port Settings--------------------------------------------->
+                <div name="portsSetSection" id="portsSetSection">
+                    <!------------------------------------------Ports Settings Form Page Container---------------------------------------->
+                    <form name="PortsConfigSetform" id="portsConfigSetForm" kendo-validator="portsSetValidator" k-options="portSetValidations">
+                        <!------------------------------------------Ports Settings Fields Container---------------------------------------->
+                        <div class="row form-group">
+                            <div class="col-sm-5">
+                                <div class="row form-group">
+                                    <div class="col-sm-5 fieldinput-right">
+                                        <span class="label">{{'portconfig_portgroup_number' | translate}}</span>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <input class="k-textbox"
+                                        name="portgroupno" id="portgroupno"
+                                        placeholder="1-{{portGroupNumRangeUpto}}" num-comma-hyphen-only
+                                        ng-model="portgroupno" 
+                                        data-space="" data-space-msg="{{'portconfig_invalid_portgroup' | translate}}" min="1" max="{{portGroupNumRangeUpto}}"
+                                        ng-change="portGroupNumberOnChange()"
+                                        data-range="" data-range-msg="{{translatePortGroupNumRange}}"
+                                        data-dupchanlgrp="" data-dupchanlgrp-msg="{{'port_channel_warning_msg' | translate}}">
+                                        <tooltip helptext="{{'help_port_group_number' | translate}}"></tooltip>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-5 fieldinput-right">
+                                        <span class="label">{{'portconfig_portgroup_type' | translate}}</span>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <select kendo-drop-down-list 
+                                        name="portGroupType" id="portGroupType"
+                                        ng-model="portGroupType"
+                                        k-data-source="portGroupTypeOptions" k-data-text-field="'portGroupTypeText'"
+                                        k-on-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn=false"
+                                        k-data-value-field="'portGroupTypeValue'" k-ng-delay="portGroupType"></select>
+                                        <tooltip helptext="{{'help_port_group_type' | translate}}"></tooltip>
+                                    </div>
+                                    <div ng-hide="true" ng-init="portSetingLAGLoading(multiSelectedPort,showRunConfigRecords)"></div>
+                                </div>
+                                <div class="row form-group" ng-if="portGroupType != 'On'">
+                                    <div class="col-sm-5 fieldinput-right">
+                                        <span class="label ng-binding">{{'portconfig_portgroup_keepalive' | translate}}</span>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <span class="toggleClass">
+                                            <toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+                                            ng-change="keepAliveOnChange()"
+                                            ng-model="portGroupData.keepAliveMode"></toggle-button>
+                                        </span>
+                                        <tooltip helptext="{{'help_ports_keepalive_mode' | translate}}"></tooltip>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-5 fieldinput-right">
+                                        <span class="label">{{'portconfig_lacp_system_priority' | translate}}</span>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <input class="k-textbox"
+                                        name="sysPriority" id="sysPriority"
+                                        placeholder="0-65535" num-comma-hyphen-only
+                                        ng-model="lacpSysPriority"  k-ng-delay="lacpSysPriority"
+                                        min="0" max="65535"  
+                                        ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"                                     
+                                        data-range="" data-range-msg="{{'portconfig_lacp_syspriority_range' | translate}}">
+                                        <tooltip helptext="{{'help_lacpsys_priority' | translate}}"></tooltip>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-5 fieldinput-right">
+                                        <span class="label">{{'portconfig_lacp_port_priority' | translate}}</span>
+                                    </div>
+                                    <div class="col-sm-7">
+                                       <input class="k-textbox"
+                                          name="portPriority" id="portPriority"
+                                          placeholder="0-65535" num-comma-hyphen-only 
+                                          ng-model="lacpPortPriority" k-ng-delay="lacpPortPriority" data-range data-range-msg="{{'portconfig_lacp_portpriority_range' | translate}}"
+                                          ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                          min="0" max="65535">
+                                       <tooltip helptext="{{'help_lacpport_priority' | translate}}"></tooltip>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-sm-1 fieldinput-right">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="panel panel-default noborder">
+											<div class="panel-heading noborder panelHeadingCustom">
+												<span class="headerfont" style="font-weight: bold;">{{'portconfig_dhcp_snooping_configuration' | translate}}</span>
+											</div>
+                                        </div>
+                                    </div>							    
+                                </div> 
+								<div class="row form-group " ng-show="isRoutedPort == false">
+                                    <div class="col-sm-5 fieldinput-right">
+										<span class="label">{{'portconfig_port_dhcpsnooping' | translate}} </span>
+                                    </div>
+                                    <div class="col-sm-7 " >
+										<span class="toggleClass">
+											<toggle-button   button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+                                                     ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                     ng-model="portsDhcpSnooping"  k-ng-delay="portsDhcpSnooping"></toggle-button></span>
+											<tooltip helptext="{{'help_ports_DHCP_snooping' | translate}}"></tooltip>
+                                    </div>
+                                </div>
+                                <div class="row form-group " >
+                                    <div class="col-sm-5 fieldinput-right">
+										<span class="label">{{'portconfig_options_allow_untrusted' | translate}} </span>
+                                    </div>
+                                    <div class="col-sm-7 " >
+										<span class="toggleClass">
+											<toggle-button   button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+                                                     ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                     ng-model="portsAllowUntrusted"  k-ng-delay="portsAllowUntrusted"></toggle-button></span>
+											<tooltip helptext="{{'help_port_config_allow_untrusted' | translate}}"></tooltip>
+                                    </div>
+                                </div>
+								<div class="row form-group">
+								       <div class="col-sm-5 fieldinput-right">
+			                                 <span class="label">{{'port_dhcp_limit_rate' | translate}}</span>
+			                          </div>
+				                       <div class="col-sm-7">
+				                           <input class="k-textbox"
+				                                  name="dhcpLimitRate" id="dhcpLimitRate" placeholder="1-2048" num-only
+				                                  ng-model="dhcpLimitRate" 	k-ng-delay="portsDHCPVlanId"
+												  ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+				                                  min="1" max="2048" data-range="" data-range-msg="{{'port_dhcp_limit_range' | translate}}">
+				                       </div>
+			                    </div>
+                            </div>
+                            <div class="col-sm-5">
+                            <div>
+                                <!------------------------------------------Port Mode---------------------------------------->
+                                <div class="row form-group" ng-show="visibleportMode">
+                                    <div class="col-sm-5 fieldinput-right">
+                                        <span class="label">{{'portconfig_port_portmode' | translate}}</span>
+                                    </div>
+                                    <div class="col-sm-7 " >
+                                        <span class="toggleClass">
+                                            <toggle-button  button-options="{{'com_switch' | translate}},{{'portconfig_port_routed' | translate}}"
+                                                             ng-change="changePortMode()"
+                                                             ng-model="portMode"  k-ng-delay="portMode"></toggle-button>
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                    <!-- For Routing mode -->
+						<div ng-show="isRoutedMode">
+							<div class="row form-group">
+								<div class="col-sm-6 webui-centerpanel-label">
+									<span class="label">{{'com_ip_option' | translate }}</span>
+								</div>
+								<div class="col-sm-2">
+									<span class="label"> &nbsp;{{'sys_dhcp_ipv4'| translate}}</span> <input
+										type="checkbox" class="pull-left  ng-valid ng-dirty" id="ipv4"
+										name="ipv4" ng-model="iptypeipv4" checked="checked">
+								</div>
+								<div class="col-sm-2">
+									<span class="label"> &nbsp;{{'iptype_ipv6'| translate}}</span> <input
+										type="checkbox" class="pull-left  ng-valid ng-dirty" id="ipv6"
+										name="ipv6" ng-model="iptypeipv6" checked="checked">										
+								</div>
+							</div>
+							<!-- IPv4 -->
+                                 <div ng-show="iptypeipv4 == true">
+                                    <div class=" row form-group"
+										ng-if="(iptypeipv4 == true && iptypeipv6 == true)">										
+										<div class="col-sm-4 webui-centerpanel-label">                        					
+                           						<span class="innerheaderdesign" id="wizardTitle">{{'sys_dhcp_ipv4' | translate}}</span>                        					
+                     					</div>							
+									</div>
+                                    <div class="row form-group">
+                                        <div class="col-sm-6 webui-centerpanel-label">
+                                            <span class="label">{{'staticrouting_ip_type' | translate}}</span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <select kendo-drop-down-list
+                                            name="portconfigIPType" id="portconfigIPType"
+                                            ng-model="portconfigIPType"
+                                            ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                            k-data-source="portconfigIPTypeOptions" k-data-text-field="'text'"
+                                            k-data-value-field="'value'" k-ng-delay="portconfigIPType" ng-disabled="portConfigIpDisabled"></select>
+                                        </div>
+                                    </div>
+                                    <div class="ng-hide" ng-init="portconfigIPTypeOptionsLoad()"></div>
+									<div class="row form-group" ng-if="portconfigIPType == 'static' && iptypeipv4 == true">
+										<div class="col-sm-6 webui-centerpanel-label">
+										<span class="label">{{'portconfig_port_ipv4_ip' | translate}}</span>
+										</div>
+										<div class="col-sm-6">
+										<input class="k-textbox form-control" ng-change="keepAliveOnChange()" ng-model="ports.portConfigIp" name="portConfigIp" id="portConfigIp" numeric-dot-only data-validate-ip="" data-validateip-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}" required data-required-msg="{{'aaa_ip_msg' | translate}}" ng-disabled="portConfigIpDisabled" placeholder="xxx.xxx.xxx.xxx">
+										<tooltip helptext="{{'help_portConfig_ipAddress' | translate}}"></tooltip>
+										</div>
+									</div>
+									<div class="row form-group" ng-if="portconfigIPType == 'static' && iptypeipv4 == true">
+										<div class="col-sm-6 webui-centerpanel-label">
+										<span class="label">{{'portconfig_port_ipv4_subnet' | translate}} </span>
+										</div>
+										<div class="col-sm-6">
+										<input class="k-textbox form-control" ng-change="keepAliveOnChange()" ng-model="ports.portConfigSubnet" name="portConfigSubnet" id="portConfigSubnet" ng-disabled="portConfigSubnetDisabled" numeric-dot-only data-validate-subnet="" data-validatesubnet-msg="{{'staticroute_subnet_invalid_msg' | translate}}" required data-required-msg="{{'staticroute_subnet_req_msg' | translate}}" placeholder="xxx.xxx.xxx.xxx">
+										<tooltip helptext="{{'help_portConfig_subnetMask' | translate}}"></tooltip>
+										</div>
+									</div>
+                                    <div class="row form-group" ng-if="portconfigIPType == 'dhcp'">
+                                        <div class="col-sm-6 webui-centerpanel-label">
+                                            <span class="label">{{'portconfig_port_ipv4_host' | translate}} </span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input class="k-textbox form-control" name="dhcpHostName" id="dhcpHostName"
+                                               ng-model="ports.dhcpHostName"
+                                               ng-change="keepAliveOnChange()" required
+                                               data-required-msg="{{'day0_wizard_hostname_req_msg' | translate}}">
+                                            <tooltip helptext="{{'help_dhcp_hostname' | translate}}"></tooltip>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group" ng-show="portconfigIPType == 'pool' && dhcpPoolArr.length > 0">
+                                        <div class="col-sm-6 webui-centerpanel-label">
+                                            <span class="label">{{'com_dhcp_pool' | translate}}</span>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <select kendo-drop-down-list
+                                                    name="portconfigPool" id="portconfigPool"
+                                                    ng-model="portconfigPool"
+                                                    ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                    k-data-source="dhcpPoolDataSource" k-data-text-field="'text'"
+                                                    k-data-value-field="'value'" k-ng-delay="portconfigPool"></select>
+                                            <tooltip helptext="{{'help_dhcp_pool' | translate}}"></tooltip>
+                                        </div>
+                                    </div>
+                                  </div>
+                            <!-- IPv6 address -->                           
+                            <div ng-show="iptypeipv6 == true">	                            
+                                <div class=" row form-group"
+										ng-if="(iptypeipv4 == true && iptypeipv6 == true)">
+										<div class="col-sm-4 webui-centerpanel-label">                        					
+                           						<span class="innerheaderdesign" id="wizardTitle">{{'iptype_ipv6' | translate}}</span>                        					
+                     					</div>							
+								</div>							
+								<div class="row form-group">									
+									<div class="col-sm-6 webui-centerpanel-label">
+									    <span class="label">{{'com_ipaddress_static' | translate}} </span>
+									</div>
+									<div class="col-sm-6">							
+										<select kendo-drop-down-list name="ipv6SubType" id="ipv6SubType"
+											ng-model="logicalInterface.port.ipv6SubType" ng-disabled="portConfigIpDisabled"
+											k-data-source="ipv6TypeOptions" k-data-text-field="'ipv6Text'"
+											k-data-value-field="'ipv6Value'" k-ng-delay="logicalInterface.port.ipv6SubType"></select>
+									</div>	
+								</div>
+								
+								<div class="row form-group">									
+									<div class="col-sm-6 webui-centerpanel-label">
+									    <span class="label">{{'portconfig_port_ipv4_ip' | translate}}</span>
+									</div>
+									<div class="col-sm-6">							
+										<input ng-if="logicalInterface.port.ipv6SubType !='link-local'"
+											class="k-textbox form-control" name="ipv6AddressRoute" placeholder="X:X:X:X:X:X:X:X/X"
+											id="ipv6AddressRoute" ng-model="logicalInterface.port.vlanIPV6Address" 	ng-disabled="portConfigIpDisabled"										
+											data-ipv6 data-ipv6-msg="{{'com_invalidIpv6' | translate }}"											
+											ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">	
+																	
+										<input ng-if="logicalInterface.port.ipv6SubType =='link-local'"
+											class="k-textbox" name="layer3linklocal" id="layer3linklocal" ng-disabled="portConfigIpDisabled"
+											ng-model="logicalInterface.port.vlanIPV6Address" placeholder="fe80::x" 											
+											data-ipv6linklocal	data-ipv6linklocal-msg="{{'com_invalidIpv6' | translate }}"
+											ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">
+											
+										<a ng-click="addIpv6Address()"
+											style="font-size: 23px; vertical-align: middle"><i
+											class="fa fa-plus-square-o"></i></a>
+									</div>	
+								</div>		
+														
+								<div class="row form-group" style="margin-left: 14px">									
+									<div class="col-sm-6 webui-centerpanel-label">									
+									</div>
+									<div class="col-sm-5.5 svibox">						
+										<div id="rowIpv6List" 
+											ng-repeat="rowData in logicalInterface.port.listIpb6Address">
+											<div>
+												{{rowData.name}} <a ng-click="removeIpv6Address(rowData)"
+													style="float: right; color: red"><i class="fa fa-times"></i></a>
+											</div>
+										</div>
+									</div>	
+								</div>
+								
+								<div class="row form-group" style="margin-right: -281px">
+									<div class="col-sm-4 webui-centerpanel-label"></div>
+									<div class="col-sm-3">
+										<span class="label"> &nbsp;{{'staticrouting_dhcp' | translate
+											}}</span> <input type="checkbox" class="pull-left ng-valid ng-dirty"
+											id="dhcp" name="dhcp" ng-model="logicalInterface.port.dhcp"
+											checked="checked" ng-click="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">
+									</div>
+									<div class="col-sm-3" ng-show="logicalInterface.port.dhcp">
+										<span class="label">
+											&nbsp;{{'portconfig_port_ipv6_rapidcommit' | translate }}</span> <input
+											type="checkbox" name="rapid" value="rapidCommit"
+											class="pull-left  ng-valid ng-dirty" id="rapid"
+											ng-model="logicalInterface.port.rapid" ng-click="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">								
+									</div>
+								</div>
+								
+								<div class="row form-group" style="margin-left: -14px">
+									<div class="col-sm-6 webui-centerpanel-label"></div>
+									<div class="col-sm-6">
+										<span class="label"> &nbsp;{{'common_ipv6types_autoconfig' | translate
+											}}</span> <input type="checkbox" class="pull-left ng-valid ng-dirty"
+											id="autoconfig" name="autoconfig" value="autoconfig" ng-model="logicalInterface.port.autoconfig"
+											checked="checked" ng-click="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">
+									</div>									
+								</div>						      							
+							</div> 
+						 </div>								
+						<!-- for switch mode -->
+								
+                                <div ng-show="isportMode">
+                                  <div class="row form-group " >
+                                    <div class="col-sm-5 fieldinput-right">
+                                        <span class="label ">{{'portconfig_port_switchmode' | translate}}</span>
+                                    </div>
+                                    <div class="col-sm-7  checkbox-styled">
+                                        <select kendo-drop-down-list 
+                                                name="switchMode" id="switchMode"
+                                                ng-model="switchMode"
+                                                ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                k-data-source="switchModeOptions" k-data-text-field="'switchModeText'"
+                                                k-data-value-field="'switchModeValue'" k-ng-delay="switchMode"></select>
+                                        <tooltip helptext="{{'help_ports_switch_mode' | translate}}"></tooltip>
+                                    </div>
+                                </div>
+
+                                <!-- access-->
+                                <div  ng-hide="switchMode === 'trunk' ">
+                                    <!-------------------------------------------Access Vlan-------------------------------------->
+                                    <div class="row form-group">
+                                    <div class="col-sm-5 fieldinput-right">
+                                        <span class="label">{{'portconfig_port_switchmode_access' | translate}}</span>
+                                    </div>
+                                    <div class="col-sm-7">
+                                        <input class="k-textbox"
+                                               name="accessVlan" id="accessVlan"
+                                               placeholder="1-4094" num-comma-hyphen-only
+                                               ng-model="portsAccessVlan" k-ng-delay="portsAccessVlan"
+                                               ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                               data-space="" data-space-msg="{{'portconfig_invalid_vlan' | translate}}" min="1" max="4094"
+                                               data-range="" data-range-msg="{{'portconfig_vlan_range' | translate}}">
+
+                                    </div>
+                                    </div>
+                                <!-------------------------------------------Voice Vlan-------------------------------------->
+                                    <div class="row form-group">
+                                        <div class="col-sm-5 fieldinput-right">
+                                            <span class="label">{{'portconfig_port_switchmode_voicevlan' | translate}}</span>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input class="col-sm-4" type="radio" name="voiceVlanOption" ng-model="voiceVlanOption"
+                                                   k-ng-delay="voiceVlanOption" value="VLANID" ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"/>
+                                            {{'vlan_id' | translate}}
+                                        </div>
+                                        <div class="col-sm-3"  >
+                                            <input  class="col-sm-2" type="radio" name="voiceVlanOption" ng-model="voiceVlanOption" ng-click="voiceVlanChanges()"
+                                                    k-ng-delay="voiceVlanOption" value="DOT1P" ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"/>
+                                            {{'DOT1P' | translate}}
+                                        </div>
+                                    </div>
+                                    <div class="row form-group" ng-show="voiceVlanOption=='VLANID'">
+	                                    <div class="col-sm-5 fieldinput-right">
+	                                        <span class="label">{{'port_voice_vlanid' | translate}}</span>
+	                                    </div>
+	                                    <div class="col-sm-7">
+	                                        <input class="k-textbox"
+	                                               name="voiceVlan" id="voiceVlan"
+	                                               placeholder="1-4094" num-comma-hyphen-only data-checkVlanList data-checkVlanList-msg="{{'portconfig_vlan_range' | translate}}"
+	                                               ng-model="portsVoiceVlan" k-ng-delay="portsVoiceVlan" data-range data-range-msg="{{'portconfig_vlan_range' | translate}}"
+	                                               ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+	                                               min="1" max="4094">
+	
+	                                    </div>
+                                    </div>
+                                </div>
+
+                               <!-- trunk-->
+                                <div ng-hide="switchMode === 'access' ">
+                                    <!-------------------------------------------Allowed Vlan------------------------------------->
+                                    <div class="row form-group">
+                                        <div class="col-sm-5 fieldinput-right">
+                                            <span class="label">{{'portconfig_port_switchmode_allowedvlan' | translate}}</span>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <input class="col-sm-4" type="radio" name="allowedVlan"
+                                                   ng-model="portsAllowedVlan" ng-change="allowdVlanOnChange()"
+                                                   k-ng-delay="portsAllowedVlan" value="all"  ng-selected="portsAllowedVlan"/>
+                                            {{'portconfig_port_switchmode_all' | translate}}
+                                        </div>
+                                        <div class="col-sm-3"  >
+                                            <input  class="col-sm-2" type="radio" name="allowedVlan"
+                                                    ng-model="portsAllowedVlan" ng-change="allowdVlanOnChange()"
+                                                    k-ng-delay="portsAllowedVlan" value="notall"  ng-selected="!portsAllowedVlan"/>
+                                            {{'portconfig_port_switchmode_vlan_ids' | translate}}
+                                        </div>
+                                    </div>
+                                    <!-------------------------------------------VLAN ID------------------------------------------>
+                                    <div class="row form-group">
+                                        <div class="col-sm-5 fieldinput-right">
+                                            <div class="label">
+                                                {{'portconfig_port_switchmode_vlan_ids' | translate}}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-7">
+                                            <input class="k-textbox" ng-disabled="isAllowedVlan()"
+                                                   name="vlanId" id="vlanId" class="form-control"
+                                                   placeholder="1-4094" num-comma-hyphen-only
+                                                   ng-model="portsAllowedVlanId"
+                                                   ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                   k-ng-delay="portsAllowedVlanId"
+                                                   data-space="" data-space-msg="{{'portconfig_invalid_vlan' | translate}}" min="1" max="4094"
+                                                   data-range="" data-range-msg="{{'portconfig_vlan_range' | translate}}"
+                                                   data-vlancheck="" data-vlancheck-msg="{{'vlan_id_req_msg' | translate}}">
+                                        </div>
+                                    </div>
+                                    <!-------------------------------------------Native Vlan-------------------------------------->
+                                    <div class="row form-group">
+                                        <div class="col-sm-5 fieldinput-right">
+                                            <span class="label">{{'portconfig_port_switchmode_nativevlan' | translate}}</span>
+                                        </div>
+                                        <div class="col-sm-7 ">
+                                            <input class="k-textbox"
+                                                   placeholder="1-4094"
+                                                   name="native" id="native" num-comma-hyphen-only
+                                                   ng-model="portsNativeVlan" k-ng-delay="portsAllowedVlanId"
+                                                   ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                   data-space="" data-space-msg="{{'portconfig_invalid_vlan' | translate}}" min="1" max="4094"
+                                                   data-range="" data-range-msg="{{'portconfig_vlan_range' | translate}}">
+                                            <tooltip helptext="{{'help_ports_native_VLAN' | translate}}"></tooltip>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <!------------------------------------------Port Fast---------------------------------------->
+                            <div class="row form-group ">
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label">{{'portconfig_port_portfast' | translate}}</span>
+                                </div>
+                                <div class="col-sm-7 " >
+                                    <span class="toggleClass">
+                                    <toggle-button ng-init="physicalInterface.portConfig.portFast='On'"
+                                                   button-options="{{'toggle_on' | translate}},{{'toggle_off' | translate}}"
+                                                   ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                   ng-model="portsPortFast"  k-ng-delay="portsPortFast"></toggle-button></span>
+                                    <tooltip helptext="{{'help_ports_PortFast' | translate}}"></tooltip>
+                                </div>
+                            </div>                            
+                            <!------------------------------------------DHCP Snooping---------------------------------------->
+                                                        
+                              <!-- Port Security -->
+                               <div class="row form-group" ng-hide="switchMode === 'dynamic auto' || switchMode === 'dynamic desirable' ">
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label">{{'port_config_port_security' | translate}} </span>
+                                </div>
+                                <div class="col-sm-7">
+                                     <span class="toggleClass">
+                                    <toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+                                                     ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                     ng-model="portSecurity"  k-ng-delay="portSecurity"></toggle-button></span>                                    
+                                </div>
+                              </div>                               	
+							<!-- add perpetual PoE config for selecon-->
+							<div class="row form-group" ng-show="portPoeStatus && selectedSwitchPoeCheck">
+								<div class="col-sm-5 fieldinput-right">
+									<span class="label ">{{'port_config_poe' | translate}}</span>
+								</div>
+								<div class="col-sm-7">
+								     <input type="checkbox" class="pull-left  ng-valid ng-dirty" id="poe"
+							  		  name="poe" ng-disabled="poeStatus" ng-model="perpetualPoE" checked="checked" ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">
+							  		  <tooltip helptext="{{'help_port_config_poe' | translate}}"></tooltip>
+								</div>
+						    </div> 
+                            </div>
+                        </div> 
+                    <!-- add event Classification config for selecon -->
+							<div class="row form-group" ng-show="showSeleconDetails">
+								<div class="col-sm-6 fieldinput-right">
+									<span class="label ">{{'port_config_eventclassification' | translate}}</span>
+								</div>
+								<div class="col-sm-1 custom-checkbox empSpace">
+									<input type="checkbox" name="eveClass" id="eveClass"
+										ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+										class="k-checkbox form-control ng-pristine ng-untouched ng-valid ng-empty"
+										ng-model="eveClassification" ng-disabled="eveClassStatus"> <label
+										class="k-checkbox-label" for="eveClass"></label>				
+								</div>
+								<tooltip helptext="{{'help_port_config_eventclassification' | translate}}" class="toolTop"></tooltip>	
+							</div>
+									
+                            </div> 
+                        </div>
+                        <!------------------------------------------Ports Settings Save and Cancel button Container---------------------------------------->						
+												
+                        <div class="formActionButtons fieldinput-center">
+                            <!-----------------------------------------------Save----------------------------------------------------------------->
+                            <button kendo-button="doneButton" class="btn btn-primary" ng-disabled="disablePortConfGlbApplyBtn" ng-click="saveGlobalPortConfig()">
+                                <span class="fa pl-apply"></span> {{'com_apply' | translate}}
+                            </button>
+                            <!-----------------------------------------------Cancel----------------------------------------------------------------->
+                            <button kendo-button="cancelButton" class="btn btn-primary" ng-disabled="disablePortConfGlbCancelBtn" ng-click="cancelPortsSetConf()">
+                                <span class="fa pl-cancel"></span> {{'com_cancel' | translate}}
+                            </button>
+                        </div>
+                    </form>
+					<div class="row">
+						<div class="col-sm-5">
+							<div class="panel panel-default panel-custom noborder">
+								<div class="panel-heading noborder panelHeadingCustom">								
+									<h3 class="panel-title custom-panel-title"><span class="dashletPanelHeader headerfont" style="font-weight: bold;"> {{'portconfig_dhcp_snooping_valn_configuration'|translate}}</span></h3>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div kendo-grid="dhcpSnoopingVLANGrid" id="dhcpSnoopingVLANGrid" name="dhcpSnoopingVLANGrid"
+							 k-options="dhcpSnoopingVLANOptions"
+							 k-data-source="dhcpSnoopingVLANDataSource"
+							 k-on-change="onSelectDHCPSnoopingVLANHandler(data)" >
+						</div>
+					</div>
+					<div class="gridActionButtons">
+						<div>
+							<button kendo-button="addDHCPSnoopingVLANButton" class="btn btn-primary margin-right-10" ng-click="addDHCPSnoopingVLAN()"><span class="fa pl-add"></span> {{'com_add' | translate}}</button>
+							<button kendo-button="deleteDHCPSnoopingVLANButton" class="btn btn-primary" ng-click="showDeleteWindow(true)" ng-disabled="disableDeleteButton"><span class="fa pl-delete"></span> {{'com_delete' | translate}}</button>
+						</div>
+					</div>
+					<div kendo-window="dhcpSnoopingVLANGridWindow" k-title="'portconfig_dhcp_snoop_vlan' | translate" k-visible="false" k-width="800" k-modal="true" id="dhcpSnoopingVLANGridPopup" >
+						<div>
+							<form name="dhcpSnoopingVlanForm" id="dhcpSnoopingVLANForm" kendo-validator="dhcpSnoopingVLANValidator" k-options="dhcpSnoopingVLANValidations">
+								<div class="well">
+									<div class="row form-group"></div>
+									<div class="row form-group">
+                                        <div class="col-sm-4 webui-centerpanel-label">
+                                            <div class="label pl-mandatory">
+                                                {{'vlan_id' | translate}}
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <input class="k-textbox"
+                                                   name="dhcpVlanId" id="dhcpVlanId" class="form-control"
+                                                   placeholder="1-4094" num-comma-hyphen-only
+                                                   ng-model="vlanEditData.portsDHCPVlanId"
+												   required data-required-msg="{{'vlan_id_req_msg' | translate}}"                                                   
+                                                   k-ng-delay="portsDHCPVlanId"
+                                                   data-space="" data-space-msg="{{'portconfig_invalid_vlan' | translate}}" min="1" max="4094"
+                                                   data-range="" data-range-msg="{{'portconfig_vlan_range' | translate}}"
+                                                   data-vlancheck="" data-vlancheck-msg="{{'vlan_id_req_msg' | translate}}"/>
+                                        </div>
+                                </div>
+								<div class="row form-group">
+                                    <div class="col-sm-4 webui-centerpanel-label">
+                                        <span class="label">{{'portconfig_options_circuit_type' | translate}}</span>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <select kendo-drop-down-list 
+                                        name="overrideType" id="overrideType"
+                                        ng-model="vlanEditData.overrideType"
+                                        k-data-source="overrideTypeOptions" k-data-text-field="'overrideTypeText'"                                        
+                                        k-data-value-field="'overrideTypeValue'" k-ng-delay="overrideType"></select>                                        
+                                    </div>                                    
+                                </div>								
+								<div class="row form-group"> 
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'portconfig_options_circuit_string' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+											name="circuit"
+											ng-model="vlanEditData.circuitString"
+                                            required data-required-msg="{{'portconfig_circuit_string_msg' | translate}}"											
+											data-minimum="2" data-minimum-msg="{{'circuit_string_length' | translate}}"
+											data-maximum="64" data-maximum-msg="{{'circuit_string_length' | translate}}"
+											data-check="" data-check-msg="{{'user_administration_username_special' | translate}}"/>											
+									</div>
+								</div>
+									
+								</div>
+							</form>
+						</div>
+						<div ng-show="!isEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+							<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveDhcpSnoopingVlanData()">
+							<i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button>
+							<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="dhcpSnoopingVlanCancel()">
+							<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+						</div>
+
+						<div ng-show="isEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+							<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveDhcpSnoopingVlanData()">
+							<i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button>
+							<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="dhcpSnoopingVlanCancel()">
+							<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+						</div>
+					</div>						
+				</div>
+                <!----------------------------------------------Advanced Settings--------------------------------------------->
+              <div name="advanSetSection" id="advanSetSection">
+				<form name="PortsConfigAvdform" id="portsConfigAdvForm" kendo-validator="portsAdvValidator" k-options="portAdvValidations">
+                	<div class="row form-group">			
+						<div class="col-sm-5">
+			
+							<!------------------------------------------Storm Control-------------------------------------------------->
+                            <div class="row form-group">
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label ">{{'portconfig_adv_storm' | translate}}</span>
+                                </div>
+                                <div class="col-sm-7">
+                                    <select kendo-drop-down-list
+                                            name="stormControl" id="stormControl"
+                                            ng-model="portsStormControlStorm"
+                                            ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                            k-data-source="stormControlOptions"
+                                            k-data-text-field="'stormControlText'"
+                                            k-data-value-field="'stormControlValue'" k-ng-delay="portsStormControlStorm"></select>
+                                    <tooltip helptext="{{'help_ports_storm_control' | translate}}"></tooltip>
+                                </div>
+                            </div>
+                            <!---------------------------------------Broadcast Threshold Level----------------------------------------->
+                            <div class="row form-group">
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label">{{'portconfig_adv_brdcst' | translate}}</span>
+                                </div>
+                                <div class="col-sm-7">
+                                    <input class="k-textbox"
+                                           name="broadcast" id="broadcast" placeholder="0-100"
+                                           ng-model="portsStormControlBroadcast" num-comma-hyphen-only data-checkVlanList
+                                           ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false" k-ng-delay="portsStormControlBroadcast"
+                                           min="0" max="100" data-range="" data-range-msg="{{'portconfig_threshold_range' | translate}}" >
+                                </div>
+                            </div>
+                            <!---------------------------------------Multicast Threshold Level----------------------------------------->
+                            <div class="row form-group">
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label">{{'portconfig_adv_mutcst' | translate}}</span>
+                                </div>
+                                <div class="col-sm-7">
+                                    <input class="k-textbox"
+                                           name="multicast" id="multicast" placeholder="0-100" num-comma-hyphen-only data-checkVlanList
+                                           ng-model="portsStormControlMulticast" k-ng-delay="portsStormControlMulticast"
+                                           ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                           min="0" max="100" data-range="" data-range-msg="{{'portconfig_threshold_range' | translate}}">
+                                </div>
+                            </div>
+                            <!---------------------------------------Unicast Threshold Level------------------------------------------->
+                            <div class="row form-group">
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label">{{'portconfig_adv_unicst' | translate}}</span>
+                                </div>
+                                <div class="col-sm-7">
+                                    <input class="k-textbox"
+                                           name="unicast" id="unicast" placeholder="0-100" num-comma-hyphen-only data-checkVlanList
+                                           ng-model="portsStormControlUnicast" k-ng-delay="portsStormControlUnicast"
+                                           ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                           min="0" max="100" data-range="" data-range-msg="{{'portconfig_threshold_range' | translate}}">
+                                </div>
+                            </div>
+                             <!-- Port Priority -->
+                             <div class="row form-group">
+                                  <div class="col-sm-5 fieldinput-right">
+                                      <span class="label">{{'port_config_port_priority' | translate}}</span>
+                                  </div>
+                                  <div class="col-sm-7">
+                                      <input class="k-textbox"
+                                             placeholder="0-240"
+                                             name="portPriority" id="portPriority" num-only
+                                             ng-model="portPriority" k-ng-delay="portPriority"
+                                             ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                             min="0" max="240"
+                                             data-range="" data-range-msg="{{'port_config_port_priority_invalid' | translate}}">
+                                      <tooltip helptext="{{'help_port_config_port_priority' | translate}}"></tooltip>
+                                  </div>
+                             </div> 
+                             <!--Flow Control  -->
+                             <div class="row form-group">
+                                 <div class="col-sm-5 fieldinput-right">
+                                     <span class="label ">{{'port_config_flow_control' | translate}}</span>
+                                 </div>
+                                 <div class="col-sm-7">
+                                     <select kendo-drop-down-list 
+                                             name="flowControl" id="flowControl"
+                                             ng-model="flowControl"
+                                             ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                             k-data-source="flowControlOptions" k-data-text-field="'flowControlText'"
+                                             k-data-value-field="'flowControlValue'" k-ng-delay="flowControl"></select>
+                                     <tooltip helptext="{{'help_port_config_flow_control' | translate}}"></tooltip>
+                                 </div>
+                              </div>
+			                <!-- MDIX -->
+                            <div class="row form-group">
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label">{{'port_config_mdix' | translate}} </span>
+                                </div>
+                                <div class="col-sm-7">
+                                     <span class="toggleClass">
+                                    <toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+                                                     ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                     ng-model="mdixStatus"  k-ng-delay="mdixStatus"></toggle-button></span>                                    
+                                 <tooltip helptext="{{'help_port_config_mdix' | translate}}"></tooltip>
+                                </div>                                
+                            </div> 
+                            <!-- CDP -->
+                            <div class="row form-group " >
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label">{{'port_config_cdp' | translate}} </span>
+                                </div>
+                                <div class="col-sm-7">
+                                     <span class="toggleClass">
+                                    <toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+                                                     ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                     ng-model="cdpStatus"  k-ng-delay="cdpStatus"></toggle-button></span>                                    
+                                 <tooltip helptext="{{'help_port_config_cdp' | translate}}"></tooltip>
+                                </div>                                
+                            </div> 
+                            <!--LLDP  -->
+                            <div class="row form-group " >
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label">{{'port_config_lldp' | translate}} </span>
+                                </div>
+                                <div class="col-sm-7">
+                                     <span class="toggleClass">
+                                    <toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+                                                     ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                     ng-model="lldpStatus"  k-ng-delay="lldpStatus"></toggle-button></span>                                    
+                                 <tooltip helptext="{{'help_port_config_lldp' | translate}}"></tooltip>
+                                </div>                                
+                            </div>
+                            <!--IPSG  -->
+                            <div class="row form-group " >
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label">{{'portconfig_ipsg' | translate}} </span>
+                                </div>
+                                <div class="col-sm-7">
+                                     <span class="toggleClass">
+                                    <toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+                                                     ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                     ng-model="ipsgStatus"  k-ng-delay="ipsgStatus"></toggle-button></span>                                    
+                                 <tooltip helptext="{{'help_port_config_ipsg' | translate}}"></tooltip>
+                                </div>                                
+                            </div>
+							<!--<div class="row form-group " >
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label">{{'portconfig_dhcp_client' | translate}} </span>
+                                </div>
+                                <div class="col-sm-7">
+                                     <span class="toggleClass">
+                                    <toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+                                                     ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                     ng-model="dhcpClientStatus"  k-ng-delay="dhcpClientStatus"></toggle-button></span>                                    
+                                 <tooltip helptext="{{'help_portconfig_dhcp_client' | translate}}"></tooltip>
+                                </div>                                
+                            </div>-->
+							<div class="row form-group " >
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label">{{'portconfig_adv_dhcprelay' | translate}} </span>
+                                </div>
+                                <div class="col-sm-7">
+                                     <span class="toggleClass">
+                                    <toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+                                                     ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                                     ng-model="dhcpRelayStatus"  k-ng-delay="dhcpRelayStatus"></toggle-button></span>                                    
+                                 <tooltip helptext="{{'help_port_config_dhcp_relay_information' | translate}}"></tooltip>
+                                </div>                                
+                            </div>
+					    </div>
+			
+						<div class="col-sm-5">
+							<div>
+							  <!-- STP Extensions -->							
+			                   <!--  <div class="webui-centerpanel-subtitle col-sm-12">
+									<span class="label"><label class="ng-binding">{{'STP Extensions' | translate}}</label></span>
+								</div>  -->
+								<div class="row form-group">
+				                    <div class="col-sm-5 fieldinput-right">
+				                        <span class="label">{{'stp_port_type' | translate}} </span>
+				                    </div>
+				                    <div class="col-sm-7">
+				                        <select kendo-drop-down-list="stpPort"  ng-model="stpPortType"
+				                                k-data-source="stpPortTypeList" id="stpPort" name="stpPort"
+				                                k-data-text-field="'stpPortText'"
+				                                k-data-value-field="'stpPortValue'"
+				                                k-ng-delay="stpPortType"
+				                                ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"></select>
+				                        <tooltip helptext="{{'port_config_stp_entension_help' | translate}}"></tooltip>                        
+				                    </div>
+				                </div>
+				                <div class="row form-group">
+				                    <div class="col-sm-5 fieldinput-right">
+				                        <span class="label">{{'stp_bpdufilter' | translate}} </span>
+				                    </div>
+				                    <div class="col-sm-7">
+				                        <span class="toggleClass">
+												<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+																ng-model="stpBpdufilter" ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">
+								                </toggle-button>
+										</span>				                                          
+				                    </div>
+				                </div>
+				                <div class="row form-group">
+				                    <div class="col-sm-5 fieldinput-right">
+				                        <span class="label">{{'stp_bpduguard' | translate}} </span>
+				                    </div>
+				                    <div class="col-sm-7">
+				                        <span class="toggleClass">
+												<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+															    ng-model="stpBpduguard" ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">
+												</toggle-button>
+										</span>				                                             
+				                    </div>
+				                </div>
+				                <div class="row form-group">
+				                    <div class="col-sm-5 fieldinput-right">
+				                        <span class="label">{{'stp_loopguard' | translate}} </span>
+				                    </div>
+				                    <div class="col-sm-7">
+				                        <span class="toggleClass">
+												<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+																ng-model="stpLoopGuard" ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">
+												</toggle-button>
+										</span>
+				                        <tooltip helptext="{{'port_config_loopguard_help' | translate}}"></tooltip>                        
+				                    </div>
+				                </div>
+			                  <!-- Loop Detection -->
+	                           <!--  <div class="webui-centerpanel-subtitle col-sm-12">
+									<span class="label"><label class="ng-binding">{{'port_loop_detect_configuration' | translate}}</label></span>
+								</div>  -->
+								<div class="row form-group" ng-show="loopDetectionDeviceStatus && !check2960Plus &&!checkCDB">
+			                          <div class="col-sm-5 fieldinput-right">
+			                                 <span class="label">{{'port_loop_detection' | translate}}</span>
+			                          </div>
+			                          <div class="col-sm-7">
+									        <input type="checkbox" class="pull-left  ng-valid ng-dirty" id="loopDetect"
+										    name="loopDetect" ng-model="loopDetectStatus" checked="checked" ng-click="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">
+										    <tooltip helptext="{{'port_help_loop_detection' | translate}}"></tooltip>
+								      </div>
+								</div>
+								<div class="row form-group" ng-show="loopDetectStatus">
+								       <div class="col-sm-5 fieldinput-right">
+			                                 <span class="label">{{'port_loop_detection_time' | translate}}</span>
+			                          </div>
+				                       <div class="col-sm-7">
+				                           <input class="k-textbox"
+				                                  name="loopDetectVal" id="loopDetectVal" placeholder="1-10" num-only
+				                                  ng-model="loopDetectValue" 
+				                                  ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+				                                  min="1" max="10" data-range="" data-range-msg="{{'port_loop_detection_range' | translate}}">
+				                       </div>
+			                    </div>
+		                    
+			                    <!--ARP attach protection  -->
+			                    <!-- <div class="webui-centerpanel-subtitle col-sm-12">
+									<span class="label"><label class="ng-binding">{{'port_arp_config' | translate}}</label></span>
+								</div>  -->
+								<div class="row form-group" ng-show="!check2960Plus">
+			                          <div class="col-sm-5 fieldinput-right">
+			                                 <span class="label">{{'port_arp' | translate}}</span>
+			                          </div>
+			                          <div class="col-sm-7">
+									        <input type="checkbox" class="pull-left  ng-valid ng-dirty" id="arpInspection"
+										    name="arpInspection" ng-model="arpInspectionStatus" checked="checked" ng-click="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">
+										    <tooltip helptext="{{'port_help_arp' | translate}}"></tooltip>
+								      </div>
+								</div>
+								<div class="row form-group" ng-show="!check2960Plus">
+								       <div class="col-sm-5 fieldinput-right">
+			                                 <span class="label">{{'port_arp_time' | translate}}</span>
+			                          </div>
+				                       <div class="col-sm-7">
+				                           <input class="k-textbox"
+				                                  name="limitRate" id="limitRate" placeholder="0-2048" num-only
+				                                  ng-model="arpLimitRate" 
+				                                  ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+				                                  min="0" max="2048" data-range="" data-range-msg="{{'port_arp_range' | translate}}">
+				                       </div>
+			                    </div>
+			                  						
+							<!--------------------------------------------Policy Management (Auto QoS)-------------------------------------------------->
+							<div class="" ng-show="portSettingDeviceX && autoQosCheck">	
+								<!-- <div class="webui-centerpanel-subtitle col-sm-12">
+									<span class="label"><label class="ng-binding">{{'portconfig_adv_policymgmt' | translate}}</label></span>
+								</div>  -->                         
+	                            <div class="row form-group">
+	                                <div class="col-sm-5 fieldinput-right">
+	                                    <span class="label ">{{'portconfig_adv_auto' | translate}}</span>
+	                                </div>
+	                                <div class="col-sm-7  checkbox-styled">
+	                                    <select kendo-drop-down-list
+	                                            name="autoQosPolicy" id="autoQosPolicy"
+	                                            ng-model="autoQos"
+	                                            ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+	                                            k-data-source="autoQosOptions"
+	                                            k-data-text-field="'autoQosText'"
+	                                            k-data-value-field="'autoQosValue'" k-ng-delay="autoQos">
+										</select>						
+	                                </div>
+	                            </div>
+                           </div>
+						   <div class="row form-group">
+                                    <div class="col-sm-1 fieldinput-right">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="panel panel-default noborder">
+											<div class="panel-heading noborder panelHeadingCustom">
+												<span class="headerfont" style="font-weight: bold;">{{'port_config_port_security_config' | translate}}</span>
+											</div>
+                                        </div>
+                                    </div>							    
+                            </div>
+						   <div class="row form-group">
+								<div class="col-sm-5 fieldinput-right">
+										<span class="label">{{'portconfig_mac_address' | translate}}</span>	                                    
+								</div>
+								 <div class="col-sm-7">
+				                        <input class="k-textbox"
+				                               name="macAddressId" id="macAddressId" placeholder="H.H.H"
+				                               ng-model="macAddress" 
+				                               ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+				                               data-mac="" data-mac-msg="{{'common_mac_address_validation' | translate}}"/>
+										<tooltip helptext="{{'port_config_mac_address_help' | translate}}"></tooltip>
+				                </div>								
+						   </div>
+						   <div class="row form-group">						            
+                                <div class="col-sm-5 fieldinput-right">
+                                    <span class="label ">{{'portconfig_violation_type' | translate}}</span>
+                                </div>
+                                <div class="col-sm-7">
+                                    <select kendo-drop-down-list
+                                            name="violationType" id="violationType"
+                                            ng-model="violationType"
+                                            ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+                                            k-data-source="violationOptions"
+                                            k-data-text-field="'violationText'"
+                                            k-data-value-field="'violationValue'" k-ng-delay="violationType"></select>
+                                    <tooltip helptext="{{'port_config_violation_help' | translate}}"></tooltip>
+                                </div>
+                                 
+	                         </div>
+							 <div class="row form-group" ng-show="violationType === 'shutdown'">
+			                          <div class="col-sm-5 fieldinput-right">
+			                                 <span class="label">{{'vlan_edit_title' | translate}}</span>
+			                          </div>
+			                          <div class="col-sm-7">
+									        <input type="checkbox" class="pull-left  ng-valid ng-dirty" id="vlanCheck"
+										    name="vlanCheck" ng-model="vlanCheckStatus" checked="checked" ng-click="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false">										    
+								      </div>
+							</div>							 
+						</div>
+						</div>			
+					</div>
+			        <!----------------------------------------Ports Advanced Settings Save and Cancel button Container-------------------------------------->
+                    <div class="formActionButtons fieldinput-center">
+                        <button kendo-button="doneButton" class="btn btn-primary" ng-disabled="disablePortConfGlbApplyBtn" ng-click="saveGlobalPortConfig()">
+                            <span class="fa pl-apply"></span> {{'com_apply' | translate}}
+                        </button>
+                        <button kendo-button="cancelButton" class="btn btn-primary" ng-disabled="disablePortConfGlbCancelBtn" ng-click="cancelPortsAdvConf()">
+                            <span class="fa pl-cancel"></span> {{'com_cancel' | translate}}
+                        </button>
+                    </div>
+				</form>
+			</div>
+       </div>
+     <div ng-hide="true" ng-init="diableApplyButton()"></div>
+    </div>
+</div>

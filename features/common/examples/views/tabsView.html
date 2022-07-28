@@ -1,0 +1,128 @@
+<div>
+	<!--
+	Description: Tabs html
+	Copyright (c) 2016 by Cisco Systems, Inc.
+	All rights reserved.
+	-->
+	<div class="pageTitle">
+		Tabs Example
+	</div>
+	<div class="pageContent">
+		<div kendo-tab-strip="tabExample">
+			<ul>
+				<li class="k-state-active" ng-show="true">
+					Table Data
+				</li>
+				<li ng-show="!isMobilityAgent">
+					Form Data
+				</li>
+			</ul>
+			<div>
+				<div kendo-grid="portsGrid" id="portsGrid" name="portsGrid"
+				k-options="portsGridOptions"
+				k-data-source="portsDataSource"></div>
+				<div class="gridActionButtons">
+					<button kendo-button="addPeerBtn" class="btn btn-primary pl-add">
+						Add
+					</button>
+					<button kendo-button="deletePeerBtn" class="btn btn-primary pl-delete" ng-disabled="true">
+						Delete
+					</button>
+					<div class="pull-right">
+						<button kendo-button="applyPeerBtn" class="btn btn-primary pl-apply">
+							Apply
+						</button>
+						<button kendo-button="cancelPeerBtn" class="btn btn-primary pl-cancel">
+							Cancel
+						</button>
+					</div>
+				</div>
+				<div class="editSection">
+					<div class="title">
+						Edit Title
+					</div>
+					<form name="userAdministrationForm" id="userAdministrationForm" kendo-validator="userValidator" k-options="uservalidations">
+						<div class="row form-group">
+							<div class="col-sm-6 fieldinput-right">
+								<span class="label pl-mandatory">User Name</span>
+							</div>
+							<div class="col-sm-6">
+								<input class="k-textbox form-control"name="userName">
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-sm-6 fieldinput-right">
+								<span class="label pl-mandatory">User Name</span>
+							</div>
+							<div class="col-sm-6">
+								<input class="k-textbox form-control"name="userName">
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-sm-6 fieldinput-right">
+								<span class="label pl-mandatory right">User Name</span>
+							</div>
+							<div class="col-sm-6">
+								<input class="k-textbox form-control"name="userName">
+							</div>
+						</div>
+						<div class="row formActionButtons fieldinput-center">
+							<button kendo-button="saveBtn" class="btn btn-primary pl-done" ng-click="showNotification('warning')">
+								Warning Notification
+							</button>
+							<button kendo-button="saveBtn" class="btn btn-primary pl-done" ng-click="showNotification('error')">
+								Error Notification
+							</button>
+							<button kendo-button="saveBtn" class="btn btn-primary pl-done" ng-click="showNotification('success')">
+								Success Notification
+							</button>
+							<button kendo-button="saveBtn" class="btn btn-primary pl-done" ng-click="showNotification('info')">
+								Info Notification
+							</button>
+							<button kendo-button="cancelBtn" class="btn btn-primary pl-cancel">
+								Cancel
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div>
+				<form name="userAdministrationForm" id="userAdministrationForm" kendo-validator="userValidator" k-options="uservalidations">
+					<div class="row form-group">
+						<div class="col-sm-6 fieldinput-right">
+							<span class="label pl-mandatory">User Name</span>
+						</div>
+						<div class="col-sm-6">
+							<input class="k-textbox form-control"name="userName">
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-sm-6 fieldinput-right">
+							<span class="label pl-mandatory">User Name</span>
+						</div>
+						<div class="col-sm-6">
+							<input class="k-textbox form-control"name="userName">
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-sm-6 fieldinput-right">
+							<span class="label pl-mandatory right">User Name</span>
+						</div>
+						<div class="col-sm-6">
+							<input class="k-textbox form-control"name="userName">
+						</div>
+					</div>
+					<div class="row formActionButtons fieldinput-center">
+						<button kendo-button="saveBtn" class="btn btn-primary pl-done" ng-click="showNotification()">
+							Click Here To See Notification
+						</button>
+						<button kendo-button="cancelBtn" class="btn btn-primary pl-cancel">
+							Cancel
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+

@@ -1,0 +1,264 @@
+<div id="wifiPage" class="row" style="margin: 0 auto;" ng-controller="wifiCtrl" ng-init="loadInputsOnBlurEvent()">
+      <div class="row col-sm-8" style="margin-bottom: 14pt;" ng-if="!wirelessPossible">
+			<div class="row form-group"></div>
+			<div class="row form-group"></div>
+			<div class="row form-group"></div>
+			<div class="col-sm-1"></div>
+            <div class="col-sm-10 text-center">
+                  <div class="alert alert-warning">
+                        <div><strong>{{'day0help_wireless_not_possible' | translate}}</strong></div>
+                  </div>
+            </div>
+      </div>
+   <div class="col-sm-8" style="margin-bottom: 20px;" ng-show="wirelessPossible" ng-init="InitLoadWireless()">
+      <div  align="" style="height: 520px;color:#706868;">   
+      <div style="padding: 20px; padding-top:5px">
+            <div class="row">
+                  <div class="col-sm-6 webui-centerpanel-label-latest">
+                     <h2 class="stepTitle">
+                        <span class="ccpexpCSSReplaceClass331 fontCiscoSansLight" id="wizardTitle">{{::'day0_wizard_basic_wireless_config' | translate}}</span>
+                     </h2>
+                  </div>
+            </div>
+            <form id="wifiPageForm" kendo-validator="wifiPageValidator" k-options="wizardValidations">
+               <div class="row">
+                        <div class="col-sm-3">
+                              <input type="checkbox" id="switchPassCheck"  name="switchPassCheck" ng-model="wzModel.wifi.sameAsRouter" checked="checked" ng-change="getRouterAccount()" style="margin-left: -50px;">
+                              <label style="font-size: 0.8rem">{{'wifi_controller_same_credential' | translate}}</label>
+                        </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-sm-3 text-left">
+                        <span class="label labelcustom">{{::'day0_wizard_basic_config_username' | translate}} *</span>
+                     </div>
+                     <div class="col-sm-3 fieldinput wizardinputcustom">
+                        <input class="k-textbox form-control" type="text" maxlength="25" id="adminUserName" name="adminUserName" title="{{::'enter_administrative_user_name' | translate}}"
+                           ng-model="wzModel.wifi.adminUserName"  ng-disabled='useSwitchCredentials' data-minchar="1" data-minchar-msg="{{'help_day0_username' | translate}}" 
+                           required data-required-msg="{{::'administrative_user_name_is_required' | translate}}"/>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-sm-3 text-left">
+                        <span class="label labelcustom">{{::'day0_wizard_basic_config_password' | translate}} *</span>
+                     </div>
+                     <div class="col-sm-3 fieldinput wizardinputcustom">
+                        <input class="k-textbox form-control" type="password" id="adminPassword" name="adminPassword" title="{{::'enter_administrative_password' | translate}}"
+                           ng-model="wzModel.wifi.adminPassword" ng-disabled='useSwitchCredentials' data-specialcharcheck  data-specialcharcheck-msg="{{::'administrative_password_shouldnot_contain_spaces' | translate}}"
+                           data-pwdmin="6" data-pwdvalid data-pwdvalid-msg="{{'wireless_password_err_msg' | translate}}" required data-required-msg="{{::'administrative_password_is_required' | translate}}"/>
+                     </div>					
+                  </div>
+				<div class="row">
+					<div class="col-sm-3 text-left">
+                        <span class="label labelcustom">{{::'user_administration_confirm_password' | translate}} *</span>
+                     </div>
+                     <div class="col-sm-3 fieldinput wizardinputcustom">
+                        <input class="k-textbox form-control" type="password" id="confirmAdminPassword" name="confirmAdminPassword" title="{{::'re_enter_administrative_password' | translate}}"
+                              ng-model="wzModel.wifi.confirmAdminPassword" ng-disabled='useSwitchCredentials' data-pwdmatch="adminPassword" data-pwdmatch-msg="{{'dayzero_reenter_password_match_password' | translate}}" required data-required-msg="{{::'administrative_re_enter_password' | translate}}"/>
+                     </div>
+                 </div>
+                  <div class="row">
+                        <div class="col-sm-3 text-left">
+                              <span class="label labelcustom">{{::'day0_wireless_country' | translate}} *</span>
+                        </div>
+                        <div class="col-sm-3 wizardinputcustom dropdownFocus">
+                              <select class="wizard-dropdown" kendo-drop-down-list id="countryId" name="country" 
+                              ng-model="wzModel.wifi.country"
+                              k-data-source="countriesList"
+                              k-data-text-field="'name'"
+                              k-data-value-field="'name'"
+                              k-ng-delay="wzModel.wifi.country"
+					ng-change="changeCountry()"
+                              ></select>
+                        </div>
+                  </div>
+                  <div class="row">
+                        <div class="col-sm-3 webui-centerpanel-label">
+                              <span class="label labelcustom txtWrap">{{'day0_wireless_mgmt_address_subnet' | translate}} *</span>
+                        </div>
+                        <div class="col-sm-9 pad-right-zero">
+                              <div class="row col-sm-12 pad-right-zero pad-left-zero">
+                                    <div class="col-sm-4 fieldinput wizardinputcustom">
+                                                <input class="k-textbox form-control" type="text" name="mgmtIpAddress"
+                                                ng-model="wzModel.wifi.mgmtIpAddress" id="mgmtIpAddress" placeholder="{{'portconfig_port_ipv4_ip' | translate}}" required data-required-msg="{{'aaa_ip_msg' | translate}}" 
+                                                numeric-dot-only data-validate-ip="" data-validateip-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}" data-duplicatewirelessip data-duplicatewirelessip-msg="{{'wireless_ip_address_check' | translate}}" data-invalidwirelessip data-invalidwirelessip-msg="{{'wireless_mgmt_ip_address_invalid' | translate}}" />
+                                    </div>
+                                    <div class="col-sm-4 fieldinput wizardinputcustom">
+                                                <input class="k-textbox form-control" type="text" name="mgmtSubnetMask"
+                                                ng-model="wzModel.wifi.mgmtSubnetMask" ng-readonly="true" id="mgmtSubnetMask" placeholder="{{'switch_subnet' | translate}}" required data-required-msg="{{'staticroute_subnet_req_msg' | translate}}" 
+                                                numeric-dot-only data-submaskvalidate data-submaskvalidate-msg="{{'day0_wizard_subnet_invalid_msg' | translate}}"/>
+                                    </div>
+                                    <!-- <div class="row col-sm-4 webui-centerpanel-label">
+                                          <div class="col-sm-8">
+                                                <span class="label labelcustom">{{'day0_enable_dhcp' | translate}} </span>
+                                          </div>
+                                          <div class="col-sm-4 custom-checkbox">
+                                                <input type="checkbox" id="enableDHCP" class="k-checkbox form-control" ng-model="dayzero.vlanDhcpEnable1">
+                                                <label class="k-checkbox-label" for="enableDHCP"></label>
+                                          </div>
+                                    </div> -->
+									
+                              </div>
+                        </div>      
+			</div>
+                  <div class="row">
+                     <div class="col-sm-5 webui-centerpanel-label-latest">
+                        <h2 class="stepTitle">
+                           <span class="ccpexpCSSReplaceClass331 fontCiscoSansLight" id="wizardTitle">{{::'day0_wireless_network' | translate}}</span>
+                        </h2>
+                     </div>
+                  </div>
+                  <div class="row">
+                     <div class="col-sm-3 text-left">
+                        <span class="label labelcustom">{{::'network_name' | translate}} *</span>
+                     </div>
+                     <div class="col-sm-3 fieldinput wizardinputcustom">
+                        <input class="k-textbox form-control" type="text" id="networkName" name="networkName" title="{{::'enter_network_name' | translate}}"
+                           ng-model="wzModel.wifi.networkName"  data-specialcharcheck  data-specialcharcheck-msg="{{::'dayzero_network_name_space' | translate}}"
+                           required data-required-msg="{{::'network_name_required' | translate}}"/>
+                     </div>
+					<div class="col-sm-3 text-left">
+                        <span class="label labelcustom">{{::'network_security' | translate}} *</span>
+                     </div>
+                     <div id="securityTypeDiv" class="col-sm-3 wizardinputcustom dropdownFocus">
+                        <select class="wizard-dropdown" kendo-drop-down-list name="securityTypes" id="securityTypes"
+                           ng-model="wzModel.wifi.networkSecurity"
+                           k-data-source="securityTypes"
+                           k-data-text-field="'securityType'"
+                           k-data-value-field="'securityValue'"
+						   ng-change="changeSecurityType()"
+                           ></select>
+                     </div>
+                  </div>
+                 
+                  <div class="row" ng-if="wzModel.wifi.networkSecurity == 'personal'" ng-init="loadInputsOnBlurEvent()">
+                     <div class="col-sm-3 text-left">
+                        <span class="label labelcustom">{{::'psk_passphrase' | translate}} *</span>
+                     </div>
+                     <div class="col-sm-3 fieldinput wizardinputcustom">
+                        <input class="k-textbox form-control" type="password" id="pskPassword" name="pskPassword" title="{{::'enter_psk_passphrase' | translate}}"
+                              ng-model="wzModel.wifi.pskPassword" data-minchar="8" data-minchar-msg="{{'day0help_wireless_phassphrase' | translate}}" 
+                              required data-required-msg="{{::'enter_psk_passphrase' | translate}}"/>
+                     </div>
+					<div class="col-sm-3 text-left">
+                        <span class="label labelcustom txtWrap">{{::'re_enter_psk_passphrase' | translate}} *</span>
+                     </div>
+                     <div class="col-sm-3 fieldinput wizardinputcustom">
+                        <input class="k-textbox form-control" type="password" id="confirmPskPassword" name="confirmPskPassword" title="{{::'re_enter_psk_passphrase' | translate}}" 
+                        required data-required-msg="{{::'re_enter_psk_passphrase' | translate}}" ng-model="wzModel.wifi.confirmPskPassword" data-pwdmatch="pskPassword" data-pwdmatch-msg="{{'day0_wizard_passphrase_same' | translate}}"/>
+                     </div>
+                  </div>
+                  
+                  <div class="row" ng-if="wzModel.wifi.networkSecurity == 'enterprise'" ng-init="loadInputsOnBlurEvent()">
+                        <div class="col-sm-3 text-left" ng-init="loadEnterpriseOptionElements()">
+                           <span class="label labelcustom">{{::'day0_wireless_radius_Server' | translate}} *</span>
+                        </div>
+                        <div id="wirelessVlan" class="col-sm-3 wizardinputcustom dropdownFocus">
+                              <input class="k-textbox form-control" type="text" name="radiusServer" id="radiusServer"
+                              ng-model="wzModel.wifi.radiusServer" placeholder="{{'portconfig_port_ipv4_ip' | translate}}"
+                              required data-required-msg="{{'aaa_ip_msg' | translate}}"
+                              numeric-dot-only data-validate-ip="" data-validateip-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}"/>
+                        </div>
+						<div class="col-sm-3 text-left">
+                           <span class="label labelcustom">{{::'dayzero_shared_key' | translate}} *</span>
+                        </div>
+                        <div id="wirelessVlan" class="col-sm-3 wizardinputcustom dropdownFocus">
+                              <input class="k-textbox form-control" type="password" name="sharedKey" id="sharedKey"
+                              ng-model="wzModel.wifi.sharedKey" required data-required-msg="{{'aaa_server_rad_secret' | translate}}"/>                              
+                        </div>
+                  </div>
+                 
+                  <div class="row" ng-if="wzModel.wifi.networkSecurity == 'not-supported-now'" ng-init="loadInputsOnBlurEvent()">
+                        <div class="col-sm-3 text-left" ng-init="loadEnterpriseOptionElements()">
+                           <span class="label labelcustom">{{::'aaa_authport' | translate}}</span>
+                        </div>
+                        <div id="wirelessVlan" class="col-sm-3 wizardinputcustom dropdownFocus">
+                              <input class="k-textbox form-control" type="text" name="authPort" id="authPort"
+                              data-check data-check-msg="{{'aaa_server_rad_auth_invalid' | translate}}"
+                              num-only min="0" max="65536" data-range="" 
+                              data-range-msg="{{'aaa_server_rad_auth_port_range' | translate}}"
+                              autocomplete="off"
+                              placeholder="0-65535"
+                              ng-model="wzModel.wifi.authPort"/>
+                        </div>
+                  </div>
+                  <div class="col-sm-9 pad-right-zero" id="networkInterface" ng-if="wzModel.wifi.networkSecurity === 'enterprise' && wzModel.wifi.wirelessVlan == 'defaultVlan' && wzModel.wifi.defaultVlans.vlan">
+                        <div class="col-sm-12 pad-right-zero pad-left-zero">
+                              <div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-left-zero pad-right-zero noLineHeight">
+                                    <label>{{'portconfig_general_interface' | translate}} </label>
+                                    <input class="k-textbox form-control" type="text" name="vlan"
+                                                value="{{wzModel.wifi.defaultVlans.vlan}}"  min="1" max="4094" k-state-disabled disabled/>
+                              </div>
+                              <div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero customIpToolTip noLineHeight">
+                                    <label>{{'portconfig_port_ipv4_ip' | translate}} </label>
+                                    <input class="k-textbox form-control" type="text" name="networkIpAddress"
+                                          ng-model="wzModel.wifi.defaultVlans.ipAddress" id="networkIpAddress" numeric-dot-only data-routevalidate  data-routevalidate-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}"/>
+                              </div>
+                              <div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero customIpToolTip customSubnetToolTip noLineHeight">
+                                    <label>{{'switch_subnet' | translate}} </label>
+                                    <input class="k-textbox form-control" type="text" name="networksubnetMask"
+                                                ng-model="wzModel.wifi.defaultVlans.subnet" id="networksubnetMask" numeric-dot-only data-submaskvalidate data-submaskvalidate-msg="{{'day0_wizard_subnet_invalid_msg' | translate}}"/>
+                              </div>
+                        </div>
+                  </div>
+                  <div class="row" ng-if="wzModel.wifi.networkSecurity == 'enterprise' && wzModel.wifi.wirelessVlan == 'new'">
+                        <div class="col-sm-3 text-left">
+                           <span class="label labelcustom">{{::'vlan_id' | translate}} *</span>
+                        </div>
+                        <div id="wirelessVlan" class="col-sm-4 fieldinput wizardinputcustom dropdownFocus">
+                              <input class="k-textbox form-control" name="networkVlan"  ng-model="wzModel.wifi.networkVlan" id="networkVlan"
+                              required data-required-msg="{{'day0_wizard_datavlan_req_msg' | translate}}" min="1" max="4094"  num-only
+                             data-checkvlan data-checkvlan-msg="{{'day0_wizard_datavlan_invalid_msg' | translate}}" data-range="" data-range-msg="{{'day0_wizard_datavlan_invalid_msg' | translate}}">
+                        </div>
+                  </div>
+                  <div class="col-sm-9 pad-right-zero" id="networkInterface" ng-if="wzModel.wifi.networkSecurity == 'enterprise' && wzModel.wifi.wirelessVlan == 'new' && wzModel.wifi.networkVlan">
+                        <div class="col-sm-12 pad-right-zero pad-left-zero">
+                              <div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-left-zero pad-right-zero noLineHeight">
+                                    <label>{{'portconfig_general_interface' | translate}} </label>
+                                    <input class="k-textbox form-control" type="text" name="vlan"
+                                                value="{{'clients_vlan' | translate}} {{wzModel.wifi.networkVlan}}"  min="1" max="4094" k-state-disabled disabled/>
+                              </div>
+                              <div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero customIpToolTip noLineHeight">
+                                    <label>{{'portconfig_port_ipv4_ip' | translate}} </label>
+                                    <input class="k-textbox form-control" type="text" name="newNetworkIpAddress"
+                                          ng-model="wzModel.wifi.newIpAddress" id="newNetworkIpAddress" numeric-dot-only required data-required-msg="{{::'management_snmp_ipaddress_required' | translate}}" data-ipaddresscheck data-ipaddresscheck-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}"/>
+                              </div>
+                              <div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero customIpToolTip customSubnetToolTip noLineHeight">
+                                    <label>{{'switch_subnet' | translate}} </label>
+                                    <input class="k-textbox form-control" type="text" name="newNetworksubnetMask"
+                                                ng-model="wzModel.wifi.subnetMask" id="newNetworksubnetMask" numeric-dot-only required data-required-msg="{{::'staticroute_subnet_req_msg' | translate}}" data-subnet data-subnet-msg="{{'day0_wizard_subnet_invalid_msg' | translate}}"/>
+                              </div>
+                        </div>
+                  </div>               
+            </form>
+      </div>
+      </div>
+   </div>
+   
+      <div class="col-sm-4" style="margin-bottom: 20px;">
+            <div align="center" style="height: 450px;color:#706868;background: #EBFAFF">
+               <div  style="margin-top:10px;height:99%;">
+                  <div class="wizardhelpcontentheader">
+                        <i class="fa fa-question-circle" style="font-size: 18px;" ng-click="openOnlineHelpWindow()" ></i> {{::'day0_wizard_help_tips' | translate}}
+                  </div>
+                  <div class="descriptionhelp">
+                    <div ng-show="wirelessHelpCommonTip">{{'wifi_config_message' | translate}} {{'ap_config_message' | translate}}</div>
+                	<div ng-show="wirelessCopyCredential">{{'day0help_wireless_same_credential' | translate}}</div>
+					<div ng-show="wirelessUserNameTip">{{'day0help_wireless_user_name' | translate}}</div>	
+					<div ng-show="wirelessPasswordTip">{{'wireless_password' | translate}}</div>		
+					<div ng-show="wirelessReenterPasswordTip">{{'day0help_wireless_repassword' | translate}}</div>		
+					<div ng-show="wirelessCountryTip">{{'day0help_wireless_country' | translate}}</div>		
+					<div ng-show="wirelessMgmtIpaddressTip">{{'day0help_wireless_management_ip_address' | translate}}</div>		
+					<div ng-show="wirelessEnableDHCPTip">{{'day0help_enable_dhcp' | translate}}</div>		
+					<div ng-show="wirelessNetworkNameTip">{{'day0help_wireless_network_name' | translate}}</div>		
+					<div ng-show="wirelessNetworkSecurityTip">{{'day0help_wireless_security' | translate}}</div>		
+					<div ng-show="wirelessRadiusServerTip">{{'day0help_wireless_radius_server' | translate}}</div>		
+					<div ng-show="wirelessSharedKeyTip">{{'day0help_wireless_shared_key' | translate}}</div>		
+					<div ng-show="wirelessAuthPortTip">{{'day0help_wireless_auth_port' | translate}}</div>						
+					<div ng-show="wirelessPhassPharseTip">{{'day0help_wireless_phassphrase' | translate}}</div>		
+					<div ng-show="wirelessReenterPhasspharseTip">{{'day0help_wireless_phassphrase' | translate}}</div>		
+                  </div>                  
+               </div>
+            </div>
+      </div>
+   
+</div>

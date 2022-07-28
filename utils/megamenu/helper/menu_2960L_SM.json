@@ -1,0 +1,182 @@
+[
+
+	{
+		"Copyright": "",
+		"CopyrightInfo": "Copyright (c) 2016 by Cisco Systems, Inc.",
+		"Rights": "All rights reserved."
+	}, {
+		"id": "1",
+		"title": "Monitoring",
+		"nlskey": "menu_monitoring",
+		"icon": "images/monitoring-white.svg",
+		"submenus": [
+			{
+				"id": "2",
+				"title": "Dashboard",
+				"nlskey": "menu_dashboard",
+				"icon": "",
+				"url": "#/dashboard"
+			}, {
+				"id": "3",
+				"title": "Ports",
+				"nlskey": "menu_ports",
+				"icon": "",
+				"url": "#/portsMonitor"
+			}, {
+				"id": "4",
+				"title": "Clients",
+				"nlskey": "menu_clients",
+				"icon": "",
+				"url": "#/clients"
+			}
+		]
+	}, {
+		"id": "11",
+		"title": "Configuration",
+		"nlskey": "menu_configuration",
+		"icon": "images/option-white.svg",
+		"submenus": [
+			{
+				"id": "12",
+				"title": "Switch",
+			    "nlskey": "menu_switch",
+				"icon": "",
+				"url": "#/switch"
+			}, {
+				"id": "13",
+				"title": "Ports",
+			   "nlskey": "menu_ports",
+				"icon": "",
+				"url": "#/portsConf"
+			}, {
+				"id": "14",
+				"title": "Trouble Shooting",
+			    "nlskey": "menu_troubleshooting",
+				"icon": "",
+				"url": "#/troubleShoot"
+			}, {
+				"id": "16",
+				"title": "Vlan",
+				"nlskey": "menu_vlan",
+				"icon": "",
+				"url": "#/vlan"
+		  	}
+		]
+	},{
+		"id": "25",
+		"title": "Services",
+		"nlskey": "menu_services",
+		"icon": "images/pin.svg",
+		"submenus": [
+			{
+				"id": "28",
+				"title": "Static Routing",
+			    "nlskey": "menu_static_routing",
+				"icon": "",
+				"url": "#/staticRouting"
+			},{
+				"id": "31",
+				"title": "SECURITY",
+				"nlskey": "menu_security",
+				"icon": "",
+				"url": "#/aaa"
+			},{
+				"id": "32",
+				"title": "ACL",
+				"nlskey": "menu_acl",
+				"icon": "",
+				"url": "#/acl"
+			},{
+				"id": "33",
+				"title": "ENERGY SAVER",
+				"nlskey": "menu_energy_saver",
+				"icon": "",
+				"url": "#/energy"
+			},{
+				"id": "34",
+				"title": "SPAN",
+				"nlskey": "span_title",
+				"icon": "",
+				"url": "#/span"
+			},{
+				"id": "35",
+				"title": "ROUTING PROTOCOL",
+				"nlskey": "menu_eigrp",
+				"icon": "",
+				"url": "#/routingProtocol"
+			},{
+				"id": "36",
+				"title": "RMON",
+				"nlskey": "rmon_title",
+				"icon": "",
+				"url": "#/rmon"
+			},{
+				"id": "37",
+				"title": "QOS",
+				"nlskey": "com_qos",
+				"icon": "",
+				"url": "#/qos"
+			}
+		]
+	}, {
+		"id": "41",
+		"title": "General Settings",
+                "nlskey": "menu_generalsettings",
+		"icon": "images/pin-white.svg",
+		"submenus": [
+			 {
+				"id": "45",
+				"title": "Management",
+                                "nlskey": "menu_management",
+				"icon": "",
+				"url": "#/management"
+			},{
+				"id": "46",
+				"title": "Power Management",
+				"nlskey": "menu_poe",        
+				"icon": "",
+				"url": "#/poe",
+				"display": "isPoECapable"
+			},{
+				"id": "47",
+				"title": "Software Update",
+                                "nlskey": "menu_softwareupgrade",
+				"icon": "",
+				"url": "#/softwareUpdate"
+
+			},{
+				"id": "48",
+				"title": "System",
+                                "nlskey": "menu_system",
+				"icon": "",
+				"url": "#/system"
+			}, {
+				"id": "49",
+				"title": "User administration",
+                                "nlskey": "menu_useradministration",
+				"icon": "",
+				"url": "#/userAdministration"
+			}
+		]
+	}, {
+                "id": "71",
+                "title": "Help",
+                "nlskey": "menu_help",
+                "icon": "images/help.svg",
+                "submenus": [
+                        {
+                                "id": "72",
+                                "title": "Documentation",
+                                "icon": "",
+                                "nlskey": "menu_documentation",
+                                "url": "#/documentation"
+                        }, {
+                                "id": "73",
+                                "title": "Support",
+                                "icon": "",
+                                "nlskey": "menu_support",
+                                "url": "#/support"
+                        }
+                ]
+        } 
+]

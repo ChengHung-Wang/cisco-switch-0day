@@ -1,0 +1,24 @@
+###
+show etherchannel summary
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show etherchannel summary</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowEtherChannelSummary">
+<Property name="Number of aggregators:" alias="numberAgg" distance = "1" length = "1" type = "String"/>
+<Table name="EtherTable">
+<Header name="Group" alias="group" end = "5" type = "String"/>
+<Header name="Port-channel" alias="portChannel" start = "6" end = "18" type =  "String"/>
+<Header name="Protocol" alias="protocol" start = "19" end = "30" type =  "String"/>
+<Header name="Ports" alias="ports" start = "31" end = "80" type =  "String"/>
+</Table>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->

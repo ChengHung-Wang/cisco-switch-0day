@@ -1,0 +1,32 @@
+###
+show running-config aaa radius-server
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show running-config aaa</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowRunningconfigAaa">
+<Container name="wnwebdata">
+
+<Container name="radius server" alias = "entry" dynamic = "true">
+<Property name="radius server" alias="name" distance = "1" length = "1" type = "String"/>
+<Property name="address" distance = "2" length = "1" type = "String"/>
+<Property name="auth-port" alias="authport" distance = "1" length = "1" type = "String"/>
+<Property name="acct-port " alias="acctport" distance = "1" length = "1" type = "String"/>
+<Property name="timeout" distance = "1" length = "1" type = "String"/>
+<Property name="retransmit" alias="retry" distance = "1" length = "1" type = "String"/>
+<Property name="key" alias="password" distance = "1" length = "1" type = "String"/>
+</Container>
+
+
+
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2014,2015 by Cisco Systems, Inc.
+All rights reserved.
+-->

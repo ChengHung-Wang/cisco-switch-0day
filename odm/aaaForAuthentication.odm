@@ -1,0 +1,50 @@
+###
+show running-config aaa authentication
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show running-config aaa authentication</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowRunningconfigAaa">
+<Container name="wnwebdata">
+
+<Container name="aaa authentication" alias = "entry" dynamic="true">
+
+<Container name="aaa authentication login" alias = "loginauthentication" dynamic = "true">
+<Property name="aaa authentication login" alias = "listname" distance = "1" length = "1" type = "String"/>
+<Property name="aaa authentication login" alias = "grouptype" distance = "2" length = "1" type = "String"/>
+<Property name="aaa authentication login" alias = "fallback" distance = "2" length="-1" type = "String"/>
+<Property name="aaa authentication" alias = "type" distance = "1" length="1" type = "String"/>
+<Container name="group">
+<Property name="group" alias="group1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="group2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="group3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="group4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+<Container name="aaa authentication dot1x" alias = "dot1xauthentication" dynamic = "true">
+<Property name="aaa authentication dot1x" alias = "listname" distance = "1" length = "1" type = "String"/>
+<Property name="aaa authentication dot1x" alias = "grouptype" distance = "2" length = "1" type = "String"/>
+<Property name="aaa authentication dot1x" alias = "fallback" distance = "2" length="-1" type = "String"/>
+<Property name="aaa authentication" alias = "type" distance = "1" length="1" type = "String"/>
+<Container name="group" >
+<Property name="group" alias="group1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="group2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="group3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="group4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+</Container>
+
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+
+
+<!--
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->

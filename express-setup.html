@@ -1,0 +1,457 @@
+<!-- Copyright (c) 2016by Cisco Systems, Inc. -->
+
+<Script>
+function launchPreflight()
+{ 
+//checking for read-only capability
+if(!isReadWriteEnabled())
+	loadPreflightReport(); 
+
+if(getcookie("Cisco_DeviceManager") && !isOlderNetscape())
+	{ return; 
+	}
+	else
+//if isSupported returns a value less than 3, then an error has occurred
+//the older netscapes absolutely do not support eXpresso and so we must force an upgrade
+if(isSupported() < 3 || isOlderNetscape())
+	{ 
+	loadPreflightReport();
+	 }
+}
+
+function isReadWriteEnabled()
+{
+var target = location.href;
+if(target.indexOf("/level/") != -1)
+	{
+ 	var temp_level = target.substring((target.indexOf("/level/") +7),target.lastIndexOf("/"));
+ 	//alert(target.substring(target.indexOf("/level/"),target.lastIndexOf("/"));
+	 if(parseInt(temp_level) < 15)
+	 	return false;
+ 
+	}
+	return true;
+
+}
+
+setcookieAndLoadCiscoDeviceManager();
+
+function setcookieAndLoadCiscoDeviceManager() { 
+	setcookie('Cisco_DeviceManager');
+
+	if(top.DEVICE_MODE != null) {
+		if(top.DEVICE_MODE == "Express Setup") {
+			top.document.location.href = "express-setup.htm";
+		}
+		else if(top.DEVICE_MODE == "Software Recovery") {
+			top.document.location.href = "recover.htm";
+		}
+		return;
+	}
+	
+	top.document.location.href = "day0/index.html";
+}
+	
+	
+
+//this returns the value needed to modify the html page
+function getcookie(cookiename) {
+ var cookiestring=""+document.cookie;
+ var index1=cookiestring.indexOf(cookiename);
+ if (index1==-1 || cookiename=="") return ""; 
+ var index2=cookiestring.indexOf(';',index1);
+ if (index2==-1) index2=cookiestring.length; 
+
+ return unescape(cookiestring.substring(index1+cookiename.length+1,index2));
+}
+
+function cookieLifeTime()
+{
+var UTCstring;
+Today = new Date();
+nomilli=Date.parse(Today);
+Today.setTime(nomilli+365*24*60*60*1000);
+UTCstring = Today.toUTCString();
+return UTCstring;
+
+}
+
+	 
+function setcookie(name)
+{
+		
+		cookiestring=name+"="+"value"+";EXPIRES="+cookieLifeTime();
+		document.cookie=cookiestring;
+		if(!getcookie(name))
+		{
+		return false;
+		}
+		else
+		{
+		return true;
+		}
+		
+}
+
+function isOlderNetscape()
+{
+   var agt=navigator.userAgent.toLowerCase(); 
+   // *** BROWSER VERSION *** 
+   // Note: On IE5, these return 4, so use is_ie5up to detect IE5. 
+   var is_major = parseInt(navigator.appVersion); 
+   var is_minor = parseFloat(navigator.appVersion); 
+   
+   // Note: Opera and WebTV spoof Navigator.  We do strict client detection. 
+   // If you want to allow spoofing, take out the tests for opera and webtv. 
+   var is_nav  = ((agt.indexOf('mozilla')!=-1) && (agt.indexOf('spoofer')==-1) 
+      && (agt.indexOf('compatible') == -1) && (agt.indexOf('opera')==-1) 
+      && (agt.indexOf('webtv')==-1)); 
+
+   var is_nav4 = (is_nav && (is_major == 4)); 
+   var is_nav4up = (is_nav && (is_major >= 4)); 
+   var is_lessthannav5 = (is_nav && (is_major < 5));
+	if(is_nav4 || (is_nav4up && is_lessthannav5) )	
+		return true;
+return false;
+}
+
+function loadPreflightReport()
+{
+	//this workaround helps to keep track of the mode in which the device is
+	//so that the correct file is loaded after the setup report
+	if (top.isPreflight!=null )
+	{
+	top.isPreflight = true;
+	setcookieAndLoadCiscoDeviceManager();
+	document.write('<frameset rows="*" frameborder="no" border="0" framespacing="0">');
+	//document.write('<frame src="frmwrkResource.htm" name="resourceFrame" scrolling="NO" marginwidth="0" marginheight="0" noresize>');
+	//document.write('<frame src="topbannernofpv.shtml" name="topFrame" scrolling="NO" marginwidth="2" marginheight="0" noresize>');
+	//document.write('<frame src="setup_report.htm" name="mainFrame" >');
+	document.write('</frameset>');
+	//location.href = "setup_report.htm";
+	}
+	else
+	{
+	setcookieAndLoadCiscoDeviceManager();
+	/*document.write('<frameset rows="*" frameborder="no" border="0" framespacing="0">');
+	document.write('<frame src="setup_report.htm" name="mainFrame" >');
+	document.write('</frameset>');	*/	
+	}
+}
+
+var OS_SUPPORTED = 2;
+var BROWSER_SUPPORTED = 1;
+
+/* returns OS_SUPPORTED or BROWSER_SUPPORTED based upon whether 
+	browser is:
+	o IE 5.5/6.0 
+	o Netscape 7.0
+	 
+	operating system is:
+	o	    Windows 2003
+	o	    Windows XP
+	o		Windows 2000
+	o		Windows NT 4.0 (SP 3 or higher). Note: Test is only done with SP6
+	o		Windows 98 
+
+*/
+function isSupported()
+{
+   // Ultimate client-side JavaScript client sniff. 
+   // (C) Netscape Communications 1999.  Permission granted to reuse and distribute. 
+   // Revised 17 May 99 to add is_nav5up and is_ie5up (see below). 
+   // Everything you always wanted to know about your JavaScript client 
+   // but were afraid to ask. Creates "is_" variables indicating: 
+   // (1) browser vendor: 
+   //     is_nav, is_ie, is_opera 
+   // (2) browser version number: 
+   //     is_major (integer indicating major version number: 2, 3, 4 ...) 
+   //     is_minor (float   indicating full  version number: 2.02, 3.01, 4.04 ...) 
+   // (3) browser vendor AND major version number 
+   //     is_nav2, is_nav3, is_nav4, is_nav4up, is_nav5, is_nav5up, is_ie3, is_ie4, is_ie4up 
+   // (4) JavaScript version number: 
+   //     is_js (float indicating full JavaScript version number: 1, 1.1, 1.2 ...) 
+   // (5) OS platform and version: 
+   //     is_win, is_win16, is_win32, is_win31, is_win95, is_winnt, is_win98 
+   //     is_os2 
+   //     is_mac, is_mac68k, is_macppc 
+   //     is_unix 
+   //        is_sun, is_sun4, is_sun5, is_suni86 
+   //        is_irix, is_irix5, is_irix6 
+   //        is_hpux, is_hpux9, is_hpux10 
+   //        is_aix, is_aix1, is_aix2, is_aix3, is_aix4 
+   //        is_linux, is_sco, is_unixware, is_mpras, is_reliant 
+   //        is_dec, is_sinix, is_freebsd, is_bsd 
+   //     is_vms 
+   // 
+   // See http://www.it97.de/JavaScript/JS_tutorial/bstat/navobj.html and 
+   // http://www.it97.de/JavaScript/JS_tutorial/bstat/Browseraol.html 
+   // for detailed lists of userAgent strings. 
+   // 
+   // Note: you don't want your Nav4 or IE4 code to "turn off" or 
+   // stop working when Nav5 and IE5 (or later) are released, so 
+   // in conditional code forks, use is_nav4up ("Nav4 or greater") 
+   // and is_ie4up ("IE4 or greater") instead of is_nav4 or is_ie4 
+   // to check version in code which you want to work on future 
+   // versions. 
+   
+   // convert all characters to lowercase to simplify testing 
+   var agt=navigator.userAgent.toLowerCase(); 
+   
+   // *** BROWSER VERSION *** 
+  
+   // Note: On IE5, these return 4, so use is_ie5up to detect IE5. 
+   var is_major = parseInt(navigator.appVersion); 
+   var is_minor = parseFloat(navigator.appVersion); 
+   // Note: Opera and WebTV spoof Navigator.  We do strict client detection. 
+   // If you want to allow spoofing, take out the tests for opera and webtv. 
+   var is_nav  = ((agt.indexOf('mozilla')!=-1) && (agt.indexOf('spoofer')==-1) 
+      && (agt.indexOf('compatible') == -1) && (agt.indexOf('opera')==-1) 
+      && (agt.indexOf('webtv')==-1)); 
+   var is_nav2 = (is_nav && (is_major == 2)); 
+   var is_nav3 = (is_nav && (is_major == 3)); 
+   var is_nav4 = (is_nav && (is_major == 4)); 
+   var is_nav4up = (is_nav && (is_major >= 4)); 
+   var is_nav475up = (is_nav && (is_major >= 4.75));
+   var is_navonly      = (is_nav && ((agt.indexOf(";nav") != -1) || 
+      (agt.indexOf("; nav") != -1)) ); 
+   //Netscape 6.x returns userAgent value of '5'
+   var is_nav6 = (is_nav && ( (is_major == 6) || (is_major == 5) ) ); 
+   var is_nav6up = (is_nav && ((is_major >= 6) || (is_major >=5)) );
+  
+   //Netscape 7.0 when downloaded from Cisco SoftTracker does not return the Netscape version 
+   //in the userAgent string, it instead gives some junk like 'gecko/20020823' which I did not
+   //see when downloading Netscape 7.0 straight from the Netscape website.  	
+   var is_nav7 =  ( (agt.indexOf('netscape/7.') != -1) || (agt.indexOf('gecko/20020823') != -1) );  
+   var is_nav71 =  (agt.indexOf('netscape/7.1') != -1);
+   var is_ie   = (agt.indexOf("msie") != -1); 
+   var is_ie3  = (is_ie && (is_major < 4)); 
+   var is_ie4  = (is_ie && (is_major == 4) && (agt.indexOf("msie 5.0")==-1) ); 
+   var is_ie4up  = (is_ie  && (is_major >= 4)); 
+   var is_ie5  = (is_ie && (agt.indexOf("msie 5.0")!=-1) ); 
+   var is_ie5up  = (is_ie  && (agt.indexOf("msie 5.5") != -1 ) ); 
+   
+   //additional checks are added to IE string because when opera or netscape 8.0 is made to behave as IE
+   //they return a string identifying the browser as IE along with the actual browser name
+   var is_ie6 = ((is_ie && ((is_major == 6) || (agt.indexOf("msie 6.0") != -1))) && (agt.indexOf("netscape") == -1) && (agt.indexOf("opera") == -1)); 
+   var is_ie6up = ((is_ie  && !is_ie3 && !is_ie4 && !is_ie5) && (agt.indexOf("netscape") == -1) && (agt.indexOf("opera") == -1)); 
+   var is_ie7  = (is_ie && (agt.indexOf("msie 7.0")!=-1) && (agt.indexOf("netscape") == -1) && (agt.indexOf("opera") == -1)); 
+ 
+   // KNOWN BUG: On AOL4, returns false if IE3 is embedded browser 
+   // or if this is the first browser window opened.  Thus the 
+   // variables is_aol, is_aol3, and is_aol4 aren't 100% reliable. 
+   var is_aol   = (agt.indexOf("aol") != -1); 
+   var is_aol3  = (is_aol && is_ie3); 
+   var is_aol4  = (is_aol && is_ie4); 
+   
+   var is_opera = (agt.indexOf("opera") != -1); 
+   var is_webtv = (agt.indexOf("webtv") != -1); 
+   
+   // *** JAVASCRIPT VERSION CHECK *** 
+   var is_js; 
+   if (is_nav2 || is_ie3) is_js = 1.0 
+   else if (is_nav3 || is_opera) is_js = 1.1 
+   else if ((is_nav4 && (is_minor <= 4.05)) || is_ie4) is_js = 1.2 
+   else if ((is_nav4 && (is_minor > 4.05)) || is_ie5) is_js = 1.3
+   // NOTE: In the future, update this code when newer versions of JS 
+   // are released. For now, we try to provide some upward compatibility 
+   // so that future versions of Nav and IE will show they are at 
+   // *least* JS 1.x capable. Always check for JS version compatibility 
+   // with > or >=. 
+   else if (is_nav && (is_major >= 5)) is_js = 1.4 
+   else if (is_ie && (is_major > 5)) is_js = 1.3 
+   // HACK: no idea for other browsers; always check for JS version with > or >= 
+   else is_js = 0.0; 
+   
+   // *** PLATFORM ***
+   var is_win   = ( (agt.indexOf("win")!=-1) || (agt.indexOf("16bit")!=-1) );
+   // NOTE: On Opera 3.0, the userAgent string includes "Windows 95/NT4" on all
+   //        Win32, so you can't distinguish between Win95 and WinNT.
+   var is_win95 = ((agt.indexOf("win95")!=-1) || (agt.indexOf("windows 95")!=-1));
+   
+   // is this a 16 bit compiled version?
+   var is_win16 = ((agt.indexOf("win16")!=-1) || 
+      (agt.indexOf("16bit")!=-1) || (agt.indexOf("windows 3.1")!=-1) || 
+      (agt.indexOf("windows 16-bit")!=-1) );  
+   
+   var is_win31 = ((agt.indexOf("windows 3.1")!=-1) || (agt.indexOf("win16")!=-1) ||
+      (agt.indexOf("windows 16-bit")!=-1));
+   
+   // NOTE: Reliable detection of Win98 may not be possible. It appears that:
+   //       - On Nav 4.x and before you'll get plain "Windows" in userAgent.
+   //       - On Mercury client, the 32-bit version will return "Win98", but
+   //         the 16-bit version running on Win98 will still return "Win95".
+   var is_win98 = ((agt.indexOf("win98")!=-1) || (agt.indexOf("windows 98")!=-1));
+   var is_winME = (agt.indexOf("Win 9x")!=-1);
+   var is_winnt = ( (agt.indexOf("winnt")!=-1) || (agt.indexOf("windows nt 4.0")!=-1) );
+   var is_winXP = ( (agt.indexOf("windows nt 5.1")!=-1) );
+   var is_win2k = ( (agt.indexOf("windows nt 5.0")!=-1) );
+   var is_winVista = ( (agt.indexOf("windows nt 6.0")!=-1) );
+   
+   var is_windows_server_2003 =  (agt.indexOf("windows nt 5.2") != -1);
+   //Windows Server 2003 is essentially Windows XP but with some features turned off for stability purposes.  
+   //Very confusing that even though it is functionally Windows XP, it still returns the string 'windows nt 5.2'
+   
+   var is_win32 = (is_win95 || is_winnt || is_win98 || 
+      ((is_major >= 4) && (navigator.platform == "Win32")) ||
+      (agt.indexOf("win32")!=-1) || (agt.indexOf("32bit")!=-1));
+   
+   var is_os2   = ((agt.indexOf("os/2")!=-1) || 
+      (navigator.appVersion.indexOf("OS/2")!=-1) ||   
+      (agt.indexOf("ibm-webexplorer")!=-1));
+   
+   var is_mac    = (agt.indexOf("mac")!=-1);
+   var is_mac68k = (is_mac && ((agt.indexOf("68k")!=-1) || 
+      (agt.indexOf("68000")!=-1)));
+   var is_macppc = (is_mac && ((agt.indexOf("ppc")!=-1) || 
+      (agt.indexOf("powerpc")!=-1)));
+   
+   var is_sun   = (agt.indexOf("sunos")!=-1);
+   var is_sun4  = (agt.indexOf("sunos 4")!=-1);
+   var is_sun5  = (agt.indexOf("sunos sun4u") != -1 || agt.indexOf("sunos 5")!=-1);
+	//Solaris 5.8 does not return version number, only SunOS sun4u
+   var is_suni86= (is_sun && (agt.indexOf("i86")!=-1));
+   var is_irix  = (agt.indexOf("irix") !=-1);    // SGI
+   var is_irix5 = (agt.indexOf("irix 5") !=-1);
+   var is_irix6 = ((agt.indexOf("irix 6") !=-1) || (agt.indexOf("irix6") !=-1));
+   var is_hpux  = (agt.indexOf("hp-ux")!=-1);
+   var is_hpux9 = (is_hpux && (agt.indexOf("09.")!=-1));
+   var is_hpux10= (is_hpux && (agt.indexOf("10.")!=-1));
+   var is_aix   = (agt.indexOf("aix") !=-1);      // IBM
+   var is_aix1  = (agt.indexOf("aix 1") !=-1);    
+   var is_aix2  = (agt.indexOf("aix 2") !=-1);    
+   var is_aix3  = (agt.indexOf("aix 3") !=-1);    
+   var is_aix4  = (agt.indexOf("aix 4") !=-1);    
+   var is_linux = (agt.indexOf("inux")!=-1);
+   var is_sco   = (agt.indexOf("sco")!=-1) || (agt.indexOf("unix_sv")!=-1);
+   var is_unixware = (agt.indexOf("unix_system_v")!=-1); 
+   var is_mpras    = (agt.indexOf("ncr")!=-1); 
+   var is_reliant  = (agt.indexOf("reliantunix")!=-1);
+   var is_dec   = ((agt.indexOf("dec")!=-1) || (agt.indexOf("osf1")!=-1) || 
+      (agt.indexOf("dec_alpha")!=-1) || (agt.indexOf("alphaserver")!=-1) || 
+      (agt.indexOf("ultrix")!=-1) || (agt.indexOf("alphastation")!=-1)); 
+   var is_sinix = (agt.indexOf("sinix")!=-1);
+   var is_freebsd = (agt.indexOf("freebsd")!=-1);
+   var is_bsd = (agt.indexOf("bsd")!=-1);
+   var is_unix  = ((agt.indexOf("x11")!=-1) || is_sun || is_irix || is_hpux || 
+      is_sco ||is_unixware || is_mpras || is_reliant || 
+      is_dec || is_sinix || is_aix || is_linux || is_bsd || is_freebsd);
+   
+   var is_vms   = ((agt.indexOf("vax")!=-1) || (agt.indexOf("openvms")!=-1));
+   var is_firefox1_5 = (agt.indexOf("firefox/1.5")!=-1);
+   var is_firefox2_0 = (agt.indexOf("firefox/2.0")!=-1);
+   var is_firefox3_0 = (agt.indexOf("firefox/3.0")!=-1);// added for Winter'10 
+   var is_netscape =  (agt.indexOf('netscape') != -1 || agt.indexOf('navigator') != -1);
+
+   var browser_supported = false;
+   var platform_supported = false;
+  	//as of Fall 03, only Netscape 7.x, IE 5.5 and IE 6.0 are supported
+   if ( is_nav)
+   {
+	  if(!is_netscape){
+	     if (is_firefox1_5 || is_firefox2_0 || is_firefox3_0 ){
+            	browser_supported = true;
+     }
+     else	
+	{
+		browser_supported = false;
+
+	}
+	}
+   }
+   else if (is_ie6 || is_ie5up || is_ie7 )
+   {  //even when running IE 6.0, is_major and is_minor variable will return value of "4"
+             browser_supported = true;
+   }
+   
+  //the windows server 2003 identifies itself as a windows NT operating system, version 5.2
+   if (is_win98 || is_winME || is_winnt || is_sun5 ) 
+   { 
+	  platform_supported = false; 
+   }
+   
+   if (is_win2k || is_winXP || is_windows_server_2003 || is_winVista) 
+   { 
+	  platform_supported = true; 
+   }
+	  
+	var flag = 0;
+	if(browser_supported)
+		flag+=BROWSER_SUPPORTED;
+	if(platform_supported)
+		flag+=OS_SUPPORTED;
+	 
+	return flag; 
+  }
+
+
+
+
+function getUserReadableBrowserVersion(userAgent)
+{
+var browserType = userAgent.toLowerCase();
+ 
+    		//interpret the navigator.userAgent string
+		//Netscape/7.0 = Netscape 7.0
+		if ( ( (browserType).indexOf("netscape")!= -1) || (browserType.indexOf("navigator") != -1) )
+			return "Netscape";
+				else
+		if ( ( (browserType).indexOf("Netscape")!= -1) && (browserType.indexOf("mozilla/4.0") != -1) )
+			return "Netscape 4.0";
+				else
+		if ( ( (browserType).indexOf("Netscape")!= -1) && (browserType.indexOf("mozilla/3.0") != -1) )
+			return "Netscape 3.0";
+				else
+		if ( ( (browserType).indexOf("Netscape")!= -1) && (browserType.indexOf("mozilla/4.7") != -1) )
+			return "Netscape 4.7";
+				else
+		if ( (browserType.indexOf("mozilla/4.79") != -1) )
+			return "Netscape 4.79";
+				else
+		if ( browserType.indexOf("netscape/7.0")!=-1)
+			return "Netscape 7.0";
+				else
+		if ( browserType.indexOf("netscape/7.")!=-1)
+			return "Netscape 7";
+				else
+		if ( browserType.indexOf("gecko/20020823")!=-1)
+			return "Netscape 7.0"
+				else
+		if ( browserType.indexOf("netscape/8.0")!=-1)
+			return "Netscape 8.0";
+				else
+		if ( browserType.indexOf("opera")!=-1)
+			return "Opera";
+				else
+		if ( browserType.indexOf("firefox/1.5")!=-1)
+			return "Firefox 1.5";
+				else
+		if ( browserType.indexOf("firefox/2.0")!=-1)
+			return "Firefox 2.0";
+				else
+		if ( browserType.indexOf("firefox/3.0")!=-1)
+			return "Firefox 3.0";
+				else
+		if ( browserType.indexOf("msie 3.0")!=-1)
+			return "Internet Explorer 3.0";
+				else
+		if ( browserType.indexOf("msie 4.0")!=-1)
+			return "Internet Explorer 4.0";
+				else
+		if ( browserType.indexOf("msie 5.0")!=-1)
+			return "Internet Explorer 5.0";
+				else
+		if ( browserType.indexOf("msie 5.5")!=-1)
+			return "Internet Explorer 5.5";
+				else
+		if ( browserType.indexOf("msie 6.0")!=-1)
+			return "Internet Explorer 6.0";
+		if ( browserType.indexOf("msie 7.0")!=-1)
+			return "Internet Explorer 7.0";
+				else
+			return browserType;
+
+
+}
+
+</Script>

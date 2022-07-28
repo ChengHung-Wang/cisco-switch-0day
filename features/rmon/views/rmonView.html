@@ -1,0 +1,173 @@
+<!--
+	Description: RMON Configuration.
+	Copyright (c) 2019 by Cisco Systems, Inc.
+	All rights reserved.
+-->
+<div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+ <div class="btnView">
+	<div class="pageTitle" ng-bind="'rmon_title' | translate"></div>
+	<div class="gridActionButtons">
+		<button kendo-button="addPeerBtn" class="btn btn-primary pl-add" ng-click="addRmonRow()">
+			{{'com_add' | translate}}
+		</button>
+		<button kendo-button="deletePeerBtn" class="btn btn-primary pl-delete" ng-disabled="rmonDeleteSection" ng-click="rmonDeleteConfirm()">
+			{{'com_delete' | translate}}
+		</button>
+	</div>
+	<div kendo-grid="rmonGrid" id="rmonGrid" name="rmonGrid"
+					 k-options="rmonGridOptions" k-rebind="rmonGridOptions"></div>
+					 
+					 
+					 <!-- Popup For Rmon starts-->
+				<div kendo-window="rmonGridWindow" k-title="'rmon_title' | translate" k-visible="false" k-width="700" k-modal="true" id="rmonGridPopup" >
+					<div>
+						<form name="rmonForm" id="rmonForm" kendo-validator="rmonValidator" k-options="rmonValidations">
+							<div class="well">
+								<div class="row form-group"></div>  
+								<div class="row form-group">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label right">{{'rmon_type' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<select kendo-drop-down-list name="rmonType" id="rmonTypeId" 
+		                                    k-data-text-field="'text'" k-data-value-field="'value'" ng-model="rmon.rmonType" k-data-source="rmonTypeOptions">
+										</select>
+										<tooltip helptext="{{'help_rmon_type' | translate}}"></tooltip>
+									</div>
+								</div>  
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'rmon_id' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+										   name="rmonId" ng-model="rmon.rmonId" placeholder="1-65535" min="1" max="65535"
+										   num-only maxlength="5" data-duplicate data-duplicate-msg="{{'rmon_id_exist_msg' | translate}}" data-range data-range-msg="{{'rmon_id_invalid_msg' | translate}}"
+										   required data-required-msg="{{'rmon_id_required_msg' | translate}}" >
+									</div>
+								</div> 
+								<div ng-if="rmon.rmonType == 'Alarm'"  >
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'rmon_mibObject' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control" name="mibObject"
+										   ng-model="rmon.mibObject"
+										   required data-required-msg="{{'rmon_mibObject_req_msg' | translate}}" 
+										   data-number data-number-msg = "{{'rmon_mib' | translate}}">
+										<tooltip helptext="{{'help_rmon_mibObject' | translate}}"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'rmon_interval' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control" name="interval"
+										   ng-model="rmon.interval" placeholder="1-2141483647" min="1" max="2141483647"
+										   num-only maxlength="10" data-duplicate data-range data-range-msg="{{'rmon_interval_invalid_msg' | translate}}"
+										   required data-required-msg="{{'rmon_interval_req_msg' | translate}}" >
+										<tooltip helptext="{{'help_rmon_interval' | translate}}"></tooltip>
+									</div>
+								</div>  
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'rmon_test' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<select kendo-drop-down-list name="test" id="testId" 
+		                                    k-data-text-field="'text'" k-data-value-field="'value'" ng-model="rmon.test" k-data-source="testOptions">
+										</select>
+										<tooltip helptext="{{'help_rmon_test' | translate}}"></tooltip>
+									</div>
+								</div> 
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'rmon_risingThreshold' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control" name="risingThreshold"
+										   ng-model="rmon.risingThreshold" style="width:50%" 
+										   placeholder="-2147483648 - 2147483647" min="-2147483648" max="2147483647"
+										   num-only maxlength="10" data-duplicate data-range data-range-msg="{{'rmon_risingThreshold_invalid_msg' | translate}}"
+										   required data-required-msg="{{'rmon_risingThreshold_req_msg' | translate}}" >								
+									</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'rmon_fallingThreshold' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control" name="fallingThreshold"
+										   ng-model="rmon.fallingThreshold" style="width:50%" 
+										   placeholder="-2147483648 - 2147483647" min="-2147483648" max="2147483647"
+										   num-only maxlength="10" data-duplicate data-range data-range-msg="{{'rmon_fallingThreshold_invalid_msg' | translate}}"
+										   required data-required-msg="{{'rmon_fallingThreshold_req_msg' | translate}}" >								
+									</div>
+								</div>   
+								</div>
+								<div  ng-if="rmon.rmonType == 'Event'" >
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'rmon_snmpCommunity' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control" name="snmpCommunity"
+										   ng-model="rmon.snmpCommunity">
+										<tooltip helptext="{{'help_rmon_snmpCommunity' | translate}}"></tooltip>
+									</div>
+								</div> 
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'critical_logs_desc' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control" name="description"
+										   ng-model="rmon.description" >
+										<tooltip helptext="{{'help_rmon_description' | translate}}"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label right">{{'rmon_log' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<span class="toggleClass">
+										<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+													  ng-model="rmon.log"  ></toggle-button></span>
+										<tooltip helptext="{{'help_rmon_log' | translate}}"></tooltip>
+									</div>
+								</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'rmon_owner' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control" name="owner"
+										   ng-model="rmon.owner" >
+										<tooltip helptext="{{'help_rmon_owner' | translate}}"></tooltip>
+									</div>
+								</div> 
+								
+							</div>
+						</form>
+					</div>
+					<div ng-show="!isEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveRmonData()">
+						<i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="rmonCancel()">
+						<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+
+					<div ng-show="isEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveRmonData()">
+						<i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="rmonCancel()">
+						<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+				</div>
+				
+				<!-- Popup For Rmon ends-->
+</div>

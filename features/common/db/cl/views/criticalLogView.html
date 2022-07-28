@@ -1,0 +1,17 @@
+<div class="dsCLContent bg-white" ng-controller="CriticalLogsCtrl">
+        <!--
+        Description: Crital Logs Page
+        Copyright (c) 2016 by Cisco Systems, Inc.
+        All rights reserved.
+        -->
+        <button class="btn btn-primary pull-right exportBtn"
+	          ng-csv="getArray()" csv-header="getHeader()" filename="{{logsFileName}}.csv">
+	          <i class="fa fa-file-text-o"></i>
+	           <span ng-bind="'clients_export' | translate"></span>
+	    </button>	   
+        <div class="pageContent">
+                <div kendo-grid="logsGrid" id="logsGrid" name="logsGrid" 
+                k-options="logsGridOptions" 
+                k-data-source="logsDataSource"></div>
+        </div>
+</div>

@@ -1,0 +1,29 @@
+<div ng-init="init()">
+	<!--
+	Description: CSS of WebUI Application
+	June 2016
+	Copyright (c) 2016 by Cisco Systems, Inc.
+	All rights reserved.
+	-->
+	<div class="clearfix ng-cloak dashlets">
+		<div class="removeDashletContainer animate-all" ng-class="removedDashletList.length==0?'hideMinimizeDiv':''">
+			<div class="minimizeDiv">
+				<div class="dashleticon" ng-repeat="dashlet in removedDashletList">
+					<i kendo-tooltip k-content="'{{dashlet.dataTitle | translate}}'" k-callout="false" style="color:#687268" class="{{dashlet.iconClass}}" ng-click="restoreDashlet(dashlet.dataTitle)"></i>
+				</div>
+			</div>
+		</div>
+		<div kendo-sortable k-placeholder="placeholder"  k-hint="hint"  k-filter="'.dashlet'" k-on-end="onDropEnd(kendoEvent)" sortable-resize="">
+			<div ng-repeat="dashlet in dashletList">
+				<div class="clearfix visible-xs-block"  ng-if='dashlet.dataSize=="3"'></div>
+				<dashlet data-size="{{dashlet.dataSize}}" data-title="{{dashlet.dataTitle | translate}}" data-description="{{dashlet.dataDescription}}"
+				data-notif="{{dashlet.dataNotif}}"
+				data-content="{{dashlet.dataContent}}"
+				gear-option="{{dashlet.gearOption}}",
+				data-poll="{{dashlet.pollingInterval}}"
+				icon-class="{{dashlet.iconClass}}"></dashlet>
+			</div>
+		</div>
+	</div>	
+</div>
+

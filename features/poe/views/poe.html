@@ -1,0 +1,258 @@
+<!--
+Description: Power Management page
+Feb 2020
+Copyright (c) 2020-2021 by Cisco Systems, Inc.
+All rights reserved.
+-->
+<div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+<div class="btnView">
+<div class="pageTitle"  ng-bind="'poe_html_title' | translate">		
+</div>
+	<div>
+		<div class="row well" ng-if="isFESwitch === true">
+			<div name="poeConfig" id="poeConfig" kendo-validator="poeGlobalValidator" k-options="poeValidations" autocomplete="off">
+				<div class="row form-group">				    
+					<div class="col-sm-7 webui-centerpanel-label">
+						<span class="label">{{'poe_html_global_power_supported' | translate}} </span>
+					</div>
+					<div class="col-sm-3">
+						<span class="label">{{globalPower.supported}}</span>
+					</div>					
+                    <div class="col-sm-1">
+						<span class="label">{{'poe_html_watts' | translate}} </span>
+                    </div>	
+                    				
+				</div>
+				<div class="row form-group" ng-hide="httpJson.http.access == 'Disable'">
+					<div class="col-sm-7 webui-centerpanel-label">
+						<span class="label">{{'poe_html_global_power_used' | translate}} </span>
+					</div>
+					<div class="col-sm-3">
+						<span class="label">{{globalPower.used}}</span>
+					</div>
+					<div class="col-sm-1">
+						<span class="label">{{'poe_html_watts' | translate}} </span>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-sm-7 webui-centerpanel-label">
+						<span class="label">{{'poe_html_global_power_available' | translate}}</span>
+					</div>
+					<div class="col-sm-3">
+						<span class="label">{{globalPower.available}}</span>
+					</div>
+					<div class="col-sm-1">
+						<span class="label">{{'poe_html_watts' | translate}} </span>
+					</div>
+				</div>
+				<div class="row form-group" ng-show="isIESwitch">
+					<div class="col-sm-6 webui-centerpanel-label">
+						<span class="label">{{'poe_html_psu1' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<span>&nbsp;</span>
+						<i class="fa fa-circle webkit-baseline-middle" 
+						aria-hidden="true" 
+						name="radio_psu_1" 
+						id="radio_psu_1"  
+						ng-style="psu1Status"></i> 
+					</div>
+					<div class="col-sm-1">
+						<span class="label">{{psu1StatusText}}</span>
+					</div>
+				</div>
+				<div class="row form-group" ng-show="isIESwitch">
+					<div class="col-sm-6 webui-centerpanel-label">
+						<span class="label">{{'poe_html_psu2' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<span>&nbsp;&nbsp;</span>
+						<i class="fa fa-circle webkit-baseline-middle" 
+						aria-hidden="true" 
+						name="radio_psu_2" 
+						id="radio_psu_2" 
+						ng-style="psu2Status"></i>
+					</div>
+					<div class="col-sm-1">
+						<span class="label">{{psu2StatusText}}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	    <div ng-if="isFESwitch === false">
+		    <form name="poeConfig" id="poeConfig" kendo-validator="poeGlobalValidator"  k-options="poeValidations">			
+			   <div ng-repeat="poeData in switchData.masterData">
+					<div  class="row text-center">
+						<div class="col-sm-2 text-center"></div>
+						<div ng-repeat="moduleData in poeData.module" class="col-sm-2 text-center">
+							<span class="label"><b>{{moduleData.module}}</b></span>
+						</div>
+					</div>
+					<div  class="row text-center">
+					    <div class="col-sm-2 text-center">
+							<span class="label">{{'poe_html_global_power_supported' | translate}} </span>
+						</div>
+						<div ng-repeat="availableData in poeData.available" class="col-sm-2 text-center">
+							<span class="label">{{availableData.available}}</span>
+							<span class="col-sm-1"></span>
+							<span class="label">{{'poe_html_watts' | translate}} </span>
+						</div>
+					</div>
+					<div  class="row text-center">
+						<div class="col-sm-2 col-sm-offset-1" style="text-align: center;">
+							<span class="label">{{'poe_html_global_power_used' | translate}} </span>
+						</div>
+						<div ng-repeat="usedData in poeData.used" class="col-sm-2 text-center">
+							<span class="label">{{usedData.used}}</span>
+							<span class="col-sm-1"></span>
+							<span class="label">{{'poe_html_watts' | translate}} </span>
+						</div>
+					</div>
+					<div  class="row text-center">
+					    <div class="col-sm-2 col-sm-offset-1" style="text-align: center;">
+							<span class="label">{{'poe_html_global_power_available' | translate}} </span>
+						</div>
+						<div ng-repeat="remainingData in poeData.remaining" class="col-sm-2 text-center">
+							<span class="label">{{remainingData.remaining}}</span>
+							<span class="col-sm-1"></span>
+							<span class="label">{{'poe_html_watts' | translate}} </span>
+						</div>
+					</div>
+					<div  class="row text-center">&nbsp;</div>					
+				</div>
+			    <div class="row form-group" ng-show="isIESwitch">
+					<div class="col-sm-6 webui-centerpanel-label">
+						<span class="label">{{'poe_html_psu1' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<span>&nbsp;</span>
+						<i class="fa fa-circle webkit-baseline-middle" 
+						aria-hidden="true" 
+						name="radio_psu_1" 
+						id="radio_psu_1"  
+						ng-style="psu1Status"></i> 
+					</div>
+					<div class="col-sm-1">
+						<span class="label">{{psu1StatusText}}</span>
+					</div>
+				</div>
+				<div class="row form-group" ng-show="isIESwitch">
+					<div class="col-sm-6 webui-centerpanel-label">
+						<span class="label">{{'poe_html_psu2' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<span>&nbsp;&nbsp;</span>
+						<i class="fa fa-circle webkit-baseline-middle" 
+						aria-hidden="true" 
+						name="radio_psu_2" 
+						id="radio_psu_2" 
+						ng-style="psu2Status"></i>
+					</div>
+					<div class="col-sm-1">
+						<span class="label">{{psu2StatusText}}</span>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="pageContent">			
+			<div kendo-grid="poeInterfaceGrid" id="poeInterfaceGrid" name="poeInterfaceGrid"
+				k-options="poeInterfaceGridOptions"
+				k-data-source="poeInterfaceDataSource"
+				k-on-change="showEditTabsOnClick(data)">
+			</div>
+		</div>
+		<div kendo-window="poeInterfaceWindow" class="cloakVisiblility" 
+			 add-edit-window window-done="applyPowerInterface" window-cancel="onCancel" 
+			 k-visible="false" k-width="900" window-height="300">
+			 <div class="windowContainer">
+		        <form name="poeInterfaceForm" id="poeInterfaceForm" kendo-validator="poeInterfaceFormValidator" k-options="poeValidations"  autocomplete="off">
+					<div class="row form-group">
+	      				<div class="col-sm-4 webui-centerpanel-label">
+	      					<span class="label">{{'portconfig_general_interface' | translate}}</span>
+	      				</div>
+	    				<div class="col-sm-6">
+	    					<span class="label">{{selectedPoeInterface}} </span>
+	            		</div>
+	          		</div> 
+	          		<div class="row form-group">
+	      				<div class="col-sm-4 webui-centerpanel-label">
+	      					<span class="label">{{'com_mode' | translate}}</span>
+	      				</div>
+	            		<div class="col-sm-6">
+							<select kendo-drop-down-list 
+                            name="adminType" id="adminType"
+							ng-model="poeInterface.adminType"
+							k-data-source="adminModeOptions" k-data-text-field="'adminText'"
+							k-data-value-field="'adminValue'" k-ng-delay="adminType"
+							ng-change="validateMode()"></select>
+						</div>
+	          		</div>
+					<div class="row form-group">
+	      				<div class="col-sm-4 webui-centerpanel-label">
+	      					<span class="label">{{'com_status' | translate }}</span>
+	      				</div>
+	    				<div class="col-sm-6 ">
+	    					<span class="label">{{poeInterface.status}}</span>
+	            		</div>
+	          		</div> 
+	              	<div class="row form-group">
+	      				<div class="col-sm-4 webui-centerpanel-label">
+	      					<span class="label">{{'poe_js_power' | translate }}</span>
+	      				</div>
+	    				<div class="col-sm-6 ">
+	    					<input class="k-textbox form-control" name="poePower" 
+	    					id="poePower" class="form-control" 
+	    					ng-model="poeInterface.power"
+	    					placeholder="{{maxPower.placeHolder}}"
+	    					required data-required-msg="{{emptyPowerMsg}}"
+							data-range="{{maxPower.range}}"
+							data-range-msg="{{invalidPowerMsg}}"
+							ng-disabled="poeInterface.adminType === 'Auto' || poeInterface.adminType === 'Disabled'">
+	            		</div>
+	          		</div>
+					<div class="row form-group">
+	      				<div class="col-sm-4 webui-centerpanel-label">
+	      					<span class="label">{{'poe_js_max_power' | translate }}</span>
+	      				</div>
+	    				<div class="col-sm-6">
+	    					<input class="k-textbox form-control" name="poeMaxPower" 
+	    					id="poeMaxPower" 
+	    					class="form-control" 
+	    					ng-model="poeInterface.maxPower"
+	    					placeholder="{{maxPower.placeHolder}}"
+	    					required data-required-msg="{{emptyMaxPowerMsg}}"
+							data-range="{{maxPower.range}}"
+							data-range-msg="{{invalidMaxPowerMsg}}"
+							ng-disabled="poeInterface.adminType === 'Static' || poeInterface.adminType === 'Disabled'">
+	            		</div>
+	          		</div>
+	          		<div class="row form-group" ng-if="powerConsumption">
+	      				<div class="col-sm-4 webui-centerpanel-label">
+	      					<span class="label">{{'poe_js_overridePower' | translate }}</span>
+	      				</div>
+	    				<div class="col-sm-6">
+	    					<span class="label">{{poeInterface.consumption}}</span>
+	            		</div>
+	          		</div> 
+	          		<div class="row form-group">
+	      				<div class="col-sm-4 webui-centerpanel-label">
+	      					<span class="label">{{'com_device' | translate }}</span>
+	      				</div>
+	    				<div class="col-sm-6">
+	    					<span class="label">{{poeInterface.device}}</span>
+	            		</div>
+	          		</div> 
+	          		<div class="row form-group">
+	      				<div class="col-sm-4 webui-centerpanel-label">
+	      					<span class="label">{{'poe_js_class' | translate }}</span>
+	      				</div>
+	    				<div class="col-sm-6">
+	    					<span class="label">{{poeInterface.poeClass}}</span>
+	            		</div>
+	          		</div>
+				</form>
+			 </div>
+		</div>
+	</div>
+</div>
+		

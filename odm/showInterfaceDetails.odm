@@ -1,0 +1,23 @@
+###
+show interfaces
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show interfaces</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowInterface">
+<Container name="wnwebdata">
+<Container name="line protocol is" alias = "entry" dynamic = "true">
+<Property name="line protocol is" alias="interfaceName" distance = "-3" length = "1" type = "String"/>
+<Property name="Total output drops:" alias="totalDrop" distance = "1" length = "1" type = "String"/>
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

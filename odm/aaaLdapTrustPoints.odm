@@ -1,0 +1,22 @@
+###
+show crypto pki trustpoints status
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show crypto pki trustpoints status</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowCryptoPkiTrustpointsStatus">
+<Container name="wnwebdata">
+<Container name="Trustpoint" alias="trust" dynamic = "true">
+<Property name="Trustpoint" alias="TrustPoint" distance = "1" end-delimiter = ":" length = "1" type = "String"/>
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->

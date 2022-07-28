@@ -1,0 +1,28 @@
+###
+show lldp neighbors detail
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show lldp neighbors detail</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="showLldpNeighborsDetail">
+<Container name="Local Intf" alias="wnwebdata" dynamic="true">
+<Property name="Local Intf" alias="SwitchPort" distance = "1.0" length = "1" end-delimiter=" " type = "String"/>
+<Property name="System Name" alias="ClientName" distance = "1.0" length = "1" end-delimiter = "," type = "String"/>
+<Property name="System Description" alias="OS" distance = "1.0" length = "1" end-delimiter = "," type = "String"/>
+<Property name="Enabled Capabilities" alias="Capabilities" distance = "1.0" length = "1" end-delimiter = " "  type = "String"/>
+<Property name="IP:" alias="IP" distance = "1.0" length = "1"  type = "String"/>
+<Property name="Vlan ID" alias="VLAN" distance = "1.0" length = "10"  type = "String"/>
+<Property name="Platform" alias="Manufacturer" distance = "1.0" length = "1"  end-delimiter = "," type = "String"/>
+<Property name="Power drawn" alias="PoEDrawn" distance = "1.0" length = "1" type = "String"/>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+~       

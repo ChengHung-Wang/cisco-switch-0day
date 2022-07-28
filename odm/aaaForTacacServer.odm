@@ -1,0 +1,29 @@
+###
+show running-config aaa tacacs-server
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show running-config aaa</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowRunningconfigAaa">
+<Container name="wnwebdata">
+
+<Container name="tacacs server" alias = "entry" dynamic = "true">
+<Property name="tacacs server" alias="name" distance="1" length="1" type="String"/>
+<Property name="address ipv4" alias="address" distance = "1" length = "1" type = "String"/>
+<Property name="key" alias="password" distance = "1" length = "1" type = "String"/>
+<Property name="port " distance = "1" length = "1" type = "String"/>
+<Property name="timeout" distance = "1" length = "1" type = "String"/>
+</Container>
+
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+
+<!--
+Copyright (c) 2014,2015,2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

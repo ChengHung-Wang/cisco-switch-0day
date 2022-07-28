@@ -1,0 +1,22 @@
+###
+show env all
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>sh env all</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="SYSTEM TEMPERATURE " alias = "entry" dynamic = "true">
+<Property name="System Temperature Value:" alias="tempVal" distance = "1" length = "1" type = "String"/>
+<Property name="Yellow Threshold :" alias="yellowThres" distance = "1" length = "1" type = "String"/>
+<Property name="Red Threshold    :" alias="redThres" distance = "1" length = "1" type = "String"/>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+
+

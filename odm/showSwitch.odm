@@ -1,0 +1,25 @@
+###
+show switch
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show switch</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="Switch">
+<Table  name="SwitchStatus">
+<Header name = "Switch#" start = "0" end = "7" type = "String"/>
+<Header name = "Role" start = "9" end = "14" type = "String"/>
+<Header name = "Mac Address" start = "16" end = "30" type = "String"/>
+<Header name = "Priority" start = "32" end = "39" type = "String"/>
+<Header name = "Version" start = "41" end = "48" type = "String"/>
+<Header name = "State" start = "50" end = "56" type = "String"/>
+</Table>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

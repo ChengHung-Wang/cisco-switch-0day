@@ -1,0 +1,26 @@
+###
+show snmp
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show snmp</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowSnmp">
+<Container name="wnwebdata">
+<Container name="snmp" alias="entry">
+<Property name="Contact" alias="systemContact" distance = "1" length = "-1" type = "String"/>
+<Property name="Location" alias="systemLocation" distance = "1" length = "-1" type = "String"/>
+<Property name="SNMP global trap" alias="globalTrap" distance = "1" length = "1" type = "String"/>
+<Property name="SNMP agent" alias="status" distance = "1" length = "-1" type = "String"/>
+<Property name="SNMP logging" alias="logging" distance = "1" length = "1" type = "String"/>
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

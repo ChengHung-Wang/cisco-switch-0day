@@ -1,0 +1,560 @@
+<!--
+	Description: QOS Configuration.
+	Copyright (c) 2019 by Cisco Systems, Inc.
+	All rights reserved.
+-->
+<style>
+    .borderContainer {
+        border: 1px solid #ccc;
+        padding-top: 10px;
+        margin-bottom: 10px;
+        margin-left: 10px;
+    }
+    .multiselectbox {
+        max-width: 150px !important;
+        max-height: 65px !important;
+        word-wrap: break-word !important;
+    }
+
+    .multiselectbox option{
+        white-space: normal;
+        word-wrap: break-word;
+    }
+
+.create_qosWindow1
+{
+    margin-left: 15px;
+    max-height: 580px !important;
+	overflow-y: auto !important;
+    overflow-x: hidden;
+}
+.editWindow
+{
+    max-height: 99% !important;
+    overflow-y: hidden !important;
+}
+.well {
+    border: 0;
+    background-color: #fff;
+    box-shadow: none;	
+}
+.create_qosWindow {
+    font-family: "CiscoSansLight";
+    font-size: inherit !important;
+	overflow: hidden;
+}
+.borderContainer {
+    border: 1px solid #ccc;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+.panel-gradient-blue, .k-panelbar .panelbar__header, .k-panelbar .panel-gradient-blue {
+    background: none;
+    background-color: #fff;
+    border: 0;
+    line-height: 32px;
+}
+.panelbar__header {
+    display: block;
+    padding-left: 26px;
+}
+div.k-window .k-window-content .well, div.k-window .k-window-content .margin-top-05 {
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    margin-left: 25px;
+}
+.margin-top-10 {
+    margin-top: 10px;
+    //margin-left: 18px;
+}
+.k-content .k-block, .k-content .k-info-colored {
+    border: 0;
+    background: inherit;
+}
+.label {
+    white-space: normal;
+    text-align: initial;
+	margin-left: 13px;
+}
+.left-inner-addon-custom em {
+    padding: 5px 10px;
+}
+.left-inner-addon em {
+    position: absolute;
+    padding: 10px 12px;
+    pointer-events: none;
+    color: #999999;
+}
+.text_help {
+    font: italic 14px CiscoSansLight, Arial;
+    text-align: left;
+    color: #8c8c8c;
+    margin-bottom: 10px;
+	padding-left: 20px;
+}
+.avcListQuadBar {
+    padding: 10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-bottom: 2px solid #c3c3c3;
+    margin-left: 3px;
+    margin-right: 50px;
+}
+.avcListQuadBar.enabledContent {
+    border-bottom-color: #00aa49;
+    color: #00aa49;
+}
+.listQuad .header {
+    background: #f5f5f5;
+    font-weight: 600;
+    font-size: 14px;
+    padding-left: 10px;
+    line-height: 40px;
+}
+.listQuad {
+    /* border: 1px solid #ebebeb; */
+    margin-bottom: 20px;
+    font-family: "CiscoSansLight";
+}
+.avcTopBar {
+    background: #fff !important;
+    border: 0;
+}
+.avctableRow, .avcRow {
+    float: left;
+    padding-left: 10px;
+}
+.listQuad .header { 	
+    font-weight: 600;
+    font-size: 14px;    
+    line-height: 40px;
+	padding-left: 10px;
+}
+.noBorder {
+    border: 0 !important;
+}
+.avctableHeader {
+    background: #fff;
+    /* color: #00aa49; */
+}
+.margin-top-15 {
+    margin-top: 1.5em;
+}
+#allInterfaceDiv #availableInterfaceDiv #avcConfiguredListDiv{
+/* #avcConfiguredListDiv */
+	overflow-y: auto;
+    overflow-x: hidden;
+    width: 99%;
+    height: 300px;    
+	background-color: #f5f5f6;
+    border: 1px solid #DCDCDC;
+}
+.listQuadMessage {
+    line-height: 250px;
+    text-align: center;
+    color: gray;
+}
+#qosSearch{
+padding-left: 38px;
+padding-bottom: 0px;
+padding-top: 0px;
+}
+#qosClassDefaultForm{
+margin: 0px 14px 0 14px;
+}
+.avcConfigureUIList{
+	background: #fff;
+	margin: 5px;
+	border: 1px solid #e1e1e2;
+	height: 30px;
+}
+#allInterfaceDiv #availableInterfaceDiv, #avcConfiguredListDiv{
+    background-color: #f5f5f6;
+    border: 1px solid #DCDCDC;
+}
+.wanInterfaceAVC .displayInlineBlock{
+display:inline-block;
+}
+.arrowButton {
+    color: gray;
+    padding-top: 3px;
+    cursor: pointer;
+}
+</style>
+
+<div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+ <div class="btnView">
+	<div class="pageTitle">QOS</div>
+	<div>
+		<div class="gridActionButtons">
+			<button kendo-button="addBtn" class="btn btn-primary pl-add"
+					ng-click="addPolicy()">
+				{{'com_add' | translate}}
+			</button>
+
+			<button kendo-button="deleteBtn" class="btn btn-primary pl-delete"
+					ng-click="deleteQoSPolicy()"
+					ng-disabled="disableDeleteButton">
+				{{'com_delete' | translate}}
+			</button>			
+		</div>
+		<div kendo-grid="qosPolicyGrid" id="qosPolicyGrid" 
+			k-options="qosPolicyGridOptions" 
+			k-data-source="qosPolicyGridDataSource"
+			k-on-change="editQos(data)">
+		</div>
+	</div>
+    <div kendo-window="qosWindow" class="create_qosWindow" id="create_qosWindow" window-cancel="onCancel" k-title="'{{'switch_qos' | translate}}'"
+	   k-modal="true" k-width="900" k-visible="false">	
+	    <div class="create_qosWindow1">
+		<form class="well" name="qosGlobalForm"	id="qosGlobalForm" kendo-validator="qosGlobalFormValidator" k-options="qosValidations">
+			<div class="row form-group"></div>
+			<div class="row form-group" ng-hide="true">
+				<div class="col-sm-2">
+					 <span class="label">Auto QOS</span>
+				</div>
+				<div class="col-sm-3" ng-show="true">					
+					<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+							ng-model="auto_qos" ng-disabled="addNewPolicyFlag" ng-change="disableApplyButton= disableCancelButton= false"">
+					</toggle-button>					
+				</div>
+				<div class="col-sm-3" ng-show="addNewPolicyFlag">
+					<span class="label" ng-show="auto_qos == 'Enable'" style="margin-left: 0px">Enable</span>
+					<span class="label" ng-show="auto_qos == 'Disable'" style="margin-left: 0px">Disable</span>
+				</div>
+			</div>              
+                
+			<div class="row first-row form-group" ng-show="auto_qos == 'Disable'" >
+				<div class="col-sm-2">
+
+					<span class="label pl-mandatory">{{::'qos_policyname' | translate}}</span>
+				</div>
+				<div class="col-sm-3">
+					<input class="k-textbox form-control" name="policyName" id="policyName" 
+					ng-model="qosModel.policyName" ng-disabled="addNewPolicyFlag || auto_qos == 'Enable'" 
+					data-specialcharcheck data-specialcharcheck-msg="" 
+					data-duplicatepolicyname data-duplicatepolicyname-msg="" 
+					maxlength="25" required data-required-msg="Policy name required">
+				</div>
+			</div>
+
+        </form>		
+		<div class="row form-group" ng-show="auto_qos == 'Disable'">
+			<form name="qosClientForm" id="qosClientForm" kendo-validator="qosClientFormValidator" k-options="qosValidations">
+				<div class= "borderContainer" style="margin: 0px 28px 0px 28px;">
+					<div class="row well" style="margin: -5px 5px 5px 5px;">
+						<div kendo-grid="avcUserDefinedGrid" name="avcUserDefinedGrid" id="avcUserDefinedGrid" k-options="avcUserDefinedGridOptions" 
+							k-data-source="avcUserDefinedDataSource"></div>
+					</div>
+					<div class="row form-group" style="padding-left: 5px">
+						<div class="col-sm-3">
+							<button kendo-button="saveBtn" class="btn btn-primary" ng-click="qosClassMapAdd()" ng-disabled="qosAddClassMap">
+						
+								<span class="fa pl-add"></span>  {{::'qos_add_classmap' | translate}}
+							</button>
+						</div>
+					</div>
+					<div ng-show="qosAddClassMapFlag">
+					    <div class="row form-group" ng-hide=true>
+										<div class="col-sm-2">
+											<span class="label">AVC/User Defined</span>
+										</div>
+                                        <div class="col-sm-3">
+                                            <select kendo-drop-down-list 
+                                            name="qosAvcUserDefId" id="qosAvcUserDefId" 
+                                            k-data-source="avcUserDefinedDataSrc" 
+                                            ng-model="qosModelAvcUserDef" ng-disabled="isIESwitch"
+                                            k-on-change="avcUserDefinedHandler()"
+                                            k-data-text-field="'name'" 
+                                            k-data-value-field="'value'"
+											k-ng-delay="qosModelAvcUserDef"></select>
+                                        </div>
+                        </div>
+						<div class="" >
+							<div class="k-block" >
+								<form name="avcForm" id="avcForm" kendo-validator="avcValidator" k-options="qosValidations">
+									<div class="row form-group">
+										<div class="col-sm-2">
+											<span class="label">{{::'qos_match' | translate}}</span>
+										</div>
+										<div class="col-sm-1 ">
+											
+											 <input type="radio" ng-model="avcMatch" id="avcMatchAny" name="avcMatch"
+											 ng-click="matchHandlerAvc()" value="Any" ng-selected>
+											<span>{{::'acl_any' | translate }}</span>
+
+										</div>
+										 <div class="col-sm-3 ">
+											<input type="radio" ng-model="avcMatch" id="avcMatchAll" name="avcMatch"
+											 ng-click="matchHandlerAvc()" value="All">
+											<span>{{::'portconfig_port_switchmode_all' | translate }}</span>
+										 </div>
+									</div>
+									<div class="row form-group " >
+										<div class="col-sm-2">
+											<span class="label">{{::'qos_marktype' | translate }}</span>
+										</div>
+										<div class="col-sm-3">
+											<select kendo-drop-down-list 
+											name="mark1" id="mark1" 
+											k-data-source="avcMarkTypeOptions" 
+											ng-model="avc.mark1"
+											k-data-text-field="'name'" 
+											k-data-value-field="'value'"
+											k-ng-delay="avc.mark1"											ng-change="getMarkValue(avc.mark1)"></select>
+										</div>
+									</div>
+									<div class="row form-group ">
+										<div class="col-sm-2"  
+										ng-show="avc.mark1 == 'dscp' || avc.mark1 == 'DSCP'">
+											<span class="label">{{::'qos_markvalue' | translate}}</span>
+										</div>
+										<div class="col-sm-3" 
+										 ng-show="avc.mark1 == 'dscp' || avc.mark1 == 'DSCP'">
+											<select kendo-drop-down-list name="mark2" 
+											id="dhcpmark2" data-ng-model="avc.mark2" k-data-source="dscpMarkValueOption">
+											</select>
+										</div>
+
+										<div class="col-sm-2" 
+										ng-show="avc.mark1 == 'cos' || avc.mark1 == 'COS'">
+											<span class="label">{{::'qos_markvalue' | translate}}</span>
+										</div>
+										<div class="col-sm-3"  
+										ng-show="avc.mark1 == 'cos' || avc.mark1 == 'COS'">
+											<select kendo-drop-down-list name="mark2" 
+											id="cosmark2" data-ng-model="avc.mark3" k-data-source="cosMarkValueOption"></select>
+										</div>
+
+									</div>
+
+									<div class="row form-group">
+										<div class="col-sm-2">
+											<span class="label">Drop</span>
+										</div>
+										<div class="col-sm-3 ">
+											<input type="checkbox" ng-change="" ng-model="avc.dropValue" 
+											name="avcDrop" ng-click="" id="avcDrop" ng-true-value="'Enabled'" 
+											ng-false-value="'Disabled'">
+
+										</div>
+									</div>
+                                    <div ng-if="avc.dropValue != 'Enabled'">
+									<div class="row form-group">
+										<div class="col-sm-2">
+											<span class="label">{{::'qos_policekbps' | translate}}</span>
+										</div>
+										<div class="col-sm-3 fieldinput">
+											<input class="k-textbox form-control" 
+											name="avcPolice" id="avcPolice" ng-model="avc.policeValue" 
+											placeholder="8000-10000000"
+											data-numericrange="8000-10000001" data-numericrange-msg="Value must between 8000 - 10000000"																						required data-required-msg="{{::'qos_choosemark_orpolicevalue' | translate}}">
+										</div>
+									</div>									</div>
+										
+
+									<div class="row form-group">
+										<div class="col-sm-2">
+											<span class="label">{{::'qos_matchtype' | translate}}</span>
+										</div>
+										<div class="col-sm-3">
+											<select kendo-drop-down-list
+											name="trustType" id="avctrustType" k-data-source="trustTypeOptions"
+											k-data-text-field="'name'" k-data-value-field="'value'" ng-model="avc.trustType" k-ng-delay="avc.trustType"></select>
+										</div>
+									</div>
+									
+									<div class="row form-group" ng-if="avc.trustType == 'access-group'">
+										<div class="col-sm-2">
+											<span class="label">{{::'com_access_value' | translate}}</span>
+										</div>
+										<div class="col-sm-3 fieldinput">
+											<input class="k-textbox form-control" 
+											name="trustValue" id="trustValue" ng-model="avc.trustValue" 
+											placeholder="1-2799"
+											required
+											data-numericrange="1-2800" data-numericrange-msg="Value must between 1 - 2799">
+										</div>
+									</div>
+									<div class="row form-group" ng-if="avc.trustType == 'ip dscp'">
+										<div class="col-sm-2">
+											<span class="label">{{::'qos_ip_dscp' | translate}}</span>
+										</div>
+										<div class="col-sm-3 fieldinput">
+											<input class="k-textbox form-control" 
+											name="trustValue" id="trustValue" ng-model="avc.mark2" 
+											placeholder="0-63"
+											required
+											data-numericrange="0-64" data-numericrange-msg="Value must between 0 - 63">
+										</div>
+									</div>
+								</form>
+								
+							</div>
+						</div>
+						<div class="row form-group" >
+									<div class="col-sm-10">
+										<div class="pull-right">										   
+											  <button kendo-button="cancelBtn" class="btn btn-primary" 
+											  ng-click="qosAddClassMap = false;qosAddClassMapFlag = false;resetAvc()">
+												<span class="fa pl-cancel"></span> {{::'com_cancel' | translate}}
+											</button>
+										</div>
+									</div>
+									<div class="col-sm-1" style="margin-left: -24px;">
+										<button kendo-button="saveBtn" class="btn btn-primary" ng-click="saveAvc();">
+										<span class="fa pl-add"></span>  {{::'com_save' | translate}}
+									</button>   
+									</div>
+						</div>
+						
+					</div>
+				</div>
+			</form>
+		</div>
+		
+		<div class="row boxModalBorderBox margin-top--10px" ng-show="auto_qos == 'Disable'">
+            <div id="config-avc" class="animateAvcContainer margin-top-15">
+				
+                <div class="col-md-6 marginLowRes">
+                    <div id="allInterfaceDiv" class="listQuad noBorder margin-bottom-10">
+                        <div class="header avcTopBar" id="allAvailInterf">
+                            <div class="avctableHeader">
+                                <div class="avctableRow" ng-style="getWidth()">
+                                    <span ng-show="!wirelessSupported">{{::'qos_interfaces' | translate}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="availableInterfaceDiv" class="content connectedSortable ui-droppable avcConfigureContentDiv"
+                             ng-drop="true" ng-drop-success="onDropCompleteAvailable1($data)">
+                            <div ng-show="!interfaceLoaded" class="avcLoader">
+								<span class="fa fa-spinner fa-spin fa-3x"></span>
+							</div>
+                            <ul ng-show="interfaceLoaded" id="allInterfaceList" class="draggable-objects avcConfigureUI">
+                                <li class="avcConfigureUIList"
+                                    ng-hide ="wirelessSupported"
+                                    ng-repeat="interface in availableInterfaceListOptions"
+                                    ng-drag="true"
+                                    ng-drag-data="interface" ng-dblclick="onDropCompleteSelected1(interface)"
+                                    ng-class='colorBusinessRelavantDropDown'
+                                    >
+                                    <div class="wanInterfaceAVC">
+                                        <div class="wanIntName displayInlineBlock" kendo-tooltip
+                                             k-content="getTooltipContent(interface)" k-callout="false">
+                                            <div class="portImageBoxAVC"
+                                                 ng-style="getPortColor(interface.status)">
+                                                <img alt=""
+                                                     src="assets/images/interfacePort.png">
+                                            </div>
+                                            <div class="wanIntContent verticalAlignMiddle">
+                                                {{interface.portName}}
+                                            </div>                                               
+                                        </div>
+
+                                        <em ng-prevent-drag kendo-tooltip
+                                            k-content=""
+                                            k-callout="false" ng-click="onDropCompleteSelected1(interface)"
+                                            class="fa fa-arrow-right pull-right itemButton arrowButton"></em>
+                                    </div>
+                                </li>
+                                
+                            </ul>
+                            <div ng-show="availableInterfaceListOptions.length===0"
+                                 class="listQuadMessage">
+                                {{::'troubleshooting_nointerfacesavailable' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 marginLowRes" style="margin-left: 417px; margin-top:-361px;">
+                    <div id="avcFieldSet" class="listQuad ui-droppable noBorder margin-bottom-10">
+                        <div class="header avcTopBar" id="avcWAN">
+                            <div class="avctableHeader">
+                                <div class="avctableRow">
+                                    <span >{{::'qos_interfaces' | translate}}</span>
+                                </div>
+                                <div class="avctableRow">
+                                    <span>{{::'span_rspan_ingress' | translate}}</span>
+                                </div>
+                                <div class="avctableRow">
+                                    <span>{{::'span_rspan_egress' | translate}}</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="avcConfiguredListDiv" class="content avcConfigureContentDiv"
+                             ng-drop="true" ng-drop-success="onDropCompleteSelected1($data)" style="width:400px !important">
+                            <div ng-show="!interfaceLoaded" class="avcLoader"><span
+                                    class="fa fa-spinner fa-spin fa-3x"></span></div>
+                            <ul ng-show="interfaceLoaded" id="avcInterfaceList"
+                                class="connectedSortable avcConfigureUI">
+                                <li class="avcConfigureUIList"
+                                    ng-repeat="interface in qosFlowData.interfaceToBeEnabled"
+                                    ng-dblclick="onDropCompleteAvailable1(interface)" ng-drag="true"
+                                    ng-drag-data="interface">
+                                    <div class="avcrowContainer">
+                                        <div class="avcRow">
+                                            <div class="wanInterfaceAVC">
+                                                <div class="wanIntName displayInlineBlock" kendo-tooltip
+                                                     k-content="getTooltipContent(interface)" k-callout="false">
+                                                    <div class="portImageBoxAVC"
+                                                         ng-style="getPortColor(interface.status)">
+                                                        <img alt=""
+                                                             src="assets/images/interfacePort.png">
+                                                    </div>
+                                                    <div class="wanIntContent verticalAlignMiddle">
+                                                        {{interface.portName}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="avcRow">
+                                            <input ng-prevent-drag type="checkbox" name="ingress" id="ingress"
+                                                   ng-model="interface.ingress"
+                                                   ng-disabled="checkDisable(interface,'ingress')"/>
+                                        </div>
+                                        <div class="avcRow">
+                                            <input ng-prevent-drag type="checkbox" name="egress" id="egress"
+                                                   ng-model="interface.egress"
+                                                   ng-disabled="checkDisable(interface,'egress')"/>
+                                        </div>
+
+                                        <em ng-prevent-drag kendo-tooltip
+                                            k-content=""
+                                            k-callout="false" class="fa fa-arrow-left pull-right itemButton arrowButton"
+                                            ng-click="onDropCompleteAvailable1(interface)"></em>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div ng-show="qosFlowData.interfaceToBeEnabled.length === 0"
+                                 class="listQuadMessage">
+                                 {{::'troubleshooting_nointerfacesenabled' | translate}}
+                            </div>
+							
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</div>	
+	<div ng-show="kendoWindow.isEditMode || !wMode" class="confirm ng-scope windowButtonContainer marginWindowButtons" ng-class="kendoWindow.isEditMode?'windowButtonAddEdit':'windowButtonContainer marginWindowButtons'" style="padding: 10px;">
+		<button ng-hide="readonly" class="btn btn-primary k-button primaryActionButton ng-binding" type="button" ng-click="doneAddEditKendoWindow()">
+		<i ng-class="kendoWindow.isEditMode?customButtons.edit.done.icon:customButtons.add.done.icon" class="icon-save-device"></i> {{::'com_save_and_apply' | translate}}</button>
+		<button ng-hide="readonly" class="btn btn-primary k-button pull-left ng-binding" type="button" ng-click="cancelAddEditKendoWindow()">
+		<i ng-class="kendoWindow.isEditMode?customButtons.edit.cancel.icon:customButtons.add.cancel.icon" class="fa pl-cancel"></i> {{::'com_cancel' | translate}}</button>
+		<button ng-show="readonly" class="btn btn-primary k-button primaryActionButton ng-hide" type="button" ng-click="closeAddEditKendoWindow()"><i class="fa fa-check"></i> OK</button>
+	</div>
+</div>
+</div>
+
+	
+
+
+
+
+		
+
+

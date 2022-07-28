@@ -1,0 +1,30 @@
+###
+show interfaces *
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show interfaces *</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowInterfaces">
+<Container name="InterfacesDetail">
+<Container name="line" dynamic = "true">
+<Property name="line" alias ="Port" distance = "-3" length = "1" type = "String"/>
+<Property name="loopback" distance = "1" length = "2" type = "String"/>
+<Property name="Total output drops" alias ="queueDrops" distance = "1" length = "1" type = "String"/>
+<Property name="runts" alias="totalRunts" distance = "-1" length = "1" type = "String"/>
+<Property name="input errors" alias="inputErrors" distance = "-1" length = "1" type = "String"/>
+<Property name="CRC" alias="totalCRC" distance = "-1" length = "1" type = "String"/>
+<Property name="output errors" alias="outputErrors" distance = "-1" length = "1" type = "String"/>
+<Property name="output buffers" distance = "-1" length = "1" type = "String"/>
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+

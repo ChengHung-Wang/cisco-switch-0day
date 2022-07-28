@@ -1,0 +1,98 @@
+<Style>
+.certlogo {
+	height: 34px;
+	width: 54px;
+	margin-left: -10px;
+	margin-top: -10px;
+	margin-right: -14px;
+	opacity: 0.6;
+}
+</Style>
+<div ng-cloak class="top-panel panel-gradient clearfix" ng-controller="headerCtrl">
+	<i class="icon-chevron icon-right-arrow-circle" title="{{'expand_collapse_megamenu' | translate}}" ng-class="{'collapsed': isActive}" ng-click="hideShowMenu()"></i>
+	<div class="logo" ng-show="ciscoDevice">
+		<a href="http://www.cisco.com" target="_blank"><img src="utils/megamenu/images/ciscoprime.png" alt="cisco"></a>
+	</div> 
+	<div class="logo" ng-show="inspurDevice">
+		<a href="http://www.icntnetworks.com" target="_blank"><img src="utils/megamenu/images/inspur_logo.png" alt="Inspur"></a> 
+	</div> 
+	<h1 class="main-title"> {{productOwner}} {{platform}} {{deviceDescription}}
+	<br/>
+	<span class="deviceVersion">{{version}}</span></h1>
+
+	<div class="top-panel-tools">
+		<div class="top-panel-section" style="margin-top: 5px; padding-right: 5px;">
+            {{'com_welcome' | translate}} <i>{{userName}}</i>
+            <tooltipinfo helptext="{{'aaa_privilege' | translate}} {{userPrivilegeLevel}}" position="top" width="100px"></tooltipinfo>
+        </div>
+		<div class="top-panel-section">
+			<span id="languageSelector" class="fieldinput">
+                                        <select style="float: left;  margin-right: 15px; width: 90px; font-size: 14px; text-align: center;" kendo-drop-down-list="languageSelector" name="languageSelected" id="languageSelected"
+                                                        ng-model="prefLang"
+                                                        k-data-source="supportedLanguages"
+                                                        k-data-text-field="'name'"
+                                                        k-data-value-field="'value'"
+							ng-change="updateLanguageSelection()"
+							k-ng-delay="prefLang">
+                                        </select>
+                        </span>
+			<a href="javascript://" title="{{'com_help' | translate}}" ng-click="openOnlineHelpWindow()"><i class="fa fa-question-circle"></i></a>
+
+			<a href="" title="{{'system_information' | translate}}" ng-click="showWindow('systemInformationWindow')"><i class="fa fa-info-circle"></i></a>
+			
+			<a href="" title="{{'system_logs_alert' | translate}}" ng-class="{'noPointer': logCount == 0, 'configDomain': logCount > 0}" class="avcTableContainer " ng-click="showLogsWindow()"><i class="fa fa-exclamation-triangle"></i><span ng-if="notificationStatus" class="alerts-counter">{{logCount}}</span></a>
+		
+			<div kendo-window="logsGridWindow" grid-id="periodicGrid" add-edit-window  class="cloakVisiblility periodicGrid" k-visible="false" k-width="1000"  window-cancel="cancelPeriodicGrid">
+				<div class="windowContainer">
+				   	<div class="pageContent">
+                		<div kendo-grid="logsGrid" id="logsGrid" name="logsGrid" 
+                			k-options="logsGridOptions" k-data-source="logsDataSource">
+                		</div>
+        			</div>
+				</div>
+			</div>
+
+			<a href="" title="{{'save_configuration' | translate}}" ng-click="showWindow('saveConfigConfirmWindow')"><i class="fa fa-save"></i></a>
+
+			<a title="{{'switch_cli_title' | translate}}" href="#/telnet"><i class="fa fa-desktop"></i></a>
+			<a ng-show="smDeviceStatus" href="" title="{{'renew_certificate' | translate}}" ng-click="showWindow('renewCertificate')"><img class="certlogo" src="resources/images/cert.png"></a>
+		    <a href="" title="{{'logout_user' | translate}}" ng-click="showWindow('logoutConfirmWindow')"><i class="fa fa-sign-out"></i></a>
+		</div>
+
+		<div class="top-panel-section" title="{{'com_supported_browsers' | translate}}" class="supportedBrowsers" ng-if="!isHTML5SupportedBrowser()">
+			<a href="javascript://"  title="{{'com_supported_browsers' | translate}}" ng-click="showConfirmWindow(true,supportedBrowsersWindow)"><i class="fa fa-times-circle" ></i></a>
+		</div>
+		<div style="display:none">
+
+			<!--Window for Supported Browsers Action-->
+			<div kendo-window="supportedBrowsersWindow" title="{{'com_supported_browsers' | translate}}" k-modal="true" k-width="500" k-visible="false">
+				<div class="windowContent">
+					<div class="title">
+						{{'com_supported_browsers' | translate}}
+					</div>
+					<div>
+						<label>IE</label>
+						<span>&gt;9</span>
+					</div>
+					<div>
+						<label>Google Chrome</label>
+						<span>>=6</span>
+					</div>
+					<div>
+						<label>Mozilla</label>
+						<span>>=4</span>
+					</div>
+					<div>
+						<label>Safari</label>
+						<span>>=11.1</span>
+					</div>
+				</div>
+				<div class="windowButtonContainer">
+					<button kendo-button="supportedBrowsersCancelButton" class="btn btn-primary " ng-click="showConfirmWindow(false,supportedBrowsersWindow)">
+						{{'com_ok' | translate}}
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

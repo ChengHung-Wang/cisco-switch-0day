@@ -1,0 +1,22 @@
+###
+show running-config aaa radius-server
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show running-config aaa radius-server</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="RadiusServerFallback">
+<Container name="wnwebdata">
+<Property name="radius-server retransmit" alias="retransmit" distance = "1" length = "1" type = "String"/>
+<Property name="radius-server timeout" alias="timeout" distance = "1" length = "1" type = "String"/>
+<Property name="radius-server deadtime" alias="deadtime" distance = "1" length = "1" type = "String"/>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->

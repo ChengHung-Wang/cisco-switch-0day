@@ -1,0 +1,77 @@
+<div ng-controller="switchCtrl" class="switchGraph">
+	<!--
+	Description: Switches View
+	Copyright (c) 2016 by Cisco Systems, Inc.
+	All rights reserved.
+	-->
+	<div ng-repeat="switch in switchData.switches" class="switchContainer poe">
+		<div class="switchLoader ng-scope" id="stackSwitch_{{switch.id}}">
+			<span class="spinner fa fa-spin fa-spinner"></span>
+		</div>
+		<div ng-repeat="port in switch.ports" ng-class="port.length==2?'set4':'set8'" data-poeCapable="{{switch.isPoECapable}}" class="switchSet">
+			<div ng-repeat="portSet in port" class="portSet">
+				<span ng-repeat="portObj in portSet" data-speed="{{portObj.speed}}" data-power="{{portObj.power}}" data-duplex="{{portObj.duplex}}" data-status="{{portObj.status}}" data-poe="{{portObj.poe}}" data-port="{{portObj}}" class="portData"> 
+					<span ng-if="port.length!=2"> 
+						<span ng-if="$index%2==0" class="portLabel">{{portObj.portNo<10?'0':''}}{{portObj.portNo}}</span> 
+						<div class="status blink" ng-mouseover="setTitle($event)" ng-click="handleClickOnPort($event, portObj.uniqueId);portclickSwitch(portObj.portNo)" ng-class="{selectSwitch: portObj.uniqueId==portNumIdentity, selectSwitch1: isMultiSelect(portObj.uniqueId)}"></div>
+						<span ng-if="$index%2==1" class="portLabel">{{portObj.portNo<10?'0':''}}{{portObj.portNo}}</span> 
+					</span> 
+					<span ng-if="port.length==2"> 
+						<span class="portLabel">{{portObj.portNo<10?'0':''}}{{portObj.portNo}}</span> 
+						<div class="status blink" ng-mouseover="setTitle($event)" ng-click="handleClickOnPort($event, portObj.uniqueId);portclickSwitch(portObj.portNo)" ng-class="{selectSwitch: portObj.uniqueId==portNumIdentity, selectSwitch1: isMultiSelect(portObj.uniqueId)}"></div> 
+					</span> 
+				</span>
+			</div>
+		</div>
+
+		<div class="uplinksSet">
+			<span class="uplinksLabel">{{"switch_uplink_ports"|translate}}</span>
+			<div>
+				<span ng-repeat="uplinkObj in switch.uplinkports" data-port="{{uplinkObj}}" data-status="{{uplinkObj.status}}" ng-mouseover="setTitle($event,'uplink')" ng-click="handleClickOnPort($event,uplinkObj.uniqueId)" class="status" ng-class="{selectSwitch: uplinkObj.uniqueId==portNumIdentity, selectSwitch1: isMultiSelect(uplinkObj.uniqueId)}">
+				<span class="uplinkPortLabel">{{uplinkObj.portNo<10?'0':''}}{{uplinkObj.portNo}}</span>
+				</span>
+			</div>
+		</div>
+		<div class="actionSet" ng-if="showModeButtons">
+			<div>
+				<span class="actionInput selected"><input type="radio" name="selectStatus{{$index}}" ng-click="showStatus($event,'stat')" ng-checked="true"></span>
+				<span class="actionLabel">{{"switch_stat"|translate}}<br/></span>
+				<span class="actionInput"><input type="radio" name="selectStatus{{$index}}" ng-click="showStatus($event, 'duplex')"></span>
+				<span class="actionLabel">{{"switch_duplex"|translate}}</span>
+			</div>
+			<div>
+				<span ng-if="switch.isStackConfigurable">
+					<span class="actionInput"><input type="radio" name="selectStatus{{$index}}" ng-click="showStatus($event,'stack')"></span>
+					<span class="actionLabel">{{"switch_stack"|translate}}</span><br/>
+				</span>
+				<span class="actionInput"><input type="radio" name="selectStatus{{$index}}" ng-click="showStatus($event,'speed')"></span>
+				<span class="actionLabel">{{"switch_speed"|translate}}</span>
+			</div>
+			<div>
+				<span ng-if="switch.isPoECapable">
+					<span class="actionInput"><input type="radio" name="selectStatus{{$index}}" ng-click="showStatus($event,'poe')"></span>
+					<span class="actionLabel">{{"switch_poe"|translate}}</span>
+				</span>
+			</div>
+		</div>
+		<div class="macAddressSet">
+		  <div>
+			<span class="fa fa-check-circle" ng-class="(switch.id == switchData.masterSwitchId?'master':'')"></span>
+			<span class="macAddress"> 
+				<span ng-if="switch.id == switchData.masterSwitchId">{{"switch_hostname"| translate}}: {{switchData.hostname}}<br/></span> 
+				<span>SN: {{switch.sn}}<br/></span> 
+				<span>{{"switch_mac"|translate}}: {{switch.macAdd}}</span> </br>               <span>{{"com_page_Uptime"| translate }}: {{switch.upTime}} </span>
+			</span>
+			</div>
+			
+			<div ng-show="switchData.coapStatus">	
+			   <span ng-show="switchData.coapEnabledStatus" class="fa fa-check-circle" ng-class="(switch.id == switchData.masterSwitchId?'master':'')"></span>
+			   <span ng-show="switchData.coapDisabledStatus" class="fa fa-times-circle redCross" ng-class="(switch.id == switchData.masterSwitchId?'master':'')"></span>
+			   <span class="macAddress coapPos"> 
+				   <span>{{'switch_coap' | translate}}</span> 
+			   </span>
+			</div>
+		</div>
+		
+	</div>
+</div>

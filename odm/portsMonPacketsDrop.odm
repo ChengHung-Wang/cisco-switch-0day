@@ -1,0 +1,22 @@
+###
+show interfaces summary
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show interfaces summary</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowInterfaceSummary">
+<Table  name ="PacketDrop">
+<Header name = "Interface" start = "1" end = "26" type = "String"/>
+<Header name = "IQD" start = "33" end = "43" type = "String"/>
+<Header name = "OQD" start = "54" end = "63" type = "String"/>
+</Table>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

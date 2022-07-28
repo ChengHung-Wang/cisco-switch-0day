@@ -1,0 +1,20 @@
+###
+show udld *
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show udld *</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowUdld">
+<Container name="Port">
+<Property name = "Current bidirectional state" alias="uniDirectionalLinks" distance = "1" length = "2" type = "String"/>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

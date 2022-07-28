@@ -1,0 +1,24 @@
+###
+show cluster
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show cluster</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ClusterDetails">
+<Container name="data">
+<Property name="switch for cluster" alias="domainName" distance = "1" length = "1" type = "String"/>
+<Property name="Total number of members:" alias="totalMembers" distance = "1" length = "1" type = "String"/>
+<Property name="Status:" alias="status" distance = "1" length = "1" type = "String"/>
+
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

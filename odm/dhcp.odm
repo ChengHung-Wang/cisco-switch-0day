@@ -1,0 +1,42 @@
+###
+show running-config ip dhcp pool
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+    <Command>
+        <Name>show running-config ip dhcp pool *</Name>
+    </Command>
+    <OS>ios</OS>
+    <DataModel>
+        <Container name="ShowRunningconfigIpDhcpPool*">
+            <Container name="wnwebdata">
+                <Container name="ip dhcp pool " alias="entry" dynamic="true">
+                    <Property name="ip dhcp pool" alias="dhcpScopeName" distance="1" length="1" type="String" />
+                    <Property name="network" alias="networkIp" length="1" type="String" />
+					<Property name="network" alias="subnetIp" distance="2" length="2" type="String" />
+                    <Property name="domain-name" alias="domain" length="1" type="String" />
+                    <Property name="bootfile" alias="bootfile" length="1" type="String" />
+                    <Property name="netbios-node-type" alias="nodeType" length="1" type="String" />
+                    <Property name="host" alias="hostIp" length="1" type="String" />
+                    <Property name="host" alias="hostSubnetIp" distance="2" length="2" type="String" />
+                    <Property name="client-identifier" alias="clientIdentifier" length="1" type="String" />
+                    <Container name="optiondata">
+                        <Container name="option " alias="options" dynamic="true">
+                            <Property name="option" alias="dhcpOptionsId" distance="1" length="1" type="String" />
+                            <Property name="option" alias="dhcpOptionsType" distance="2" length="1" type="String" />
+                            <Property name="option" alias="dhcpOptionsValue" distance="3" length="3" type="String" />
+                        </Container>
+                    </Container>
+					<Container name="lease " alias="lease" dynamic="true">
+						<Property name="lease" alias="leaseDays" distance="1"  length="1" type="String" />
+						<Property name="lease" alias="leaseHours" distance="2"  length="1" type="String" />
+						<Property name="lease" alias="leaseMinutes"  distance="3"  length="1" type="String" />
+					</Container>
+                </Container>
+            </Container>
+        </Container>
+    </DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->

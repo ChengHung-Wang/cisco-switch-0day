@@ -1,0 +1,26 @@
+###
+show running-config aaa user-name
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+    <Command>
+        <Name>show running-config aaa user-name</Name>
+    </Command>
+    <OS>ios</OS>
+    <DataModel>
+        <Container name="ShowRunningconfigAAAUserName">
+            <Container name="wnwebdata">
+                <Container name="user-name " alias="entry" dynamic="true">
+                    <Property name="user-name" alias="userName" distance="1" length="1" type="String" />
+                    <Property name="privilege" alias="privilege" distance="1" length="1" type="String" />
+                    <Property name="password" distance = "2" length = "1" type="String" />
+                    <Property name="secret" alias="secret" distance = "2" length = "1" type="String" />
+			    <Property name="type" alias="type" distance = "1" length = "1" type="String" />
+                </Container>
+            </Container>
+        </Container>
+    </DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->

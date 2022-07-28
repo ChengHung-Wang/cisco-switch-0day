@@ -1,0 +1,19 @@
+###
+show version
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show version</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowVersion">
+<Property name="Version" alias="version" distance = "1" length = "1" type = "String"/>
+<Property name="uptime" alias="hostname" distance = "-1" length = "1" type = "String"/>
+<Property name="uptime" alias="uptime" distance = "2" length = "6" type = "String"/>
+<Property name="Base ethernet MAC Address       :" alias="baseMacAdd" distance = "1" length = "1" type = "String"/>
+<Property name="Model number                    :" alias="name" distance = "1" length = "1" type = "String"/>
+<Property name="System serial number            :" alias="serialNumber" distance = "1" length = "1" type = "String"/>
+</Container>
+</DataModel>
+</ODMSpec>

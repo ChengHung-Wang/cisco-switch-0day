@@ -1,0 +1,50 @@
+[
+	{
+		"dataSize": "3",
+		"dataTitle": "db_switch_view_title",
+		"dataDescription": " ",
+		"dataNotif": "24",
+		"dataContent": "features/common/stackConf/views/switchView.html",
+		"gearOption": "features/common/db/dashlet/views/modal1.html",
+		"visible": "default",
+		"iconClass": "fa fa-binoculars fa-4x",
+		"imgLink": "assets/images/dashboard/cpu.jpg",
+		"pollingInterval": "30000"
+	},{
+		"dataSize": "1.5",
+		"dataTitle": "db_cpu_memory_utilization_title",
+		"dataDescription": " ",
+		"dataNotif": "24",
+		"dataContent": "features/common/db/CPUMemory/views/CPUMemoryView.html",
+		"gearOption": "features/common/db/dashlet/views/modal1.html",
+		"visible": "default",
+		"iconClass": "fa fa-bar-chart-o fa-4x",
+		"imgLink": "assets/images/dashboard/cpu.jpg",
+		"pollingInterval": "30000"
+	},{
+		"dataSize": "1.5",
+		"dataTitle": "system_information",
+		"dataDescription": " ",
+		"dataNotif": "24",
+		"dataContent": "features/common/db/sysInfo/views/systemInfoView.html",
+		"gearOption": "features/common/db/dashlet/views/modal1.html",
+		"visible": "default",
+		"iconClass": "fa fa-hdd-o fa-4x",
+		"imgLink": "assets/images/db/deviceport.jpg",
+		"capability": "isWirelessSupported",
+		"pollingInterval": "15000"
+	}, {
+         "dataSize": "3",
+         "dataTitle": "com_critical_events_logs",
+         "dataDescription": " ",
+         "dataNotif": "24",
+         "dataContent": "features/common/db/cl/views/criticalLogView.html",
+         "gearOption": "features/common/db/dashlet/views/modal1.html",
+         "visible": "default",
+         "iconClass": "fa fa-list-alt fa-4x",
+         "imgLink": "assets/images/dashboard/deviceport.jpg",
+         "capability": "isWirelessSupported",
+         "pollingInterval": "15000"
+       }
+       
+]

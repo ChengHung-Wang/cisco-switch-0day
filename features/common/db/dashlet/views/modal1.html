@@ -1,0 +1,57 @@
+<!--modal content  -->
+<div class="row form-group">
+	<!--
+	Description: Library wiring of WebUI application
+	June 2014, 2015
+	Copyright (c) 2014, 2015 by Cisco Systems, Inc.
+	All rights reserved.
+	-->
+	<div class="col-sm-4 webui-centerpanel-label">
+		<span class="label">Visualise</span>
+	</div>
+	<div class="col-sm-8 fieldinput">
+		<input class="k-textbox form-control" type="text" name="visualise" ng-model="visualise"/>
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-sm-4 webui-centerpanel-label">
+		<span class="label">Rank by</span>
+	</div>
+	<div class="col-sm-8 fieldinput">
+		<select id="selector"  kendo-drop-down-list
+		name="rank"
+		ng-model="rank"
+		>
+			<option>Top Applications</option>
+			<option>Top Clients</option>
+			<option>Client Issues</option>
+		</select>
+	</div>
+</div>
+<hr>
+<div class="row form-group">
+	<div class="col-sm-4 webui-centerpanel-label">
+		<span class="label">Scope</span>
+	</div>
+	<div class="col-sm-8 fieldinput">
+		<input class="k-textbox form-control" type="text" name="scope" ng-model="scope"/>
+	</div>
+</div>
+<hr>
+<div class="row form-group">
+	<div class="col-sm-4 webui-centerpanel-label">
+		<span class="label">Type</span>
+	</div>
+	<div class="col-sm-8 fieldinput">
+		<input class="k-textbox form-control" type="text" name="type" ng-model="type"/>
+	</div>
+</div>
+<div class="row form-group">
+	<div class="col-sm-4 webui-centerpanel-label">
+		<span class="label">Time Range</span>
+	</div>
+	<div class="col-sm-8 fieldinput">
+		<input class="k-textbox form-control" type="text" name="range" ng-model="range"/>
+	</div>
+</div>
+<hr>

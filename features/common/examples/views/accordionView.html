@@ -1,0 +1,44 @@
+<div>
+	<!--
+	Description: Accordion html
+	Copyright (c) 2016 by Cisco Systems, Inc.
+	All rights reserved.
+	-->
+	<div class="pageTitle">
+		Accordions Example
+	</div>
+	<div class="pageContent">
+
+		<ul kendo-panel-bar="wssiPanel" class="panelbar">
+			<li class="k-state-active">
+				<span class="panelbar__header panel-gradient-blue clearfix">
+					<div class="panelbar__open-icon">
+						<i class="icon-chevron" name="wssiArrow"></i>
+					</div>
+					<div class="panelbar__title">
+						Dual-Band Radios
+					</div> </span>
+				<div>
+					<div kendo-grid="portsGrid" id="portsGrid" name="portsGrid"
+					k-options="portsGridOptions"
+					k-data-source="portsDataSource"></div>
+				</div>
+			</li>
+			<li>
+				<span class="panelbar__header panel-gradient-blue clearfix">
+					<div class="panelbar__open-icon">
+						<i class="icon-chevron" name="wssiArrow"></i>
+					</div>
+					<div class="panelbar__title">
+						Second Accordion
+					</div> </span>
+				<div>
+					<div kendo-grid="portsGrid" id="portsGrid" name="portsGrid"
+					k-options="portsGridOptions"
+					k-data-source="portsDataSource"></div>
+				</div>
+			</li>
+		</ul>
+	</div>
+</div>
+

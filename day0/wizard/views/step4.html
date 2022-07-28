@@ -1,0 +1,95 @@
+<div class="row"  ng-controller="step4Ctrl" style="margin: 0 auto;">
+	<div class="col-sm-8" style="margin-bottom: 20px;" >
+		<div  align="center" style="height: 450px;color:#706868;overflow-y: auto;">
+			<div style="padding: 20px;">
+				<div><div class="stepTitle" style="text-align:left;">{{'day0_wizard_advance_config' | translate}}</div></div>
+				<form kendo-validator="basicScreenValidator"  k-options="wizardValidations">
+				<div class="row">
+						<div class="col-sm-4 webui-centerpanel-label ">
+							<span class="label labelcustom">{{'day0_wizard_advance_config_enable_VTP_transparent' | translate}}</span>
+						</div>
+						<div class="col-sm-5 custom-checkbox">
+							<input type="checkbox" id="enableVTPTransparent" class="k-checkbox form-control" ng-model="dayzero.enableVTPTransparent">
+							<label class="k-checkbox-label" for="enableVTPTransparent"></label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4 webui-centerpanel-label ">
+							<span class="label labelcustom">{{'day0_wizard_advance_config_telnet' | translate}}</span>
+						</div>
+						<div class="col-sm-5 custom-checkbox">
+							<input type="checkbox" id="enableTelnet" class="k-checkbox form-control" ng-model="dayzero.enableTelnet">
+							<label class="k-checkbox-label" for="enableTelnet"></label>
+						</div>
+					</div>					
+					<div class="row">
+						<div class="col-sm-4 webui-centerpanel-label ">
+							<span class="label labelcustom">{{'day0_wizard_advance_config_ssh' | translate}}</span>
+						</div>
+						<div class="col-sm-5 custom-checkbox">
+							<input type="checkbox" id="enableSSH" class="k-checkbox form-control" ng-model="dayzero.enableSSH">
+							<label class="k-checkbox-label" for="enableSSH"></label>
+						</div>
+					</div>							
+					<div class="row">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label labelcustom">{{'day0_wizard_advance_config_domain_name' | translate}} *</span>
+							</div>
+							<div class="col-sm-3 fieldinput wizardinputcustom">
+								<input class="k-textbox form-control" name="domainName"  ng-model="dayzero.domainName" id="domainName" alpa-numeric-special-only
+								 required data-required-msg="{{'domain_name_req_msg' | translate}}" data-domainnamevalidate
+							 	 maxlength="32"	data-domainname-msg="{{'stack_domain_invalid' | translate}}" ng-disabled="!dayzero.enableSSH">
+							</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-4 webui-centerpanel-label">
+							<span class="label labelcustom">{{'day0_advconfig_rsakey' | translate}} *</span>
+						</div>
+						<div class="col-sm-3 fieldinput wizardinputcustom">
+							<input class="k-textbox form-control" name="rsaKey"  ng-model="dayzero.rsaKey" id="rsaKey"
+								    required data-required-msg="{{'day0_wizard_advance_config_rsa_key_length' | translate}}" min="360" max="4096"  num-only
+								    data-range="" data-range-msg="{{'day0_wizard_advance_config_rsa_key_length' | translate}}" ng-disabled="!dayzero.enableSSH">
+						</div>
+					</div>					
+					<div class="row" ng-show="showDeviceStatus">
+						<div class="col-sm-4 webui-centerpanel-label ">
+							<span class="label labelcustom">{{'day0_wizard_advance_config_autoqos_phones' | translate}}</span>
+						</div>
+						<div class="col-sm-5 custom-checkbox">
+							<input type="checkbox"  id="enableAutoQosPhones" class="k-checkbox form-control" ng-model="dayzero.enableAutoQosPhones">
+							<label class="k-checkbox-label" for="enableAutoQosPhones"></label>
+						</div>
+					</div>
+					<div class="row" ng-show="showDeviceStatus">
+						<div class="col-sm-4 webui-centerpanel-label ">
+							<span class="label labelcustom">{{'day0_wizard_advance_config_autoqos_uplink' | translate}}</span>
+						</div>
+						<div class="col-sm-5 custom-checkbox">
+							<input type="checkbox" id="enableAutoQosUplink" class="k-checkbox form-control" ng-model="dayzero.enableAutoQosUplink">
+							<label class="k-checkbox-label" for="enableAutoQosUplink"></label>
+						</div>
+					</div>					
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-4" style="margin-bottom: 20px;">
+		<div  align="center" style="height: 450px;color:#706868;background: #EBFAFF">
+			<div  style="margin-top:10px;height:99%;">
+				<div class="wizardhelpcontentheader" >
+					<i class="fa fa-question-circle" style="font-size: 18px;" ng-click="openOnlineHelpWindow()" /></i> {{'day0_wizard_help_tips' | translate}}
+				</div>
+				<div class="descriptionhelp">
+					<div ng-show="advConfigToolTip">{{'dayzero_wizard_adv_con_def_tip' | translate}}</div>
+					<div ng-show="enableTelnetTip">{{'help_day0_enable_telnet' | translate}}</div>
+					<div ng-show="enableVTPTransparentTip">{{'help_day0_enable_VTPTransparent' | translate}}</div>
+					<div ng-show="enableSSHTip">{{'help_day0_enable_SSH' | translate}}</div>
+					<div ng-show="enableAutoQosPhonesTip">{{'help_day0_auto_QoS_for_cisco_phones' | translate}}</div>
+					<div ng-show="enableAutoQosUplinkTip">{{'help_day0_auto_QoS_for_uplinks' | translate}}</div>					
+					<div ng-show="domainNameTip">{{'help_day0_enable_SSH_domain' | translate}}</div>
+					<div ng-show="rsaKeyTip">{{'help_day0_enable_SSH_rsa_key' | translate}}</div>					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

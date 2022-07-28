@@ -1,0 +1,20 @@
+<div class="col-sm-12 pad-right-zero pad-left-zero" ng-repeat="accordion in accordions">
+	<div class="col-sm-3 fieldinput wizardinputcustom pad-left-zero pad-right-zero">
+		<input class="k-textbox form-control" type="text" name="interface{{$index}}"
+			   ng-model="interface.selected[accordion]"  k-state-disabled disabled/>
+	</div>
+	<div class="col-sm-3 fieldinput wizardinputcustom pad-right-zero">
+		<input class="k-textbox form-control" type="text" name="ipAddress{{$index}}"
+			   ng-model="ipAddress.selected[accordion]"  k-state-disabled disabled/>
+	</div>
+	<div class="col-sm-3 fieldinput wizardinputcustom pad-right-zero customIpToolTip">
+		<input class="k-textbox form-control" type="text" name="newIpAddress{{$index}}"
+			   ng-model="newIpAddress.selected[accordion]" id="newIpAddress{{$index}}" numeric-dot-only="" data-routevalidate
+			   data-routevalidate-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}" />
+	</div>
+	<div class="col-sm-3 fieldinput wizardinputcustom pad-right-zero customIpToolTip customSubnetToolTip">
+		<input class="k-textbox form-control" type="text" name="subnetMask{{$index}}"
+			   ng-model="subnetMask.selected[accordion]" id="subnetMask{{$index}}" numeric-dot-only="" data-submaskvalidate
+			   data-submaskvalidate-msg="{{'day0_wizard_subnet_invalid_msg' | translate}}" />
+	</div>
+</div>

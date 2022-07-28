@@ -1,0 +1,22 @@
+###
+show vlan group
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show vlan group</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowVlanGroup">
+<Container name="vlan group" alias="entry" dynamic ="true">
+<Property name="vlan group" alias="VlanGroup" distance = "1" length = "1" type = "String"/>
+<Property name=":" alias="VlanList" distance = "1" length = "20" type = "String"/>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+

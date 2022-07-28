@@ -1,0 +1,269 @@
+/*
+ Description: Switches View
+ Copyright (c) 2016 by Cisco Systems, Inc.
+ All rights reserved.
+ */
+
+.switchGraph {
+	margin: 10px;
+	white-space: nowrap;
+	overflow: auto;
+}
+.switchGraph .switchSet, .switchGraph .switchSet .portSet, .switchGraph .uplinksSet, .switchGraph .macAddressSet, .switchGraph .macAddress, .switchGraph .actionSet, .switchGraph .actionSet > div {
+	display: inline-block;
+}
+
+.switchGraph .switchSet{
+	white-space: normal;
+}
+.switchGraph .switchSet, .switchGraph .uplinksSet, .switchGraph .actionSet {
+	margin: 10px 5px;
+	padding: 5px;
+}
+.switchGraph .switchSet[data-poeCapable="true"] {
+	border-bottom: 2px solid yellow;
+}
+
+.switchGraph .actionSet, .switchGraph .macAddressSet {
+	vertical-align: top;
+	margin-top: 29px;
+}
+
+.switchGraph .actionSet > div {
+	vertical-align: top;
+	margin-right: 5px;
+}
+.switchGraph .macAddressSet {
+	margin-top: 35px;
+}
+.switchGraph .switchSet .portSet {
+	text-align: center;
+	width: 70px;
+}
+
+.switchGraph .switchSet .portSet .portData {
+	width: 30px;
+	display: inline-block;
+}
+.switchGraph .switchSet.set8 .portSet {
+	width: 30px;
+}
+.switchGraph .switchSet .portSet .status, .switchGraph .uplinksSet .status, .switchGraph .actionSet .actionInput {
+	width: 25px;
+	height: 18px;
+	display: inline-block;
+	border-radius: 4px;
+	background-color: darkgray;
+	border: 1px solid lightgray;
+}
+
+.switchGraph .uplinksSet .status, .switchGraph .actionSet .actionInput {
+	background-color: lightgray;
+	text-align: center;
+}
+
+.switchGraph .actionSet .actionInput.selected {
+	background-color: orange;
+}
+.switchGraph .actionSet .actionInput input {
+	width: 15px;
+	height: 15px;
+	margin: 1px 0 0 0;
+	opacity: 0;
+}
+
+.switchGraph .actionSet .actionInput input:checked {
+	opacity: 1;
+}
+.switchGraph .actionSet .actionLabel {
+	position: relative;
+	top: -2px;
+}
+.switchGraph .switchContainer.stat .switchSet .portSet .portData[data-status="3"] .status,
+.uplinksSet .status[data-status="3"] {
+	background-color: red;
+	border-color: 1px solid black;
+}
+
+.switchGraph .switchContainer.stat .switchSet .portSet .portData[data-status="3"] .status,
+.switchSet .portData[data-status="3"] .status{
+	background-color: red;
+	border: 1px solid black;
+}
+
+.switchGraph .switchContainer.stat .switchSet .portSet .portData[data-status="5"] .status,
+.switchSet .portData[data-status="5"] .status{
+	background-color: orange;
+	border: 1px solid black;
+}
+
+.switchGraph .switchContainer.stat .switchSet .portSet .portData[data-status="1"] .status,
+.uplinksSet .status[data-status="1"], 
+.switchGraph .switchContainer.poe .switchSet .portSet .portData[data-status="1"][data-power="0"] .status {
+	background-color: green;
+	border: 1px solid black;
+}
+
+.switchGraph .switchContainer.poe .switchSet .portSet .portData[data-poe="true"] .status {
+	background-color: yellow;
+	border: 1px solid orange;
+}
+
+.switchGraph .switchContainer.duplex .switchSet .portSet .portData[data-duplex="full"] .status {
+	background-color: green;
+	border: 1px solid black;
+}
+
+.switchGraph .switchContainer.speed .switchSet .portSet .portData[data-speed="10"] .status, .switchGraph .switchContainer.speed .switchSet .portSet .portData[data-speed="100"] .status, .switchGraph .switchContainer.speed .switchSet .portSet .portData[data-speed="1000"] .status {
+	background-color: green;
+	border: 1px solid black;
+}
+
+.switchGraph .switchContainer.speed .portData[data-speed="10"] .blink {
+	animation: blink-animation 1500ms steps(2, start) infinite;
+	-webkit-animation: blink-animation 1500s steps(2, start) infinite;
+}
+
+.switchGraph .switchContainer.speed .portData[data-speed="100"] .blink {
+	animation: blink-animation 800ms steps(2, start) infinite;
+	-webkit-animation: blink-animation 800ms steps(2, start) infinite;
+}
+
+.switchGraph .switchContainer.speed .portData[data-speed="1000"] .blink {
+	animation: blink-animation 300ms steps(2, start) infinite;
+	-webkit-animation: blink-animation 300ms steps(2, start) infinite;
+}
+
+@keyframes blink-animation {
+to {
+	background-color: white;
+}
+}
+@-webkit-keyframes
+blink-animation {to {
+	background-color: white;
+}
+}
+
+.switchGraph .uplinksSet {
+	text-align: center;
+}
+
+.switchGraph .uplinksSet .status {
+	margin: 3px 5px 18px 5px;
+}
+
+.switchGraph .switchContainer .switchSet .portSet .portData .portLabel {
+	font-size: 11px;
+	vertical-align: top;
+}
+
+.switchGraph .switchContainer .uplinksLabel {
+	font-size: 12px;
+	font-weight: bold;
+}
+.switchGraph .switchContainer .uplinkPortLabel {
+	float: left;
+	margin-top: 22px;
+	font-size: 11px;
+	margin-left: 6px;
+}
+.macAddressSet .fa-check-circle {
+	vertical-align: top;
+	font-size: 21px;
+	color: limegreen;
+}
+.macAddressSet .fa-check-circle.master {
+	color: green;
+}
+
+.switchGraph .switchContainer {
+	border-bottom: 1px solid #fff;
+}
+
+.switchGraph .switchContainer:last-child {
+    border-bottom: 0;
+}
+
+.portSwitchContainer {
+	border: 1px solid lightgray;
+	margin-bottom: 10px;
+}
+
+.customFS {
+	border: 1px solid #ccc;
+	border-top: none;
+	padding: 0.5em;
+	margin: 1em 2px;
+}
+
+.customFS .cLegend {
+	margin: -1em -0.5em 0;
+}
+.custCrs{
+	cursor:pointer;
+}
+.customFS .cLegend>span {
+	float: left;
+	background: #49afcd;
+	color: #fff;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.greyClr{
+	background: grey !important;
+}
+.customFS .cLegend:before {
+	border-top: 1px solid #ccc;
+	content: ' ';
+	float: left;
+	margin: 0.5em 2px 0 -1px;
+	width: 0.75em;
+}
+
+.customFS .cLegend:after {
+	border-top: 1px solid #ccc;
+	content: ' ';
+	display: block;
+	height: 1.5em;
+	left: 2px;
+	margin: 0 1px 0 0;
+	overflow: hidden;
+	position: relative;
+	top: 0.5em;
+}
+.cLegSpan{
+	padding: 2px;
+	margin-top: -6px;
+}
+.icon-minus{
+	float: right;
+	z-index: 1000;
+	position: relative;
+	top: -10px;
+	right: -5px;
+}
+
+div.subSwitch {
+	position: absolute;
+	width: 98%;
+	height: 80%;
+	background: #000;
+	opacity: 0.5;
+	filter: alpha(opacity=50);
+	display: none;
+	z-index: 99999;
+	text-align: center;
+}
+
+div.subSwitch span.spinner {
+	color: #fff;
+	font-size: 30px;
+	position: relative;
+	top: 40%;
+}
+
+.stackSwitchBlock{
+	min-height:100px !important;
+}

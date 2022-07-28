@@ -1,0 +1,105 @@
+<style>
+	div.detailed-configuration {
+		border: solid 2px;
+		border-radius: 1px;
+		max-width: 8em;
+		text-align: center;
+		border-color: #ABCAD1;
+		font-size: 15px;
+		font-weight: 700;
+		top: 10px;
+		margin-top: 5em
+	}
+	.anchor{
+		text-decoration: underline;
+		color: #0097D3;
+		cursor: pointer;
+	}
+</style>
+<div class="quickwizard">
+	<div style="background: #F4F6F4;" >
+		<div ng-cloak class="wizardtop-panel">
+			<div class="logo" ng-show="ciscoDevice">  
+				<a href="http://www.cisco.com" target="_blank"><img src="utilities/megamenu/images/ciscoprime.png" alt="{{'day0_wizard_cisco' | translate}}"></a>
+			</div>
+			<div class="logo" ng-show="inspurDevice">
+				<a href="http://www.icntnetworks.com" target="_blank"><img src="utilities/megamenu/images/inspur_logo.png" alt="Inspur"></a>
+			</div>	
+			<h1 class="main-title"> {{'day0_wizard_config_wiazard' | translate}}
+			</h1>
+		</div>
+		<div  ng-hide="welcomeScreen" style="background: white;margin-bottom:10px;margin-top:10px;border-top: 10px solid #2B5693;box-shadow: 5px 5px 5px #DEDED8;" ng-init="initLoad()">
+			<div style="display: block; margin: 10px;">
+				<div class="row">
+					<div class="col-sm-12">
+						<div   style="height: 500px;color:#706868;">
+							<div class="row">
+								<div ng-cloak class="wizardtop-panel col-sm-12" style="margin-bottom: 10px;">
+									<div class="col-sm-10" style="padding: 20px;font-size: 18px;color: #0097D3;">{{'day0_wizard_welcome_text' | translate}}</div>
+								</div>
+							</div>
+							<div class="ccpexpCSSReplaceClass332">
+								<ul class="ccpexpCSSReplaceClass333 dayzero-lineheight-3">
+									<li>
+										<i class="fa fa-circle ccpexpCSSReplaceClass334" >
+										</i>
+											&nbsp;&nbsp;
+											<span>{{'dayzero_wizard_welcome_text' | translate}}</span>
+									</li>
+									<li>
+										<i class="fa fa-circle ccpexpCSSReplaceClass334" >
+										</i>
+										&nbsp;&nbsp;
+										<span>{{'dayzero_wizard_welcome_text_note' | translate}}</span>
+									</li>
+								</ul></div>
+								<div class="form-group row"></div>
+								<div class="form-group row"></div>
+								<div class="form-group row"></div>
+								<div class="col-sm-12 text-center" ng-if="!gotoScreen">
+									<div class="pinging addEllipses" style="font-size:28px;"><em class="fa fa-spinner fa-spin" style="font-size:40px;"></em> Detecting Wireless Controller <i class="fa fa-ellipsis-h" style="font-size:18px;" aria-hidden="true"></i></div>
+									<div class="anchor" ng-click="cancelControllerIPLoop()">
+											{{'com_cancel' | translate}}
+									</div>
+								</div>
+						</div>
+					</div>
+					<div class="col-sm-12">
+						<div style="border-top:1px solid #F5F4F3;margin-top: 10px;">
+							<div class="wizard-buttons clearfix" style="height:50px;margin:15px;">
+								<div ng-if="gotoScreen" class="btn btn-primary right-button nextbtn" ng-click="gotowelcomeScreen('towizard')">{{'day0_wizard_goto_wiazard' | translate}}<i class="fa fa-angle-right"></i></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="mainwizard" ng-hide="mainStep" ng-if="!isDay0Mode">
+			<wizard on-finish="finishedWizard(wzModel)" hide-indicators="false" style="background: white;margin-bottom:10px;margin-top:10px;border-top: 10px solid #2E424A;box-shadow: 5px 5px 5px #DEDED8;">
+				<wizard-step step-number="1"  next-label="{{'day0_wizard_interface_config' | translate}}"
+							 template-path="wizard/views/step1.html" image-name="fa fa-desktop" menu-name="{{'day0_wizard_basic_config' | translate}}"></wizard-step>
+
+				<wizard-step step-number="2"  next-label="{{'day0_wizard_summary' | translate}}" prev-label="{{'day0_wizard_basic_config' | translate}}"
+							 template-path="wizard/views/step2.html" image-name="fa fa-globe" menu-name="{{'day0_wizard_interface_config' | translate}}"></wizard-step>
+
+				<wizard-step step-number="6"  next-label="{{'com_submit' | translate}}" prev-label="{{'day0_wizard_interface_config' | translate}}"
+							 template-path="wizard/views/summaryScreen.html" image-name="fa fa-location-arrow"  menu-name="{{'day0_wizard_summary' | translate}}"></wizard-step>
+			</wizard>
+		</div>
+		<div class="mainwizard" ng-hide="mainStep" ng-if="isDay0Mode">
+			<wizard on-finish="finishedWizard(wzModel)" hide-indicators="false" style="background: white;margin-bottom:10px;margin-top:10px;border-top: 10px solid #2E424A;box-shadow: 5px 5px 5px #DEDED8;">
+				<wizard-step step-number="1"  next-label="{{'day0_wizard_interface_config' | translate}}"
+								template-path="wizard/views/step1.html" image-name="fa fa-desktop" menu-name="{{'day0_wizard_basic_config' | translate}}"></wizard-step>
+
+				<wizard-step step-number="2"  next-label="{{'dayzero_wireless_config' | translate}}" prev-label="{{'day0_wizard_basic_config' | translate}}"
+								template-path="wizard/views/step2.html" image-name="fa fa-globe" menu-name="{{'day0_wizard_interface_config' | translate}}"></wizard-step>
+
+				<wizard-step step-number="4" next-label="{{'day0_wizard_summary' | translate}}" prev-label="{{'day0_wizard_interface_config' | translate}}"
+								template-path="wizard/views/wifiView.html" image-name="fa fa-wifi" menu-name="{{'dayzero_wireless' | translate}}"></wizard-step>
+
+				<wizard-step step-number="6"  next-label="{{'com_submit' | translate}}" prev-label="{{'dayzero_wireless_config' | translate}}"
+								template-path="wizard/views/summaryScreen.html" image-name="fa fa-location-arrow"  menu-name="{{'day0_wizard_summary' | translate}}"></wizard-step>
+			</wizard>
+		</div>
+	</div>
+</div>

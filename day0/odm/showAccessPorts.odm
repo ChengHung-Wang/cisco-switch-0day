@@ -1,0 +1,18 @@
+###
+sh ip interface brief
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>sh ip interface brief</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowIpInterfaceBrief">
+<Property name="Gig" alias="AccessPort" distance = "1" length = "1" type = "String"/>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

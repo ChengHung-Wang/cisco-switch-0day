@@ -1,0 +1,22 @@
+###
+show power inline
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show power inline</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="Available" alias = "entry" dynamic = "true">
+<Property name="Available:" alias="availablePower" distance = "1" length = "1" type = "String"/>
+<Property name="Used:" alias="usedPower" distance = "1" length = "1" type = "String"/>
+<Property name="Remaining:" alias="remainingPower" distance = "1" length = "1" type = "String"/>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+
+

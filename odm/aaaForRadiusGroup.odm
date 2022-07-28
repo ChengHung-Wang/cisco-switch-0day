@@ -1,0 +1,31 @@
+###
+show running-config aaa group server radius
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show running-config aaa</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowRunningconfigAaa">
+<Container name="wnwebdata">
+
+<Container name="aaa group server radius" alias = "entry" dynamic = "true">
+<Property name="aaa group server radius" alias = "name" distance = "1" length = "1" type = "String"/>
+<Container name="server name" alias="list" dynamic = "true">
+<Property name="server name" alias = "list" distance = "1" length = "1" type = "String"/>
+</Container>
+<Property name="deadtime" distance = "1" length = "1" type = "String"/>
+<Property name="security-mode" alias = "securitymode" distance = "1" length = "1" type = "String"/>
+<Property name="mac-delimiter" alias = "macdelimiter" distance = "1" length = "1" type = "String"/>
+</Container>
+
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+
+<!--
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->

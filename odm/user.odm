@@ -1,0 +1,26 @@
+###
+show snmp user
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show snmp user</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowSnmpUser">
+<Container name="wnwebdata">
+<Container name="User name:" alias = "entry" dynamic = "true">
+<Property name="User name" alias="userName" distance = "1" length = "1" type = "String"/>
+<Property name="access-list" distance = "1" length = "1" type = "String"/>
+<Property name="Authentication Protocol" alias="authProtocol" distance = "1" length = "1" type = "String"/>
+<Property name="Privacy Protocol" distance = "1" alias="privProtocol" length = "1" type = "String"/>
+<Property name="Group-name" alias="groupName" distance = "1" length = "1" type = "String"/>
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

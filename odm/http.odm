@@ -1,0 +1,29 @@
+###
+show ip http server status
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show ip http</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowIpHttp">
+<Container name="wnwebdata">
+<Container name="entity">
+<Property name="HTTP server status" alias="httpaccess" distance = "1" length = "1" type = "String"/>
+<Property name="HTTP server port" alias="httpport" distance = "1" length = "1" type = "String"/>
+<Property name="Server idle time-out" alias="httpTimeout" distance = "1" length = "1" type = "String"/>
+<Property name="Server life time-out" alias="serverLifeTime" distance = "1" length = "1" type = "String"/>
+<Property name="Maximum number of requests allowed on a connection" alias="maxRequest" distance = "1" length = "1" type = "String"/>
+<Property name="HTTP secure server status:" alias = "httpsaccess" distance = "1" length = "1" type = "String"/>
+<Property name="HTTP secure server port" alias = "httpsport" distance = "1" length = "1" type = "String"/>
+<Property name="HTTP secure server trustpoint" alias="trustpoint" distance = "1" length = "1" type = "String"/>
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

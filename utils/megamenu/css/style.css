@@ -1,0 +1,537 @@
+/**
+ Description: CSS specific to megamenu
+ June 2014, 2015
+ Copyright (c) 2014,2015, 2016 by Cisco Systems, Inc.
+ All rights reserved.
+ */
+a:hover {
+	text-decoration: none;
+}
+img {
+	max-width: 100%;
+}
+::-webkit-input-placeholder {
+	color: #bababa;
+}
+:-moz-placeholder {
+	color: #bababa;
+}
+::-moz-placeholder {
+	color: #bababa;
+}
+:-ms-input-placeholder {
+	color: #bababa;
+}
+.main-container {
+	overflow: hidden;
+}
+.megamenu {
+	width: 290px;
+	float: left;
+	background-color: #2e3c47;
+	-webkit-transition: width .3s;
+	-moz-transition: width .3s;
+	-ms-transition: width .3s;
+	-o-transition: width .3s;
+	transition: width .3s;
+	background-image: url(../images/megamenu_background.png);
+	-webkit-box-shadow: inset -7px 0 10px 0 #1A2229;
+	box-shadow: inset -7px 0 10px 0 #1A2229;
+	margin-bottom: -99999px;
+	padding-bottom: 99999px;
+	font-family: "CiscoSansLight"
+}
+
+.megamenu.collapsed {
+	width: 0;
+	overflow: hidden;
+}
+
+.icon-chevron.icon-right-arrow-circle {
+	width: 29px;
+	height: 29px;
+	background-color: #0096d6;
+	text-align: center;
+	border-radius: 5px;
+	line-height: 29px;
+	color: #fff;
+	font-size: 16px;
+	vertical-align: bottom;
+	cursor: pointer;
+	font-family: FontAwesome;
+	margin-left: 20px;
+}
+
+.icon-chevron.icon-right-arrow-circle:before {
+	content: "\f060";
+}
+
+.icon-chevron.icon-right-arrow-circle.collapsed:before{
+	content: "\f0c9";
+}
+
+.megamenu.collapsed .megamenu-menu-title .title, .megamenu.collapsed .megamenu-menu .submenus .menu-item {
+	-webkit-animation: fade-out 0.3s;
+	-moz-animation: fade-out 0.3s;
+	-o-animation: fade-out 0.3s;
+	animation: fade-out 0.3s;
+	-webkit-animation-fill-mode: forwards;
+	animation-fill-mode: forwards;
+}
+.megamenu.collapsed .selected .icon-megamenu-submenu {
+	padding-right: 16px;
+}
+
+.megamenu-panel {
+	padding: 15px 10px;
+	-webkit-box-shadow: inset -10px -10px 30px 0 #1A2229;
+	box-shadow: inset -10px -10px 30px 0 #1A2229;
+}
+
+.megamenu-menu {
+	border-top: 1px solid #50697a;
+	border-bottom: 1px solid #212c30;
+	padding: 10px 0 15px;
+}
+.megamenu-menu:first-child {
+	display: none;
+}
+
+.megamenu-menu:nth-child(2) {
+	border-top-color: transparent;
+	margin-top: 3px;
+}
+
+.megamenu-menu:last-child {
+	border-bottom: 0;
+}
+
+.icon-megamenu-menu {
+	margin-left: 15px;
+	margin-right: 5px;
+	display: inline-block;
+	vertical-align: middle;
+	width: 25px;
+	height: 25px;
+}
+.megamenu-menu-title {
+	white-space: nowrap;
+	text-transform: uppercase;
+}
+.megamenu-menu-title .title {
+	color: #fff;
+	font-size: 18px;
+	display: inline-block;
+	vertical-align: middle;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	text-decoration: none;
+}
+.megamenu-menu .submenus {
+	padding-left: 0;
+	margin: 0;
+}
+.megamenu-menu .submenus li {
+	display: block;
+	position: relative;
+	font-size: 12px;
+}
+.icon-megamenu-submenu {
+	padding: 15px 5px 5px 6px;
+	border-radius: 3px 0 0 3px;
+	display: inline-block;
+	color: #f5f5f5;
+	vertical-align: top;
+}
+
+.submenuTitle > .icon-megamenu-submenu.menuIcon {
+	position: absolute;
+	top: -3px;
+}
+
+.menu-item + .icon-megamenu-submenu {
+	position: absolute;
+	right: 0;
+	top: 0;
+}
+.menu-item + .icon-megamenu-submenu i {
+	font-size: 14px;
+	margin-right: 8px;
+}
+
+.icon-megamenu-submenu img {
+	width: 26px;
+	height: 26px;
+}
+.megamenu-menu .submenus li .menu-item {
+	padding: 10px 0;
+	font-size: 15px;
+}
+
+.megamenu-menu .submenus li .submenuTitle {
+	border-left: 4px solid transparent;
+	white-space: nowrap;
+	cursor: default;
+}
+
+.collapsed .megamenu-menu .submenus li .submenuTitle.selectedSubmenu {
+	border-left: 0;
+}
+
+.megamenu-menu .submenus li .submenuTitle.selectedSubmenu {
+	background-color: #0096d6;
+	border-left: 4px solid #0096d6;
+}
+
+.megamenu-menu .submenus li .submenuTitle:hover {
+	border-left: 4px solid #fff;
+}
+
+.megamenu-menu .submenus li a {
+	display: block;
+	color: #fff;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+}
+.megamenu-menu .submenus li .badge {
+	border-radius: 12px 0 0 12px;
+	position: absolute;
+	right: 0;
+	padding: 6px 2px 6px 6px;
+	color: #fff;
+	top: 7px;
+}
+.megamenu-menu .submenus li.selected {
+}
+.selected .icon-megamenu-submenu {
+	background-color: #27ccbb;
+	-webkit-transition: padding-right .3s;
+	-moz-transition: padding-right .3s;
+	-ms-transition: padding-right .3s;
+	-o-transition: padding-right .3s;
+	transition: padding-right .3s;
+}
+.megamenu-menu .submenus li.selected .menu-item {
+	background-color: #27ccbb;
+	border-radius: 3px 0 0 3px;
+}
+
+.menu-item a:hover, .menu-item a:focus {
+	text-decoration: none;
+}
+.megamenu-menu .submenus li.selected a {
+	color: #323e4a;
+}
+.megamenu-menu .submenus li .badge.red {
+	background-color: #f75757;
+}
+
+@-webkit-keyframes fade-out {
+from {
+	opacity: 1;
+}
+to {
+	opacity: 0;
+}
+}
+@-moz-keyframes
+fade-out {from {
+	opacity: 1;
+}
+to {
+	opacity: 0;
+}
+}
+@-o-keyframes
+fade-out {from {
+	opacity: 1;
+}
+to {
+	opacity: 0;
+}
+}
+@keyframes
+fade-out {from {
+	opacity: 1;
+}
+to {
+	opacity: 0;
+}
+}
+
+.main {
+	overflow: hidden;
+	margin-bottom: -99999px;
+	padding-bottom: 99999px;
+}
+.top-panel {
+	border-bottom: 1px solid #ccc;
+	padding: 18px 0;
+}
+.top-panel .logo {
+	display: inline-block;
+	width: 55px;
+	margin: 0 22px;
+}
+.top-panel .main-title {
+	display: inline-block;
+	margin: 0;
+	font-size: 18px;
+	color: #4a4a4a;
+	vertical-align: middle;
+}
+.panel-gradient {
+	background: #fff;
+	background: -moz-linear-gradient(top,  #fff 0%, #f0f0f0 100%, #f0f0f0 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#f0f0f0), color-stop(100%,#f0f0f0));
+	background: -webkit-linear-gradient(top,  #fff 0%,#f0f0f0 100%,#f0f0f0 100%);
+	background: -o-linear-gradient(top,  #fff 0%,#f0f0f0 100%,#f0f0f0 100%);
+	background: -ms-linear-gradient(top,  #fff 0%,#f0f0f0 100%,#f0f0f0 100%);
+	background: linear-gradient(to bottom,  #fff 0%,#f0f0f0 100%,#f0f0f0 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f0f0f0',GradientType=0 );
+}
+.top-panel-tools {
+	float: right;
+}
+
+.top-panel-tools .top-panel-section{
+	display: inline-block;
+	border-right: 1px solid #ccc;
+	padding: 0 20px 0 15px;;
+	color: #7f7f7f;
+	vertical-align: top;
+	height: 25px;
+	line-height: 25px;
+	font-size: 15px;
+}
+
+.top-panel-tools .top-panel-section i.fa{
+	color: #7f7f7f;
+}
+
+.top-panel-tools .top-panel-section i.fa:hover{
+	color: #0197d6;
+}
+
+.top-panel-tools .top-panel-section a{
+	margin-right: 14px;
+	font-size: 29px;
+}
+
+.top-panel-tools .top-panel-section.withoutRightBorder{
+	border: 0;
+}
+.top-panel-tools .top-panel-section a:last-child{
+	margin: 0;
+	border-color: transparent;
+}
+
+.dashlets {
+	padding: 5px;
+	padding-bottom: 18px;
+	background-color: #fff;
+}
+.dashlet {
+	border: 1px solid #b3b3b3;
+	/*height: 376px;*/
+	padding: 0;
+}
+.dashlet-panel {
+	height: 52px;
+	padding: 8px 10px;
+	border-bottom: 1px solid #ccc;
+}
+.dashlet-panel .dashlet-title {
+	float: left;
+}
+.dashlet-panel .dashlet-title h3 {
+	font-size: 14px;
+	color: #474747;
+	font-weight: bold;
+	margin: 0;
+}
+.dashlet-panel .dashlet-info {
+	font-size: 11px;
+	color: #707070;
+	font-style: italic;
+}
+.dashlet-tools {
+	float: right;
+	margin-right: -5px;
+	/*margin-top: 4px;*/
+}
+.dashlet-notifications {
+	display: inline-block;
+	background-color: #f75754;
+	font-size: 12px;
+	color: #fff;
+	height: 26px;
+	width: 26px;
+	border-radius: 50%;
+	padding-top: 4px;
+	text-align: center;
+	font-weight: bold;
+}
+.dashlet-options {
+	display: none;
+	font-size: 17px;
+	vertical-align: middle;
+	margin-left: 4px;
+}
+.dashlet-empty {
+	border-style: dashed;
+}
+.dashlet-empty .add-dashlet-button {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	text-align: center;
+	font-size: 11px;
+	color: #dbdbdb;
+	-webkit-transform: translate(-50%, -50%);
+	-moz-transform: translate(-50%, -50%);
+	-ms-transform: translate(-50%, -50%);
+	-o-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+.add-dashlet-text {
+	margin-top: 5px;
+}
+.dashlet-body {
+}
+
+#dashlet1 {
+	padding: 0 10px;
+}
+#dashlet1 .port-panel-container {
+	text-align: center;
+}
+#dashlet1 .port-panel {
+	font-size: 11px;
+	color: #737373;
+	margin: 45px 0;
+	display: inline-block;
+}
+#dashlet1 .port-section {
+	float: left;
+	text-align: center;
+	margin-right: 2px;
+}
+#dashlet1 .port + .port {
+	margin-top: 2px;
+}
+#dashlet1 .port-number {
+}
+#dashlet1 .port-square {
+	width: 18px;
+	height: 18px;
+}
+#dashlet1 .port-square.red {
+	background-color: #f55656;
+}
+#dashlet1 .port-square.gray {
+	background-color: #d9d9d9;
+}
+#dashlet1 .port-square.green {
+	background-color: #27ccbb;
+}
+.port-panel-text {
+	float: left;
+	text-align: left;
+}
+.port-panel-text .up-row-text {
+	margin-top: 18px;
+}
+.port-panel-text .down-row-text {
+	margin-top: 4px;
+}
+.dashlet1-bottom {
+	border-top: 1px solid #d9d9d9;
+}
+.dashlet1-bottom-left {
+	float: left;
+	border-right: 1px solid #d9d9d9;
+	padding: 10px 1px 60px 0;
+	width: 46%;
+}
+#dashlet1 .dashlet1-bottom-left .port-panel {
+	margin: 0;
+}
+.dashlet1-bottom .port-panel-text {
+	margin-right: 1px;
+}
+.dashlet1-bottom .up-row-text {
+	margin-top: 3px;
+}
+.dashlet1-bottom-right {
+	float: left;
+	font-size: 11px;
+	width: 54%;
+}
+.dashlet1-bottom-right-top {
+	border-bottom: 1px solid #d9d9d9;
+	padding: 10px 0 10px 10px;
+}
+.dashlet1-bottom-right-bottom {
+	padding: 10px 0 10px 10px;
+}
+.dashlet1-bottom-right span {
+	font-weight: bold;
+}
+
+@media (max-width: 1200px) {
+	#dashlet1 .port-square {
+		width: 12px;
+		height: 12px;
+	}
+	.port-panel-text .up-row-text {
+		margin-top: 15px;
+	}
+	.port-panel-text .down-row-text {
+		margin-top: -1px;
+	}
+
+	.dashlet1-bottom .up-row-text {
+		margin-top: 0;
+	}
+}
+
+/*Expand/Collapse related styles*/
+.megamenu-menus .megamenu-menu {
+	overflow: hidden;
+	min-height: 50px;
+	height: 50px;
+	-webkit-transition-property: height; /* Safari */
+	-webkit-transition-duration: 1s; /* Safari */
+	transition-property: height;
+	transition-duration: 1s;
+}
+
+.megamenu-menus .megamenu-menu.megamenuCollapsed .megamenu-menu-title + ul.submenus {
+	visibility: hidden;
+}
+
+.megamenu-menus .megamenu-menu.menuExpand .megamenu-menu-title + ul.submenus {
+	visibility: visible;
+}
+.megamenu-menus .megamenu-menu.megamenuExpanded {
+	overflow: inherit;
+	height: auto !important;
+	-webkit-transition-property: height; /* Safari */
+	-webkit-transition-duration: 0; /* Safari */
+	transition-property: height;
+	transition-duration: 0;
+}
+
+.megamenu-menus .megamenu-menu.menuExpand {
+	background-color: #212b34;
+}
+
+.megamenu-menus .megamenu-menu ul.submenus a.selectedSubmenu {
+	text-decoration: underline;
+}
+
+.row:before, .row:after {display: none !important;}
+

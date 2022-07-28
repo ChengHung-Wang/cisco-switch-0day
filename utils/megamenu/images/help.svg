@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016 by Cisco Systems, Inc.
+ All rights reserved. -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewBox="-1 -1 27 27">
+<path 
+style="fill:none;stroke:#ffffff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" 
+d="M10.938 17.188h3.125v3.125h-3.125zM17.188 6.25c0.863 0 1.563 0.7 1.563 1.563v4.688l-4.688 3.125h-3.125v-1.563l4.688-3.125v-1.563h-7.813v-3.125h9.375zM12.5 2.344c-2.713 0-5.263 1.056-7.182 2.975s-2.975 4.469-2.975 7.182c0 2.713 1.056 5.263 2.975 7.182s4.469 2.975 7.182 2.975c2.713 0 5.263-1.056 7.182-2.975s2.975-4.469 2.975-7.182c0-2.713-1.056-5.263-2.975-7.182s-4.469-2.975-7.182-2.975zM12.5 0v0c6.904 0 12.5 5.596 12.5 12.5s-5.596 12.5-12.5 12.5c-6.904 0-12.5-5.596-12.5-12.5s5.596-12.5 12.5-12.5z"></path>
+</svg>

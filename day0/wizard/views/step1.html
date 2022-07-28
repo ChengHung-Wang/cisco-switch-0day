@@ -1,0 +1,150 @@
+<div class="row"  ng-controller="step1Ctrl" style="margin: 0 auto;">
+	<div class="col-sm-8" style="margin-bottom: 20px;" >
+		<div style="height: 450px;color:#706868;">
+			<div style="padding: 20px; padding-top:5px">
+					<div class="row">
+					   <div class="col-sm-4 webui-centerpanel-label-latest">
+						  <h2 class="stepTitle">
+							 <span class="ccpexpCSSReplaceClass331">{{'day0_wizard_basic_config' | translate}}</span>
+						  </h2>
+					   </div>
+					</div>
+					<form kendo-validator="basicScreenValidator"  k-options="wizardValidations">
+						<div class="row">
+							<div class="col-sm-3 webui-centerpanel-label">
+								<span class="label labelcustom">{{'day0_wizard_basic_config_hostname' | translate}} *</span>
+							</div>
+							<div class="col-sm-3 fieldinput wizardinputcustom">
+								<input class="k-textbox form-control" name="hostName"  ng-model="dayzero.hostName" id="hostName" alpa-numeric-special-only
+								 required data-required-msg="{{'day0_wizard_hostname_req_msg' | translate}}" data-hostnamevalidate
+								 maxlength="32"	data-hostnamevalidate-msg="{{'day0_wizard_hostname_invalid_msg' | translate}}">
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 webui-centerpanel-label">
+								<span class="label labelcustom">{{'day0_wizard_basic_config_username' | translate}} *</span>
+							</div>
+							<div class="col-sm-3 fieldinput wizardinputcustom">
+								<input class="k-textbox form-control" type="text" name="userName" id="userName"  maxlength="25"
+								ng-model="dayzero.userName" data-minchar="1" data-minchar-msg="{{'help_day0_username' | translate}}" required data-required-msg="{{'day0_wizard_username_req_msg' | translate}}"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 webui-centerpanel-label">
+								<span class="label labelcustom">{{'day0_wizard_basic_config_password' | translate}} *</span>
+							</div>
+							<div class="col-sm-3 fieldinput wizardinputcustom">
+								<input type="password" class="k-textbox form-control" type="text" name="password" id="password"  maxlength="127"
+									   ng-model="dayzero.password" required data-required-msg="{{'day0_wizard_password_req_msg' | translate}}"
+									   data-pwdmin="6" data-pwdvalid data-pwdvalid-msg="{{'wireless_password' | translate}}"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 webui-centerpanel-label">
+								<span class="label labelcustom">{{'user_administration_confirm_password' | translate}} *</span>
+							</div>
+							<div class="col-sm-3 fieldinput wizardinputcustom">
+								<input type="password" class="k-textbox form-control" type="text" name="enablePassword" title="Enter password" id="enablePassword"
+									   ng-model="dayzero.enablePassword" data-pwdmatch data-pwdmatch-msg="{{'dayzero_reenter_password_match_password' | translate}}" required data-required-msg="{{'day0_wizard_enable_password_req_msg' | translate}}"/>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 webui-centerpanel-label ">
+								<span class="label labelcustom">{{'day0_wizard_basic_config_clock' | translate}} </span>
+							</div>
+							<div class="col-sm-3 fieldinput wizardinputcustom">
+								<input type="text" class="form-control" name="clock"  ng-model="dayzero.clock" id="clock"
+									   data-k-format="'yyyy-MM-dd HH:mm:ss'"/>
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="row col-sm-4">
+								<div class="col-sm-10 webui-centerpanel-label">
+									<span class="label labelcustom">{{'day0_wizard_advance_config_ssh' | translate}}</span>
+								</div>
+								<div class="col-sm-2">
+									<input type="checkbox" id="enableSSH"  name="enableSSH" ng-model="dayzero.enableSSH" checked="checked">
+								</div>
+							</div>
+							<div class="row col-sm-3">
+								<div class="col-sm-8">
+									<span class="label labelcustom">{{'day0_wizard_advance_config_telnet' | translate}}</span>
+								</div>
+								<div class="col-sm-3">
+								    <input type="checkbox" id="enableTelnet"  name="enableTelnet" ng-model="dayzero.enableTelnet" checked="checked">
+							    </div>
+							</div>
+							<div class="row col-sm-4">
+								<div class="col-sm-9 text-center">
+									<span class="label labelcustom" style="margin-left:-30px;">{{'day0_wizard_advance_config_enable_VTP_transparent' | translate}}</span>
+								</div>
+								<div class="col-sm-2">
+								    <input type="checkbox" id="enableVTPTransparent"  name="enableVTPTransparent" ng-model="dayzero.enableVTPTransparent" checked="checked">
+								</div>
+							</div>
+						</div>										
+						<div class="row" ng-show="dayzero.enableSSH">
+							<div class="col-sm-3 webui-centerpanel-label">
+								<span class="label labelcustom">{{'day0_domain_ssh' | translate}} *</span>
+							</div>
+							<div class="col-sm-3 fieldinput wizardinputcustom">
+								<input class="k-textbox form-control" name="domainName"  ng-model="dayzero.domainName" id="domainName" alpa-numeric-special-only
+								required data-required-msg="{{'domain_name_req_msg' | translate}}" data-domainnamevalidate
+								maxlength="32"	data-domainname-msg="{{'stack_domain_invalid' | translate}}" ng-disabled="!dayzero.enableSSH">
+							</div>
+							<div class="col-sm-3 text-center">
+									<span class="label labelcustom">{{'day0_rsakey_ssh' | translate}} *</span>
+							</div>
+							<div class="col-sm-3 fieldinput wizardinputcustom">
+									<input class="k-textbox form-control" name="rsaKey"  ng-model="dayzero.rsaKey" id="rsaKey"
+									required data-required-msg="{{'day0_wizard_advance_config_rsa_key_length' | translate}}" min="360" max="4096"  num-only
+									data-range="" data-range-msg="{{'day0_wizard_advance_config_rsa_key_length' | translate}}" ng-disabled="!dayzero.enableSSH">
+							</div>
+						</div>
+						<div class="row">
+							<div class="row col-sm-4" ng-show="showDeviceStatus">
+								<div class="col-sm-10 webui-centerpanel-label">
+									<span class="label labelcustom">{{'day0_wizard_advance_config_autoqos_phones' | translate}}</span>
+								</div>
+								<div class="col-sm-2">
+								    <input type="checkbox" id="enableAutoQosPhones"  name="enableAutoQosPhones" ng-model="dayzero.enableAutoQosPhones" checked="checked">
+								</div>
+							</div>
+							<div class="row col-sm-4" ng-show="showDeviceStatus">
+								<div class="col-sm-9">
+									<span class="label labelcustom">{{'day0_wizard_advance_config_autoqos_uplink' | translate}}</span>
+								</div>
+								<div class="col-sm-2">
+								    <input type="checkbox" id="enableAutoQosUplink"  name="enableAutoQosUplink" ng-model="dayzero.enableAutoQosUplink" checked="checked">
+								</div>
+							</div>
+						</div>
+					</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-4" style="margin-bottom: 20px;">
+		<div  align="center" style="height: 450px;color:#706868;background: #EBFAFF">
+			<div  style="margin-top:10px;height:99%;">
+				<div class="wizardhelpcontentheader" >
+					<i class="fa fa-question-circle" style="font-size: 18px;" ng-click="openOnlineHelpWindow()" ></i> {{'day0_wizard_help_tips' | translate}}
+				</div>
+				<div class="descriptionhelp">
+					<div ng-show="basicConfigToolTip">{{'dayzero_wizard_basic_con_def_tip' | translate}}</div>
+					<div ng-show="hostNameTip">{{'help_day0_hostname' | translate}}</div>
+					<div ng-show="userNameTip">{{'help_day0_username' | translate}}</div>
+					<div ng-show="passwordTip">{{'help_day0_password' | translate}}</div>
+					<div ng-show="enablePasswordTip">{{'help_day0_enable_password' | translate}}</div>
+					<div ng-show="clockTip">{{'help_day0_clock' | translate}}</div>
+					<div ng-show="enableVTPTransparentTip">{{'help_day0_enable_VTPTransparent' | translate}}</div>
+					<div ng-show="enableTelnetTip">{{'help_day0_enable_telnet' | translate}}</div>
+					<div ng-show="enableSSHTip">{{'help_day0_enable_SSH' | translate}}</div>
+					<div ng-show="enableAutoQosPhonesTip">{{'help_day0_auto_QoS_for_cisco_phones' | translate}}</div>
+					<div ng-show="enableAutoQosUplinkTip">{{'help_day0_auto_QoS_for_uplinks' | translate}}</div>
+					<div ng-show="domainNameTip">{{'help_day0_enable_SSH_domain' | translate}}</div>
+					<div ng-show="rsaKeyTip">{{'help_day0_enable_SSH_rsa_key' | translate}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,228 @@
+<!--
+	Copyright (c) 2015-2018 by Cisco Systems, Inc.
+	All rights reserved.
+	-->
+<!DOCTYPE html>
+<html>
+<script src="lib/jquery/jquery.min.js"></script>
+<head lang="en">
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title id="loginTitle"></title>
+<style>
+html {
+	height: 100%;
+}
+body {
+	height: 100%;
+	overflow-x:hidden;
+	font-family: Source Sans Pro;
+	font-size: 14px;
+	line-height: 1.428571429;
+	color: #333;
+	background-color: #fff;
+	padding: 10px;
+	margin: 0;
+	background-image: url("/webui/login/assets/images/login_bg.png");
+	background-repeat: no-repeat;
+	background-position:-70px 0px;
+}
+.webui-centerpanel {
+    color: #495659;
+    padding: 10px 0 40px;
+    background: white;
+    border-top: 10px solid #0196D8;
+    box-shadow: 0px 0px 5px #6f7374;
+    -webkit-box-shadow: 0px 0px 5px #6f7374;
+	min-width: 380px;
+}
+.webui-centerpanel-title {
+	font-size: 18px;
+	font-weight: 600;
+	position: relative;
+	color: green;
+}
+.webui-centerpanel-title pre {
+	margin: 0 5px;
+	font-size: 10px;
+    white-space: pre-line !important;
+	text-align: left;
+	display: inline-block;
+	margin-bottom: 10px;
+	max-height: 100px;
+	overflow: hidden;
+	width: 300px;
+}
+.mainLoginDiv{
+	text-align: center;
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    margin: 0;
+    transform: translate(-50%, -25%);
+    min-width: 300px;
+    width: 33%;
+	min-height: 385px;
+}
+.login-form .form-control {
+	width: 300px;
+	background-color: #fff;
+	color: #333;
+	height: 2.42em;
+	text-indent: .8em;
+	border: 1px solid #8cafbf;
+	font-weight: 600;
+	box-shadow: none;
+	outline: 0;
+	padding: 2px .3em;
+	line-height: 1.6em;
+	font-family: inherit;
+	font-size: 100%;
+}
+.label {
+    white-space: normal;
+    text-align: initial;
+}
+.label {
+    color: #4b5764;
+    font-size: 16px;
+    border-bottom: 1px dashed transparent;
+    padding: 4px 0px 0px 0px;
+    font-weight: normal;
+    border-radius: 0;
+    display: inline-block;
+    margin-top: 8px;
+    font-weight: 500;
+}
+.marginbottom{
+	margin-bottom: 20px !important;
+}
+.descriptionhelp {
+    margin: 0px;
+    text-align: center;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+.configLoginCopyright {
+	position: absolute;
+	bottom: 10px;
+	margin: 10px;
+}
+
+.login-form {
+	display: inline-block;
+	text-align: left;
+}
+#companylogo{
+	margin-bottom: 15px;
+	width: 100px;
+}
+#LoginTitle{
+	font-weight:400;
+	color:#495659;
+	margin: 5px 0px 0px 0px;
+	text-transform: uppercase;
+}
+#show_banner_text{
+	display:none;
+	font-size: 13px;
+	text-decoration:underline;
+	position: relative;
+	color: green;
+	top: -20px;
+	text-align:right;
+	margin: 0px;
+	width: 300px;
+	cursor: pointer;
+}
+#copyrightmsg{
+	margin: 10px 10px 20px 10px;
+	position: relative;
+	bottom: -50px;
+	text-align: left;
+}
+.langInline.langLinkCSS a {
+    text-decoration: none;
+    color: inherit;
+}
+</style>
+</head>
+<body>
+	<div class="container main-container">
+		<div class="mainLoginDiv" align="center">
+			<img src="utils/megamenu/images/ciscoprime.png" id="companylogo"
+				alt="logo">
+			<div class="webui-centerpanel login-panel col-sm-4 col-sm-offset-4">
+				<h2>Logged out successfully.</h2>
+				<h1 class="webui-centerpanel-title" id="authmsg"></h1>
+				<h1 class="webui-centerpanel-title" id="bannerHead">
+					<span id="show_banner_text" class="More"></span>
+				</h1>
+				<form class="form-horizontal login-form" id="myloginform"
+					autocomplete="off">
+					<div>
+						<a href="#" onclick="login()">Login</a>
+					</div>
+					<!-- <div>
+						<a href="#" onclick="close_window();return false;">close</a>
+					</div> -->
+				</form>
+			</div>
+			<div class="configLoginCopyright" id="copyrightmsg"
+				style="text-align: center;">
+				© Copyright (c) 2015-2018 by Cisco Systems, Inc.All rights reserved			
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+function getBrowserType(){
+	var sBrowser, sUsrAg = navigator.userAgent;
+	// The order matters here, and this may report false positives for unlisted browsers.
+	if (sUsrAg.indexOf("Firefox") > -1) {
+	  sBrowser = "Firefox";
+	  // "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:61.0) Gecko/20100101 Firefox/61.0"
+	} else if (sUsrAg.indexOf("Trident") > -1) {
+	  sBrowser = "IE";
+	  // "Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; .NET4.0C; .NET4.0E; Zoom 3.6.0; wbx 1.0.0; rv:11.0) like Gecko"
+	} else if (sUsrAg.indexOf("Chrome") > -1) {
+	  sBrowser = "Chrome";
+	  // "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/66.0.3359.181 Chrome/66.0.3359.181 Safari/537.36"
+	} else if (sUsrAg.indexOf("Safari") > -1) {
+	  sBrowser = "Safari";
+	  // "Mozilla/5.0 (iPhone; CPU iPhone OS 11_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 Mobile/15E148 Safari/604.1 980x1306"
+	} else {
+	  sBrowser = "unknown";
+	}
+	return sBrowser;
+  }
+  function callLogout() {
+	    if (getBrowserType()=="IE") {
+	        document.execCommand('ClearAuthenticationCache', 'false');
+	    } 
+		if (getBrowserType()=="Firefox" || getBrowserType()=="IE" || getBrowserType()=="Chrome" || getBrowserType()=="Safari") {
+	    	 jQuery.ajax({
+	    		type: "POST",
+	            url: "/ios_web_exec/commandset",
+	            data: "dummy",
+	            async: true,	
+	            username: 'logout'
+	         });	    	
+	    } else {
+	        alert("Logging out automatically is unsupported for " + $scope.getBrowserType()
+	            + "\nYou must close the browser to log out.");
+	    }	   	
+ }  
+ callLogout();
+ function close_window() {
+	  window.open('','_parent','');
+      window.close();
+ }
+ function login(){
+	 var url=window.location.href;
+	 url=url.split("/log")[0];
+	 window.location.href=url
+ }
+</script>
+</html>
+

@@ -1,0 +1,23 @@
+###
+show cluster candidates
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show cluster candidates</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowClusterCandidates">
+<Table  name="CandidateTable">
+<Header name = "MAC Address" alias="macAddress" start = "0" end = "14" type = "String"/>
+<Header name = "Name" alias="name" start = "15" end = "27" type = "String"/>
+<Header name = "Device Type" alias="deveiceType" start = "28" end = "43" type = "String"/>
+<Header name = "Hops" alias="hops" start = "57" end = "61" type = "String"/>
+
+</Table>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.

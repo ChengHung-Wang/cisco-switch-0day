@@ -1,0 +1,450 @@
+/*modified for wizard*/
+.inputcustom input{
+	width: 100%;
+	border-radius: 0;
+}
+
+.descriptionhelp{
+	margin: 0px;
+	text-align: center;
+	font-size: 15px;
+	margin-bottom: 10px;
+}
+.inputcustom{
+	line-height: 50px;
+	text-align: left;
+}
+.wizardinputcustom{
+	line-height: 50px;
+	text-align: left;
+}
+.wizardinputcustom input {
+	width: 100%;
+	border-radius: 0;
+}
+.wizardinputcustom select {
+	width: 100%;
+	border-radius: 0;
+}
+div.inputcustom .k-widget.k-tooltip {
+	color: #575757;
+	background: #fefefe;
+	background: -webkit-linear-gradient(#fefefe, #e4e5f0);
+	background: -o-linear-gradient(#fefefe, #e4e5f0);
+	background: -moz-linear-gradient(#fefefe, #e4e5f0);
+	background: linear-gradient(#fefefe, #e4e5f0);
+	font-family: CiscoSansLight;
+	border-color: #CACACA;
+}
+
+div.inputcustom span.k-tooltip:before {
+	content: "";
+	display: block;
+	width: 9px;
+	height: 9px;
+	top: 11px;
+	left: 98.6%;
+	position: absolute;
+	background-color: inherit;
+	border-left: 1px solid #c7c118;
+	border-bottom: 1px solid #c7c118;
+	-webkit-transform: rotate(-135deg);
+	-moz-transform: rotate(-135deg);
+	-ms-transform: rotate(-135deg);
+	-o-transform: rotate(-135deg);
+	transform: rotate(-135deg);
+}
+
+div.inputcustom span.k-tooltip {
+	border-radius: 0;
+	font-weight: 600;
+	position: absolute;
+	top: 1px;
+	left: -60%;
+	width: 200px;
+	padding: 6px 15px;
+	text-align: left;
+	margin-left: 15px;
+}
+
+
+/* .labelcustom{
+	padding: .2em .6em .3em;
+} */
+
+.wizardhelpcontentheader {
+	margin: 0px;
+	text-align: center;
+	font-size: 15px;
+	margin-bottom: 10px;
+	padding-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #E3F1F5;
+}
+.ccpexpCSSReplaceClass333{list-style:none;}
+.ccpexpCSSReplaceClass332{text-align:left;font-size:13px;line-height:2;}
+
+
+.wizardtop-panel .instructionlogo {
+	display: inline-block;
+	margin: 0 22px;
+	position: relative;
+}
+
+
+ul.ccpexpCSSReplaceClass333 li i{
+	font-size: 10px;
+	vertical-align: middle;
+	color:#0097D3;
+}
+ul.ccpexpCSSReplaceClass333 li span{
+	font-size: 16px;
+	vertical-align: middle;
+	color: black;
+}
+
+
+
+.radiocontainer{
+}
+
+h2 {
+	color: #AAAAAA;
+	font-weight: normal;
+}
+
+.radiocontainer ul{
+	list-style: none;
+	height: 100%;
+	width: 100%;
+}
+.radiocontainer ul li {
+	color: #AAAAAA;
+	display: inline-block;
+	position: relative;
+	width: 20%;
+	background: grey;
+	background-color: grey;
+	border-bottom: 5px solid grey;
+	float: left;
+	font-family: 'Helvetica', cursive;
+	color: #FFF;
+	text-decoration: none;
+	transition: all 0.1s;
+	-webkit-transition: all 0.1s;
+	border-width: 0;
+	/* border-top: 1px solid transparent; */
+	/* border-bottom: 1px solid #ddd; */
+	background-color: white;
+	background-size: 0;
+	border-color: #b2b2b2;
+	background-color: #f8f8f8;
+	color: #444;
+	/* border-width: 1px; */
+	/* border-style: solid; */
+	margin: 1px;
+
+}
+.radiocontainer ul li label:active{
+	transform: translate(0px,5px);
+	-webkit-transform: translate(0px,5px);
+
+}
+
+.radiocontainer ul li:last-child{
+	border-left: 0;
+
+}
+
+.radiocontainer ul li input[type=radio]{
+	position: absolute;
+	visibility: hidden;
+}
+
+.radiocontainer ul li label{
+	isplay: block;
+	position: relative;
+	font-weight: 600;
+	font-size: 1.2em;
+	padding: 5px 25px 25px 80px;
+	color:#aaaaaa;
+	margin: 10px auto;
+	height: 30px;
+	z-index: 9;
+	cursor: pointer;
+	transition: border .25s cubic-bezier(0.4, 0, 1, 1);
+	-webkit-transition: border .25s cubic-bezier(0.4, 0, 1, 1);
+}
+
+ul li:hover label{
+	color: #FFFFFF;
+}
+
+ul li .check{
+	display: block;
+	position: absolute;
+	border: 3px solid #AAAAAA;
+	border-radius: 100%;
+	height: 25px;
+	width: 25px;
+	top: 12px;
+	left: 40px;
+	z-index: 5;
+	transition: border .25s cubic-bezier(0.4, 0, 1, 1);
+	-webkit-transition: border .25s cubic-bezier(0.4, 0, 1, 1);
+}
+
+.radiocontainer ul li:hover .check {
+	border: 3px solid #FFFFFF;
+}
+
+.radiocontainer ul li .check::before {
+	display: block;
+	position: absolute;
+	content: '';
+	border-radius: 100%;
+	height: 13px;
+	width: 13px;
+	top: 3px;
+	left: 3px;
+	margin: auto;
+	transition: background 0.25s linear;
+	-webkit-transition: background 0.25s linear;
+}
+
+.radiocontainer input[type=radio]:checked ~ .check {
+	border: 3px solid #0097d3;
+}
+
+.radiocontainer input[type=radio]:checked ~ .check::before{
+	background: #0097d3;
+}
+
+.radiocontainer input[type=radio]:checked ~ label{
+	color: #0097d3;
+}
+
+.radiocontainer .signature {
+	position: fixed;
+	margin: auto;
+	bottom: 0;
+	top: auto;
+	width: 100%;
+}
+
+.signature p{
+	text-align: center;
+	font-family: Helvetica, Arial, Sans-Serif;
+	font-size: 0.85em;
+	color: #AAAAAA;
+}
+
+.signature .much-heart{
+	display: inline-block;
+	position: relative;
+	margin: 0 4px;
+	height: 10px;
+	width: 10px;
+	background: #AC1D3F;
+	border-radius: 4px;
+	-ms-transform: rotate(45deg);
+	-webkit-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.signature .much-heart::before,
+.signature .much-heart::after {
+	display: block;
+	content: '';
+	position: absolute;
+	margin: auto;
+	height: 10px;
+	width: 10px;
+	border-radius: 5px;
+	background: #AC1D3F;
+	top: -4px;
+}
+
+.signature .much-heart::after {
+	bottom: 0;
+	top: auto;
+	left: -4px;
+}
+
+.signature a {
+	color: #AAAAAA;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+.rowStyleWizard:not(:last-child){
+	border-bottom: 1px dashed #e7e7e7;
+}
+.rowStyleWizard:nth-child(even){
+	background: #ffffff;
+}
+.rowStyleWizard .infoView {
+	word-break: break-all;
+	font-family: CiscoSansLight;
+	padding: 0px 10px;
+	margin-bottom: 5px;
+	color: black;
+	line-height: 2;
+}
+
+/* Day zero wizard custom css */
+
+.wizardContainer .label.labelcustom{
+	margin-top:15px
+}
+.wizardContainer span.k-tooltip{
+	padding:4px 15px;top:11px;white-space: pre-line;
+}
+.wizardContainer span.k-tooltip::before{
+	top:9px;
+}
+.col-sm-12.wizardContainer{
+	margin-left:0;
+	height:auto;
+}
+.custom-checkbox .k-checkbox-label::before{
+	position:absolute;
+	/* width: 1.25em;
+	height: 1.25em; */
+	font-size: 1.25em;
+	line-height: 1.25em;
+}
+.custom-checkbox input{
+	z-index:-9999;
+}
+.custom-checkbox .k-checkbox-label{
+	position: absolute;
+	left:12px;
+	top:1em;
+}
+.custom-datetime-picker .k-state-default>.k-select,.custom-datetime-picker .k-state-hover>.k-select,.custom-datetime-picker .k-state-focused>.k-select{
+	border:#fff;border-left:1px solid #ccc;
+	background:#fff;
+}
+.custom-datetime-picker .k-picker-wrap.k-state-focused .k-input,.custom-datetime-picker .k-picker-wrap.k-state-focused{
+	border:none;
+	box-shadow: none;
+}
+.custom-datetime-picker input{
+	border:none;
+	padding:0.2em 0 0 0;
+	height:2.17em !important;
+}
+.custom-datetime-picker  .k-combobox .k-dropdown-wrap:before,.custom-datetime-picker  .k-numeric-wrap:before,.custom-datetime-picker  .k-picker-wrap:before{
+	padding-bottom:0;
+}
+.custom-datetime-picker .k-picker-wrap.k-state-default{
+	border:none;
+}
+.custom-datetime-picker .k-widget{
+	width:100%;
+	height:2.17em;
+}
+.custom-datetime-picker .k-widget.k-tooltip{
+	top: 0px;
+	margin-left: 5.25em;
+	width: 84.5%;
+}
+.mainwizard .steps-indicator li{
+	width:16.4%;
+}
+.mainwizard .steps-indicator li .topmenuname,.wizardContainer .stepTitle{
+	text-transform: uppercase;
+}
+.wizardContainer span.k-dropdown{
+	width:100%;
+}
+.wizardContainer span.k-dropdown .k-dropdown-wrap .k-input{
+	height:2.17em;
+	line-height:2.17em
+}
+.wizardContainer .pad-left-zero{
+	padding-left:0;
+}
+.wizardContainer .pad-right-zero{
+	padding-right:0;
+}
+.wizardContainer .wizardCustomSelect .k-dropdown-wrap,.wizardContainer .wizardCustomMultiSelect .k-multiselect-wrap{
+	width:100%;
+	display:inline-block
+}
+.wizardContainer .wizardCustomMultiSelect .k-widget.k-multiselect{
+	margin-top:1em;
+}
+.wizardContainer .wizardCustomSelect .k-widget.k-tooltip{
+	width: 84.5%;
+	top:-1px;
+}
+.wizardContainer .wizardCustomMultiSelect .k-widget.k-tooltip{
+	width:77%;
+	top:1em
+}
+ul.dayzero-lineheight-3 li{
+	margin-bottom: 1.5em;
+}
+.customIpToolTip .k-widget.k-tooltip{
+	width:86px;
+}
+.wizardContainer .customIpToolTip.customSubnetToolTip .k-widget.k-tooltip{
+	top:42px;
+	left:0
+}
+.wizardContainer #dynamicInterface > div:nth-child(1) .customIpToolTip.customSubnetToolTip .k-widget.k-tooltip{
+	top:70px;
+}
+#dynamicInterface > div:nth-child(1) input{
+	margin-bottom:10px;
+}
+.wizardContainer .customIpToolTip.customSubnetToolTip .k-widget.k-tooltip::before{
+	display:none
+}
+.wizardContainer .summary-description{
+	width: 94%;
+	margin-left: 3.5%;
+}
+
+#dynamicInterface .wizardinputcustom.line-height-zero{
+	line-height:0
+}
+#dynamicInterface .wizardinputcustom label{
+	margin-bottom: 16px;
+	margin-top: 25px;
+}
+
+.custChkBox{
+	margin-left: 11px;
+	margin-bottom: 15px;
+}
+.custChkBox input{
+	padding: 15px;
+}
+.custChkBox label{
+    padding: 6px;
+    padding-left: 60px;
+}
+.mrg12{
+	margin-top: 12px !important;
+}
+#switchPassCheck{
+	position:relative !important;
+}
+.txtWrap{
+		display: block;
+		width: 244px;
+		word-wrap: break-word;
+		white-space: normal;
+		text-align: left;
+}	
+.mrgLft{
+	margin-left: -12px;
+}
+.text-right1 {
+    text-align: right;
+    top: -37px;
+    height:0;
+}

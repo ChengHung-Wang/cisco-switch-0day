@@ -1,0 +1,39 @@
+###
+show running-config interface *
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show running-config interface *</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowRunningGig">
+<Container name="wnwebdata">
+<Property name="interface" distance = "1" length = "1" type = "String"/>
+<Property name="description" distance = "1" length = "-1" type = "String"/>
+<Property alias="perPoE" name="power inline port poe-ha" distance = "-1" length = "1" type = "String"/>
+<Property alias="eventClass" name="power inline port 2-event" distance = "-1" length = "1" type = "String"/>
+<Property name="ip address" alias="ipaddress" distance = "1" length = "3" type = "String"/>
+<Property name="auto qos" alias="autoQOS" distance = "1" length = "2" type = "String"/>
+<Property name="switchport access vlan" distance = "1" length = "1" type = "String"/>
+<Property name="switchport trunk allowed vlan" distance = "1" length = "1" type = "String"/>
+<Property name="switchport trunk native vlan" distance = "1" length = "1" type = "String"/>
+<Property name="switchport mode" distance = "1" length = "2" type = "String"/>
+<Property name="speed" distance = "1" length = "-1" type = "String"/>
+<Property name="duplex" distance = "1" length = "-1" type = "String"/>
+<Property name="storm-control broadcast level" alias="broadcast" distance = "1" length = "2" type = "String"/>
+<Property name="storm-control multicast level" alias="multicast" distance = "1" length = "2" type = "String"/>
+<Property name="storm-control unicast level" alias="unicast" distance = "1" length = "2" type = "String"/>
+<Property name="storm-control action" alias="storm" distance = "1" length = "1" type = "String"/>
+<Property name="portfast" distance = "1" length = "-1" type = "String"/>
+<Property name="ip dhcp snooping" distance = "1" length = "1" type = "String"/>
+<Property alias="channelGroup" name="channel-group" distance = "1" length = "1" type = "String"/>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

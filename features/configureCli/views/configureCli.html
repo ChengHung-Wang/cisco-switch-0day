@@ -1,0 +1,100 @@
+<!--
+Description: Configure CLI Screen
+February 2016
+Copyright (c) 2015, 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+<div style="overflow:auto">
+<div class="pageTitle" onclick="angular.element('#cliinput').focus();">{{'switch_cli_title' | translate}} </div>
+<div class="container well" onclick="angular.element('#cliinput').focus();">
+    <form data-ng-controller="configCliCtrl" autocomplete="off">
+        <div class="row " ng-hide="smDeviceStatus">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-11">
+                <label>
+                    <input type="radio" data-ng-model="configType" data-ng-init="configType='exec'" value="exec"/>
+                    {{'switch_cli_exec' | translate}} </label>
+                <span> &nbsp;&nbsp;&nbsp;</span>
+                <label>
+                    <input type="radio" data-ng-model="configType" value="configure" />
+                    {{'switch_cli_configure' | translate}} </label>
+                <span> &nbsp;&nbsp;&nbsp;</span>
+                <button type="button" class="btn btn-primary" id="runCommand" ng-click="executeCli(cliInput,configType, $event)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {{'execute_command_text' | translate}} ">
+                    {{'switch_cli_run' | translate}}
+                </button>
+                <span> &nbsp;&nbsp;&nbsp;</span>
+                <input type="button" class="btn btn-primary" ng-click="clearFields()" value="{{'switch_cli_clear' | translate}}"/>
+                <span> &nbsp;&nbsp;&nbsp;</span>
+                <button class="btn btn-primary" ng-click="copy_cli_output()" ng-disabled="cliOutput==''" >
+                <i class="fa fa-copy"></i>
+                {{ "clients_copy" | translate}}
+                </button>
+                <span> &nbsp;&nbsp;&nbsp;</span>
+                <button id="clientsExportButton" class="btn btn-primary" ng-click="save_file_content()" ng-disabled="cliOutput==''">
+                   <i class="fa fa-file-text-o"></i>
+                {{"clients_export" | translate}}
+                </button>
+                <span> &nbsp;&nbsp;&nbsp;</span>
+                <tooltip helptext="{{'switch_cli_help' | translate}}"></tooltip>
+            </div>
+        </div>
+        <div class="row " ng-show="smDeviceStatus">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-11">
+                <!-- <label>
+                    <input type="radio" data-ng-model="configType" data-ng-init="configType='exec'" value="exec"/>
+                    {{'switch_cli_exec' | translate}} </label>
+                <span> &nbsp;&nbsp;&nbsp;</span>
+                <label>
+                    <input type="radio" data-ng-model="configType" value="configure" />
+                    {{'switch_cli_configure' | translate}} </label>
+                <span> &nbsp;&nbsp;&nbsp;</span> -->
+                <button type="button" class="btn btn-primary" id="runCommand" ng-click="executeCli(cliInput,configType, $event)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {{'execute_command_text' | translate}} ">
+                    {{'switch_cli_run_execute' | translate}}
+                </button>
+                <span> &nbsp;&nbsp;&nbsp;</span>
+                <input type="button" class="btn btn-primary" ng-click="clearFields()" value="{{'switch_cli_clear' | translate}}"/>
+                <span> &nbsp;&nbsp;&nbsp;</span>
+                <button class="btn btn-primary" ng-click="copy_cli_output()" ng-disabled="cliOutput==''" >
+                <i class="fa fa-copy"></i>
+                {{ "clients_copy" | translate}}
+                </button>
+                <span> &nbsp;&nbsp;&nbsp;</span>
+                <button id="clientsExportButton" class="btn btn-primary" ng-click="save_file_content()" ng-disabled="cliOutput==''">
+                   <i class="fa fa-file-text-o"></i>
+                {{"clients_export" | translate}}
+                </button>
+                <span> &nbsp;&nbsp;&nbsp;</span>
+                <tooltip helptext="{{'switch_cli_help_sm' | translate}}"></tooltip>
+            </div>
+        </div>
+	<br>
+        <div class="row form-group">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-11">
+                <textarea id="cliinput" rows="4" cols="125" onkeyup="return angular.element(this).scope().handleKeyUp(event, this)" onkeydown="return angular.element(this).scope().handleKeyDown(event, this)" onkeypress="return angular.element(this).scope().handleKeyPress(event, this)" placeholder="{{'switch_cli_exec_placeholder' | translate}}" data-ng-model="cliInput" autocomplete="off" ng-blur="focussedOut()"></textarea>
+            </div>
+        </div>
+
+        <div class="row form-group" ng-hide="smDeviceStatus">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-11">
+                <span class="hintfont">{{'switch_cli_hint' | translate}}</span>
+            </div>
+        </div>
+         <div class="row form-group" ng-show="smDeviceStatus">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-11">
+                <span class="hintfont">{{'switch_cli_hint_sm' | translate}}</span>
+            </div>
+        </div>
+        <div class="row form-group">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-11">
+                <textarea readonly rows="20" cols="125" id="clioutput" data-ng-model="cliOutput" style="background-color:lightgray;" ng-focus="focussedOut()"></textarea>
+            </div>
+        </div>
+
+    </form>
+</div>
+</div>

@@ -1,0 +1,5 @@
+macro name extractMacro
+end
+archive tar /xtract $SRCFILE $TARGETPATH 
+@
+!

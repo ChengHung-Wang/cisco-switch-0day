@@ -1,0 +1,25 @@
+###
+show running-config aaa username
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show users</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowUsers">
+<Container name="Users">
+<Container name="username" alias = "entry" dynamic = "true">
+<Property name="username" alias = "userName" distance = "1" length = "1" type = "String"/>
+<Property name="privilege" distance = "1" length = "1" type = "String"/>
+<Property name="password" distance = "2" length = "1" type = "String"/>
+<Property name="secret" distance = "2" length = "1" type = "String"/>
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>i
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

@@ -1,0 +1,20 @@
+###
+show flow exporter *
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show flow exporter *</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="showexporter">
+<Property name="Destination IP address:" alias="collectorIpAddress" distance = "1" length = "1" type = "String"/>
+<Property name="Source IP address:" alias="switchIpAddress" distance = "1" length = "1" type = "String"/>
+<Property name="Source Interface:" alias="interface" distance = "1" length = "1" type = "String"/>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

@@ -1,0 +1,62 @@
+<div class="bg-white softwareUpgradeContainer" kendo-validator="upgradeValidator" k-options="upgradeValidations" ng-init="upgradeInit">
+	<!--
+	Description: Software Upgrade Html
+	Copyright (c) 2016 by Cisco Systems, Inc.
+	All rights reserved.
+	-->
+	<div class="pageTitle">
+		{{'menu_softwareupgrade' | translate}}
+	</div>
+		<div>
+			<div class="row form-group">
+				<div class="col-sm-4 col-sm-offset-2 webui-centerpanel-label">
+					<span class="label">{{'software_update_file_type' | translate}}</span>
+				</div>
+				<div class="col-sm-3">
+					<select kendo-drop-down-list
+							ng-model="requestData.type"
+							k-data-source="fileTypeDataSource"
+							k-data-text-field="'name'"
+							k-data-value-field="'value'">
+					</select>
+					<tooltip helptext="{{'help_software_update_file_type' | translate}}"></tooltip>
+				</div>
+			</div>
+			
+			<form id="swUpdateForm" name="swUpdateForm" 
+				enctype="multipart/form-data" target="statusDetails" action="/archive+download-file+%2fhttp+uploadFile%0A" method="post">
+			<div class="row form-group">
+				<div class="col-sm-4 col-sm-offset-2 webui-centerpanel-label">
+					<span class="label pl-mandatory">{{'software_update_file_select' | translate}}</span>
+				</div>
+				<div class="col-sm-4">
+					<input type="file" name="uploadFile" id="uploadFile" ng-model="requestData.file" 
+					onchange="angular.element(this).scope().fileSelected(this)" accept="*.tar">
+				</div>
+			</div>
+			</form>
+			<div class="row form-group">
+				<div class="col-sm-5 col-sm-offset-1 webui-centerpanel-label">
+					<button kendo-button="apply" class="pl-apply k-button btn btn-primary"
+                                                ng-disabled="requestData.file === ''"
+                                                ng-click="showUpdateConfirmDialog()">
+						{{'software_update_start' | translate}}
+                                        </button>
+					</div>
+				<div class="col-sm-4">
+					<button kendo-button="restart" class="pl-apply k-button btn btn-primary"
+							ng-click="showRestartConfirmDialog()" ng-disabled="restartBtnStatus">
+						 {{'software_update_restart_title' | translate}}
+					</button>
+				</div>
+			</div>
+		</div>
+		<div id="statusDiv" class="well">
+			<div id="statusMsg" name="statusMsg" class="row form-group">
+			</div>
+			<div class="ng-hide">
+				<iframe name="statusDetails" id="statusDetails" width="400" height="100" align="center"></iframe>
+			</div>
+		</div>
+</div>
+

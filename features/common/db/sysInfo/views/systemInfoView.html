@@ -1,0 +1,49 @@
+<!--
+Description: System Power and temperature graph html
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+<div class="bg-white" ng-controller="systemInformationCtrl">
+		<div class="memoryCPUDashlet">
+		    <div class="row memorySlot">
+				<span class="col-sm-5"> </span>
+		    </div>
+			<div class="memoryCPUContainer systemPower">
+				<div class="row">
+					<!-- Power UTILIZATION -->
+					<div class="col-sm-6" ng-show="powerStatus">
+						<fieldset class="cpuUtilizationfieldset">
+							<legend>
+								<div class="cpuUtilization" ng-bind="'db_poe_power_consumption' | translate"></div>
+							</legend>
+							<div class="text-center">
+							  <span class="memoryCPUChartHeader"></span>
+						    </div>
+						    <div id="cpuHint">
+							   <div id="powerChart"></div>
+							</div>
+						</fieldset>
+					</div>
+				<!-- Temperature UTILIZATION -->
+				   <div class="col-sm-6">
+						<fieldset class="cpuUtilizationfieldset">
+							<legend>
+								<div class="cpuUtilization" ng-bind="'db_syteminfo_temp' | translate"></div>
+							</legend>
+						    <div id="cpuHint">
+							   <div id="gauge-container">
+									<div id="gauge"></div>
+								</div>
+							</div>
+							<div class="text-center">
+							  <span class="memoryCPUChartHeader">{{'db_syteminfo_temp' | translate}} : <span>{{currentTemp}}</span>&#x2103;</span>
+						    </div>
+						</fieldset>
+					</div>
+				</div>
+			</div>
+			<div class="row memorySlot">
+				<span class="col-sm-5"> </span>
+			</div>
+		</div>	
+</div>

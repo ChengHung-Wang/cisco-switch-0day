@@ -1,0 +1,662 @@
+/*
+ Description: CSS Specific to Angular Wizard
+ Copyright (c) 2015 by Cisco Systems, Inc.
+ All rights reserved.
+ */
+.steps {
+	text-align: center;
+}
+
+.steps-indicator {
+	padding: 0;
+	padding-top: 9px;
+	margin: 0;
+
+li {
+	display: inline-block;
+
+div.indicatordiv:before {
+	content: "";
+	display: block;
+	border: 1px solid #495659;
+	border-radius: 50%;
+	margin: 0 2px;
+	cursor: default;
+	width: 25px;
+    height: 25px;
+    background-color: #AFAAA5;
+    border: 6px solid #D4D1CC;
+    position: relative;
+    z-index: 100;
+}
+&.current div.indicatordiv:before {
+	 background-color: #0095D4;
+	 border-color: #2D404A;
+ }
+&.editing div.indicatordiv:before {
+	 background-color: #0095D4;
+	 border-color: #2D404A;
+ }
+&.done div.indicatordiv:before {
+	 background-color: #0095D6;
+	content: "\2713";
+	border: 5px solid #0095D6;
+	line-height: 1.2;
+    color: white;
+    font-size: 15px;
+    font-weight: bold;
+ }
+ div.indicatordiv:after {
+	content: "\2713";
+    width: 100%;
+    height: 2px;
+    background: white;
+    position: absolute;
+    left: -50%;
+    top: 9px;
+    z-index: -1;
+}
+& i{
+	color: #BBB7B0;
+}
+&.current i {
+	color: #314952;
+ }
+&.editing i{
+	 color: #314952;
+ }
+&.done i {
+	color: #314952;
+	
+ }
+ & div.topmenuname{
+	color: #BBB7B0;
+	font-weight: 600;
+}
+&.current div.topmenuname {
+	color: #314952;
+ }
+&.editing div.topmenuname{
+	 color: #314952;
+ }
+&.done div.topmenuname {
+	color: #314952;
+	
+ }
+}
+}
+
+/** Wizard CSS */
+.main-wizard-header {
+	padding: 0 30px;
+	position: relative;.icon-question {
+	position: absolute;
+	top: -20px;
+	right: 10px;
+	font-size: 27px;
+	color: #b2c5cf;
+}
+}
+.main-wizard-title {
+	font-size: 16px;
+}
+
+.wizard-step-title {
+	font-size: @centerpanelTitlefontSize;
+	font-weight: @fwBold;
+}
+.centerpanel-container {
+	display: inline-block;
+}
+.webui-centerpanel {
+	border-radius: @panelBorderRadius;
+	border: @centerpanelBorder;
+	background-color: @panelBackground;
+	color: @centerpanelTitleColor;
+	padding: 30px 0 40px;
+	margin-top: 30px;
+	-webkit-box-shadow: 0 1px 1px 0 #a0a0a0;
+	box-shadow: 0 1px 1px 0 #a0a0a0;
+	text-align: left;.description {
+	padding: 0 30px 30px;
+	font-size: 13px;
+	font-style: italic;
+}
+}
+.size-medium {
+	width: 545px;
+}
+
+.size-big-medium {
+	width: 600px;
+}
+
+.size-medium-large {
+	width: 670px;
+}
+
+.size-large {
+	width: 620px;@media (
+	min-width: 992px ) {
+	width: 825px;
+}
+}
+.webui-centerpanel-label {
+	text-align: left;
+}
+.label {
+	color: @labelColor;
+	font-size: @labelFontSize;
+	/* Commenting this line as most pages don't need the underline. If needed please add for the specific page only.
+	 border-bottom: @labelSpanBorder;*/
+	border-bottom: 1px dashed transparent;
+	padding: 0 0 4px;
+	font-weight: normal;
+	border-radius: 0;
+	display: inline-block;
+	margin-top: 8px;
+}
+.wizard-buttons {
+	padding: 0 0 20px;
+	margin-top: 20px;
+	position: relative;.btn {
+	position: absolute;
+}
+.left-button {
+	left: 0;.icon-arrow-right {
+	position: relative;
+	right: 10px;
+	font-size: 16px;
+	vertical-align: middle;
+	-webkit-transform: rotate(180deg);
+	-moz-transform: rotate(180deg);
+	-ms-transform: rotate(180deg);
+	-o-transform: rotate(180deg);
+	transform: rotate(180deg);
+}
+}
+.left-button {
+	left: 0;.fa-angle-left {
+	position: relative;
+	right: 5px;
+	font-size: 16px;
+}
+}
+.right-button {
+	right: 0;.icon-arrow-right {
+	position: relative;
+	left: 8px;
+	font-size: 16px;
+	vertical-align: middle;
+}
+}
+.right-button {
+	right: 0;.fa-angle-right {
+	position: relative;
+	left: 8px;
+	font-size: 16px;
+	vertical-align: middle;
+}
+}
+}
+
+.network-icon {
+	font-size: 80px;
+	position: absolute;
+	top: 50%;
+	right: 50%;
+	-webkit-transform: translate(50%, -50%);
+	-moz-transform: translate(50%, -50%);
+	-ms-transform: translate(50%, -50%);
+	-o-transform: translate(50%, -50%);
+	transform: translate(50%, -50%);
+}
+
+img.checkmark {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	-webkit-transform: translate(50%, -50%);
+	-moz-transform: translate(50%, -50%);
+	-ms-transform: translate(50%, -50%);
+	-o-transform: translate(50%, -50%);
+	transform: translate(50%, -50%);
+	font-size: 36px;
+	color: #69b324;
+	background-color: transparent;
+}
+
+.icon-circle {
+	width: 154px;
+	height: 154px;
+	border-radius: 50%;
+	border: @line;
+	background-color: #fff;
+	cursor: pointer;
+	position: relative;
+	display: inline-block;.icon-wifi-big {
+	font-size: 80px;
+	position: absolute;
+	top: 50%;
+	right: 50%;
+	-webkit-transform: translate(50%, -50%);
+	-moz-transform: translate(50%, -50%);
+	-ms-transform: translate(50%, -50%);
+	-o-transform: translate(50%, -50%);
+	transform: translate(50%, -50%);
+}
+.icon-wired {
+	font-size: 80px;
+	position: absolute;
+	top: 50%;
+	right: 50%;
+	-webkit-transform: translate(50%, -50%);
+	-moz-transform: translate(50%, -50%);
+	-ms-transform: translate(50%, -50%);
+	-o-transform: translate(50%, -50%);
+	transform: translate(50%, -50%);
+}
+.icon-checkmark {
+	position: absolute;
+	top: 50%;
+	right: 0;
+	-webkit-transform: translate(50%, -50%);
+	-moz-transform: translate(50%, -50%);
+	-ms-transform: translate(50%, -50%);
+	-o-transform: translate(50%, -50%);
+	transform: translate(50%, -50%);
+	font-size: 36px;
+	color: #69b324;
+	background-color: white;
+}
+}
+.site-profile {
+	text-align: center;
+	background-color: @siteProfileBg;
+	border: @siteProfileBorder;
+	padding: 15px;
+	margin-left: -1px;
+	margin-top: -1px;
+	height: 320px;
+	cursor: pointer;&.selected {
+	z-index: 1;
+	border-color: #000;&:after {
+	content: "\e610";
+	font-family: "icomoon";
+	color: #69b324;
+	font-size: 36px;
+	display: block;
+	width: 37px;
+	height: 37px;
+	position: absolute;
+	top: 8px;
+	right: 8px;
+	line-height: 1;
+}
+}
+i {
+	font-size: 67px;
+	color: #f77474;
+}
+}
+.site-profile-title {
+	font-weight: @fwBold;
+	display: block;
+	font-size: 16px;
+	margin-top: 10px;
+	padding-bottom: 10px;
+	border-bottom: @labelSpanBorder;
+}
+.site-profile-description {
+	display: block;
+	padding-top: 10px;
+	color: #a9b0b0;
+}
+
+.site-profile-deselect-button {
+	margin-top: 15px;
+}
+.webui-centerpanel-subtitle {
+	font-weight: @fwBold;
+	font-size: 18px;
+	margin-bottom: 20px;
+	padding: 0 30px;
+	text-align: center;
+	display: block;i {
+	float: left;
+	margin-top: 8px;
+	font-size: 15px;
+	-webkit-transition: -webkit-transform .3s;
+	-moz-transition: -moz-transform .3s;
+	-o-transition: -o-transform .3s;
+	transition: transform .3s;
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	transform: rotate(-90deg);li.k-state-active & {
+	-webkit-transform: rotate(0deg);
+	-moz-transform: rotate(0deg);
+	-ms-transform: rotate(0deg);
+	-o-transform: rotate(0deg);
+	transform: rotate(0deg);
+}
+}
+}
+
+.top-tab-pane {
+	margin: 0 20px;
+	border: @line;
+	background-color: #fff;
+}
+.top-tab-pane-text {
+	border-bottom: @line;
+	padding: 0 15px 30px;
+	font-size: 15px;
+}
+
+.left-tabs {
+	padding-right: 0;ul {
+	padding: 0 0 0 15px;
+	margin: 0;
+}
+.tab {
+	display: block;
+	border-bottom: @line;
+	padding: 10px 0;
+	margin-right: -1px;
+	border-right: 1px solid transparent;
+	height: 56px;
+	line-height: 36px;&.selected {
+	border-right-color: #fff;
+	position: relative;
+	z-index: 1;
+}
+
+a {
+	cursor: pointer;
+	color: @textColor;
+}
+
+.k-dropdown {
+	width: 100%;
+}
+}
+}
+.left-tabs-pane-container {
+	border-left: @line;
+}
+.left-tabs-pane {
+	padding: 20px 30px 20px 20px;
+}
+.label-simple {
+	font-weight: @fwBold;
+	text-align: right;
+}
+.port-maps {.description {
+	padding: 10px 0 30px;
+}
+}
+.port-maps-unmapped {
+	float: right;
+	font-style: italic;
+}
+.port-maps-title {
+	font-weight: @fwBold;
+	float: left;
+}
+
+.tabs-add {
+	float: right;
+	margin-right: 5px;i {
+	font-size: 25px;
+	vertical-align: middle;
+}
+}
+.tabs-remove {
+	float: right;
+	margin-right: 5px;i {
+	font-size: 25px;
+	vertical-align: middle;
+	-webkit-transform: rotate(45deg);
+	-moz-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	-o-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+}
+
+.port-maps-box {
+	margin: 0 20px;
+	background-color: #fff;
+}
+
+.port-maps-partition {
+	border-left: 1px solid #d5e5eb;
+}
+
+.wizard-field-note {
+	padding-top: 10px;
+}
+
+.port-role-help {
+	padding-top: 10px;
+}
+
+.svg-port-type-label {
+	font-size: 14px;
+}
+
+.svg-switch-label {
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.svg-port-label {
+	font-size: 10px;
+}
+.btn.btn-primary.right-button.nextbtn {
+    border: none;
+    border-radius: 0;
+    background: #0097D3;
+    padding: 2;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.btn.btn-primary.left-button.prevbtn{
+	border: none;
+    border-radius: 0;
+    background: #ffffff;
+    color: #0097D3;
+    font-weight: 500;
+}
+.wizard-tabs {
+	margin: 0 30px;
+	/*.k-tabstrip-items .k-loading {
+	 border-top: 0;
+	 }
+	 .k-tabstrip-items .k-link {
+	 border-radius: 0;
+	 padding: 11px 15px;
+	 }
+	 .k-tabstrip-items .k-item {
+	 border-width: 1px 1px 0px;
+	 border-color: @grayLine;
+	 border-radius: 0;
+
+	 &:not(:first-child) {
+	 margin-left: 4px;
+	 }
+
+	 &.k-state-active {
+	 font-weight: @fwBold;
+	 }
+	 &.k-state-hover {
+	 background-color: transparent;
+	 }
+
+	 a {
+	 color: @textColor;
+	 }
+	 }
+
+	 & > .k-content {
+	 padding: 30px 0 0;
+
+	 &.k-state-active {
+	 color: @textColor;
+	 border-color: @grayLine;
+	 }
+	 }*/
+}
+
+.quickwizard{
+	.container{
+		width:100%;
+		max-width: 100%;
+		
+	}
+	
+}
+.steps-indicator li div{
+	margin-bottom: 10px;
+}
+.steps-indicator li {
+    display: inline-block;
+   /* width: 14%;*/
+    text-align: -webkit-center;
+    text-align: -moz-center;
+
+}
+.steps-indicator li:not(:last-child):before {
+      content: '';
+    /* border-radius: 2px; */
+    background: #D4D1CC;
+    /* box-shadow: 0 -1px 1px #c0bfbc inset; */
+    height: 4px;
+    position: relative;
+    left: 50%;
+    top: 14px;
+    display: block;
+    z-index: 1;
+    width: 100%;
+}
+.steps-indicator li.current:not(:last-child):before {
+	 background-color: #D4D1CC;
+ }
+.steps-indicator li.editing:not(:last-child):before {
+	 background-color: #D4D1CC;
+ }
+.steps-indicator li.done:not(:last-child):before {
+	background-color: #0095D4;
+ }
+
+
+.wizardContainer{
+	height: 400px;
+	padding-left: 0px;
+	margin-bottom: 10px;
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.wizardtop-panel{
+	    margin-top: 10px;
+}
+.wizardtop-panel .logo {
+    display: inline-block;
+    width: 80px;
+    margin: 0 22px;
+}
+.wizardtop-panel .main-title {
+    display: inline-block;
+    margin: 0;
+    font-size: 25px;
+    vertical-align: middle;
+    /* font-family: CiscoSansLight; */
+    font-weight: lighter;
+    color: #7594A1;
+}
+
+.btn.btn-primary.right-button.loginbtn{
+	    border: none;
+    border-radius: 0;
+    background: #0097D3;
+    padding: 2;
+    /* padding-left: 50px; */
+    /* padding-right: 50px; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    width: 100%;
+    margin: 40px 0px;
+
+	
+}
+.btn.btn-primary.right-button.gotostepBtn{
+	    border: none;
+    border-radius: 0;
+    background: #0097D3;
+    padding: 2;
+    /* padding-left: 50px; */
+    /* padding-right: 50px; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+   
+    margin: 40px 0px;
+
+	
+}
+
+.stepTitle {
+    font-size: 16px;
+    font-family: CiscoSansLight;
+    font-weight: 600;
+    text-align: left;
+    max-width: 90%;
+    margin-bottom: 2px;
+    margin: 10px 0px 10px 0px !important;
+    border-bottom: 1px solid #0096D6;
+}
+
+.ccpexpCSSReplaceClass331 {
+    display: inline-block;
+    padding: 0 30px 5px 0;
+    border-bottom: 3px solid #0096D6;
+    margin-bottom: -1px;
+    color: #0096D6;
+}
+.main{
+	background:#F4F6F4;
+}
+
+.mrgLft{
+	margin-left: -5px;
+}
+
+.mrgLft span.k-tooltip{
+	top: 42px !important;
+    left: -38px !important;	
+}
+
+.mrgLft span.k-tooltip::before {
+	left: 94px !important;
+    top: -6px !important;
+}
+
+.mrgLft span.k-tooltip:before {
+    -webkit-transform: rotate(-228deg);
+    -moz-transform: rotate(-228deg);
+    -ms-transform: rotate(-228deg);
+    -o-transform: rotate(-228deg);
+    transform: rotate(-228deg);
+}
+
+
+#wifiPage{
+      margin-left: 15px;
+}
+.noLineHeight{
+      line-height: 0px;
+}

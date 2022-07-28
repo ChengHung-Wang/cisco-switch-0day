@@ -1,0 +1,205 @@
+/**
+ Copyright (c) 2015-2016 by Cisco Systems, Inc.
+ All rights reserved.
+ */
+@font-face {
+	font-family: 'icomoon';
+	src: url('fonts/icomoon.eot?-8j3nnh');
+	src: url('fonts/icomoon.eot?#iefix-8j3nnh') format('embedded-opentype'), url('fonts/icomoon.woff?-8j3nnh') format('woff'), url('fonts/icomoon.ttf?-8j3nnh') format('truetype'), url('fonts/icomoon.svg?-8j3nnh#icomoon') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'CiscoSansRegular';
+	src: url('fonts/CiscoSans/CiscoSansRegular.woff?-8j3nnh');
+	src: url('fonts/CiscoSans/CiscoSansRegular.eot?-8j3nnh') format('embedded-opentype'), url('fonts/CiscoSans/CiscoSansRegular.woff?-8j3nnh') format('woff'), url('fonts/CiscoSans/CiscoSansRegular.ttf?-8j3nnh') format('truetype'), url('fonts/CiscoSans/CiscoSansRegular.svg?-8j3nnh') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'CiscoSansThin';
+	src: url('fonts/CiscoSans/CiscoSansThin.woff?-8j3nnh');
+	src: url('fonts/CiscoSans/CiscoSansThin.eot?-8j3nnh') format('embedded-opentype'), url('fonts/CiscoSans/CiscoSansThin.woff?-8j3nnh') format('woff'), url('fonts/CiscoSans/CiscoSansThin.ttf?-8j3nnh') format('truetype'), url('fonts/CiscoSans/CiscoSansThin.svg?-8j3nnh') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'CiscoSansLight';
+	src: url('fonts/CiscoSans/CiscoSansTTLight.ttf?-8j3nnh');
+	src: url('fonts/CiscoSans/CiscoSansTTLight.eot?-8j3nnh') format('embedded-opentype'), url('fonts/CiscoSans/CiscoSansTTLight.woff?-8j3nnh') format('woff'), url('fonts/CiscoSans/CiscoSansTTLight.ttf?-8j3nnh') format('truetype'), url('fonts/CiscoSans/CiscoSansTTLight.svg?-8j3nnh') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'icomoon';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	display: inline-block;
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-arrow-right:before {
+	content: "\e600";
+}
+.icon-filter:before {
+	content: "\e608";
+}
+.icon-arrow-down:before {
+	content: "\e60e";
+}
+.icon-plus2:before {
+	content: "\e612";
+}
+.icon-small-branch:before {
+	content: "\e613";
+}
+.icon-flag:before {
+	content: "\e615";
+}
+.icon-pin_fill:before {
+	content: "\e616";
+}
+.icon-wired-mini:before {
+	content: "\e601";
+}
+.icon-option:before {
+	content: "\e602";
+}
+.icon-pin:before {
+	content: "\e603";
+}
+.icon-monitoring:before {
+	content: "\e604";
+}
+.icon-add:before {
+	content: "\e605";
+}
+.icon-chevron:before {
+	content: "\e606";
+}
+.icon-small-campus:before {
+	content: "\e607";
+}
+.icon-medium-campus:before {
+	content: "\e609";
+}
+.icon-medium-branch:before {
+	content: "\e60a";
+}
+.icon-large-campus:before {
+	content: "\e60b";
+}
+.icon-wired:before {
+	content: "\e60c";
+}
+.icon-wifi-big:before {
+	content: "\e60d";
+}
+.icon-checkmark_2:before {
+	content: "\e60f";
+}
+.icon-checkmark:before {
+	content: "\e610";
+}
+.icon-question:before {
+	content: "\e611";
+}
+.icon-cog:before {
+	content: "\e617";
+}
+.icon-circle-full:before {
+	content: "\e618";
+}
+.icon-eye:before {
+	content: "\e619";
+}
+.icon-arrow-down2:before {
+	content: "\e614";
+}
+.icon-expand:before {
+	content: "\e61b";
+}
+
+button[class*="pl-"]:before {
+	font: normal normal normal 14px/1 FontAwesome;
+	font-size: inherit;
+}
+
+.pl-add:before, .pl-new:before {
+	content: '\f067';
+}
+
+.pl-delete:before {
+	content: '\f00d';
+}
+
+.pl-apply:before {
+	content: '\f00c'
+}
+
+.pl-reload:before {
+	content: '\f021'
+}
+
+.pl-done:before {
+	content: '\f164'
+}
+
+.pl-save:before {
+	content: '\f0c7'
+}
+
+.pl-moveup:before {
+	content: '\f062'
+}
+
+.pl-movedown:before {
+	content: '\f063'
+}
+
+.pl-clear:before {
+	content: '\f12d'
+}
+
+.pl-cancel:before {
+	content: '\f0e2'
+}
+
+.pl-copy:before, .pl-clone:before {
+	content: '\f0c5';
+}
+
+.pl-mandatory:after {
+	content: "*";
+	margin-left: 2px;
+}
+.pl-play:before {
+	content: '\f04b';
+}
+.pl-stop:before {
+	content: '\f04d ';
+}
+.pl-eraser:before {
+	content: '\f12d';
+}
+.pl-configure:before {
+	content: '\f016';
+}
+
+.pl-detail:before {
+	content: '\f03a';
+}
+
+.pl-signal:before {
+	content: '\f09e';
+}
+

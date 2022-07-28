@@ -1,0 +1,18 @@
+###
+show sampler *
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show sampler *</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="showsampler*">
+<Property name="Type:" alias="samplerType" distance = "1" length = "1" type = "String"/>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

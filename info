@@ -1,0 +1,11 @@
+version_suffix: universalk9-152-7.E6
+version_directory: c3560cx-universalk9-mz.152-7.E6
+image_system_type_id: 0x00000000
+image_name: c3560cx-universalk9-mz.152-7.E6.bin
+ios_image_file_size: 22968832
+total_image_file_size: 38226432
+image_feature: IP|LAYER_3|PLUS|SSH|3DES|MIN_DRAM_MEG=128
+image_family: C3560CX
+stacking_number: 1.160
+board_ids: 0x0000025d 0x0000025f 0x00000260 0x00000261 0x00000262 0x00000265 0x00000263 
+info_end:

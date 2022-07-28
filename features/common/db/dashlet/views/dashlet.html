@@ -1,0 +1,35 @@
+<div ng-class="empty?'dashlet-empty':''" class="dashlet col-md-{{size*4}} float-left custom-padding-dashlet animate-all" resize-dashlet="" data-des="{{title}}">
+	<!--
+	Description: Dashlet Helper Screen
+	June 2014, 2015
+	Copyright (c) 2014, 2015 by Cisco Systems, Inc.
+	All rights reserved.
+	-->
+
+	<div class="card panel-default panel-custom">
+		<div class="panel-heading panelHeadingCustom">
+			<h3 class="card-title custom-panel-title"><span class="dashletPanelHeader"><i class="{{iconClass}}"></i> &nbsp;{{title}}</span>
+			<div class="dashlet-tools">
+				<!-- <span class="dashlet-notifications">{{(notif?notif:"&nbsp;")}}</span>-->
+				<span ng-if="start"><i class="fa fa-spinner fa-2x fa-spin"></i></span>
+				<div class="dashlet-options">
+					<dashlet-options option-url="{{gearOption}}"></dashlet-options>
+				</div>
+			</div></h3>
+			<div class="updateTimeHeader"><span ng-if="description!=''">{{description}}</span><span ng-if="description==''">Loading...</span></div>
+		</div>
+		<div class="card-body customPanelBody">
+
+			<div ng-if="! empty" class="dashlet-body" ng-include="content"></div>
+		</div>
+	</div>
+
+	
+	<div ng-if="empty" class="add-dashlet-button">
+		<!-- <dashlet-options option-url="{{gearOption}}"><img class="icon-right-arrow-circle" src="common/megamenu/images/add.svg">
+			<div class="add-dashlet-text">
+				Add Widget
+			</div>
+		</dashlet-options> -->
+	</div>
+</div>

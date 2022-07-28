@@ -1,0 +1,754 @@
+<div class="pageTitle" ng-bind="'menu_management' | translate">
+</div>
+<div>
+	<!--
+	Description: HTTP and SNMP Page design
+	Copyright (c) 2016-2019 by Cisco Systems, Inc.
+	All rights reserved.
+	-->
+	<div class="pageContent">
+		<ul kendo-panel-bar="wssiPanel" class="panelbar"  id="myTabStrip" ng-click="tabTog()">
+			
+			<li class="k-state-active">
+				<span class="panelbar__header panel-gradient-blue clearfix">
+					<div class="panelbar__open-icon">
+						<i class="icon-chevron" name="wssiArrow"></i>
+					</div>
+					<div ng-hide="smDeviceStatus" class="panelbar__title" ng-bind="'menu_http' | translate"></div> 
+					<div ng-show="smDeviceStatus" class="panelbar__title" ng-bind="'menu_https_sm' | translate"></div> 
+					</span>					
+				<div>
+<!-- Http/https page code -->					
+	<div class="pull-right">
+		<button kendo-button="applyBtn" class="btn btn-primary pl-apply" ng-click="httpApply()" ng-disabled="disableApplyhttpBtn">
+			{{'com_apply' | translate}}
+		</button>
+		<button kendo-button="cancelBtn" class="btn btn-primary pl-cancel" ng-click="resethttpFunction()" ng-disabled="disableCancelhttpBtn">
+			{{'com_cancel' | translate}}
+		</button>
+	</div>
+			<div class="container">
+				<div class="row well">
+					<div class="col-lg-12 col-lg-offset-1">
+						<form name="httpConfig" id="httpConfig" kendo-validator="httpValidator"
+						k-options="httpValidations">
+								<div ng-hide="smDeviceStatus" class="webui-centerpanel-subtitle col-sm-9" ng-bind="'management_http_access_config' | translate">
+								</div>
+								<div ng-show="smDeviceStatus" class="webui-centerpanel-subtitle col-sm-9" ng-bind="'management_https_access_config_sm' | translate">
+								</div>
+								<div class="row form-group" ng-hide="smDeviceStatus">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label" ng-bind="'management_http_access' | translate"></span>
+									</div>
+									<div class="col-sm-3">
+										<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+										ng-model="http.access" ng-change="enableApplyhttpBtn()"></toggle-button>
+									</div>
+								</div>
+								<div class="row form-group" ng-hide="http.access == 'Disable'" ng-if="smDeviceStatus1">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label" ng-bind="'management_http_port' | translate"></span>
+									</div>
+									<div class="col-sm-3">
+										<input  ng-model="http.port"
+										ng-disabled="http.access == 'Disable'" name="httpPort"
+										id="httpPort" class="form-control k-textbox "
+										ng-model="http.port"
+										data-httpvalidports="65535" 
+										data-httpvalidports-msg="{{'management_http_port_valid' | translate}}" ng-keyup="enableApplyhttpBtn()">
+										<tooltip helptext="{{'help_HTTP_port' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label" ng-bind="'management_https_access' | translate"></span>
+									</div>
+									<div class="col-sm-3">
+										<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+										ng-model="https.access" ng-change="enableApplyhttpBtn()"></toggle-button>
+									</div>
+								</div>
+								<div class="row form-group" ng-hide="https.access == 'Disable'">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label" ng-bind="'management_https_port' | translate"></span>
+									</div>
+									<div class="col-sm-3">
+										<input  ng-model="https.port"
+										ng-disabled="https.access == 'Disable'" name="httpsPort"
+										id="httpsPort" class="form-control"
+										data-httpsvalidports="65535"
+										data-httpsvalidports-msg="{{'management_https_port_valid' | translate}}"
+										ng-keyup="enableApplyhttpBtn()">
+										<tooltip helptext="{{'help_HTTPS_port' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+
+								<div class="webui-centerpanel-subtitle col-sm-9" ng-bind="'management_http_trust_config' | translate">
+								</div>
+								<div class="row form-group">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label" ng-bind="'management_http_trust_enable' | translate"></span>
+									</div>
+									<div class="col-sm-3">
+										<span class="toggleClass">
+										<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+										ng-model="trustpoint.status" ng-change="enableApplyhttpBtn()"></toggle-button></span>
+										<tooltip helptext="{{'help_HTTPS_enable_trustpoint' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group" ng-hide="trustpoint.status == 'Disable'">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label" ng-bind="'management_http_trust_points' | translate"></span>
+									</div>
+									<div class="col-sm-3 checkbox-styled">
+										<select kendo-drop-down-list="httpTrustPointDropDown" name="httpTrustpoint" id="httpTrustpoint"
+										ng-model="trustpoint.trustPoint"
+										k-data-source="trustPoints"  k-ng-delay="trustpoint.trustPoint"
+										ng-change="handleTrustPoint()"></select>
+									</div>
+								</div>
+								<div ng-if="false" class="row form-group">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label" ng-bind="'management_http_ip_device_tracking' | translate"></span>
+									</div>
+									<div class="col-sm-3">
+										<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+										ng-init="ip_device_tracking='Enable'"
+										ng-model="ip_device_tracking"
+										ng-change="enableApplyButton()"></toggle-button>
+									</div>
+								</div>
+								<div ng-if="false" class="row form-group">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label" ng-bind="'management_http_timeout_policy' | translate"></span>
+									</div>
+									<div class="col-sm-3">
+										<toggle-button button-options="Enable,Disable"
+										ng-init="ip_device_tracking='Enable'"
+										ng-model="ip_device_tracking"
+										ng-change="enableApplyhttpBtn()"></toggle-button>
+									</div>
+								</div>
+								<div class="webui-centerpanel-subtitle col-sm-9" ng-bind="'management_http_timeout_policy_config' | translate">
+								</div>
+								<div class="row form-group">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label" ng-bind="'management_http_timeout_policy' | translate"></span>
+									</div>
+									<div class="col-sm-3">
+										<input  name="httpTimeout" id="httpTimeout"
+										ng-model="timeoutPolicy.httpTimeout"
+										class="form-control k-textbox"							
+										data-numericcheck
+										data-numericcheck-msg="{{'management_http_timeout' | translate}}"
+										data-maximum="600" data-maximum-msg="{{'management_http_timeoutsec' | translate}}"
+										data-minimum="1" data-minimum-msg="{{'management_http_timeoutsec' | translate}}"
+										ng-keyup="enableApplyhttpBtn()">
+										<tooltip helptext="{{'help_HTTP_timeout' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label" ng-bind="'management_http_server_lifetime' | translate"></span>
+									</div>
+									<div class="col-sm-3">
+										<input  name="httpServerLifetime"
+										id="httpServerLifetime"
+										ng-model="timeoutPolicy.serverLifeTime"
+										class="form-control k-textbox"
+										data-numericcheck
+										data-numericcheck-msg="{{'management_http_timeout' | translate}}"
+										data-maximum="86400" data-maximum-msg="{{'management_http_lifetime' | translate}}"
+										data-minimum="1" data-minimum-msg="{{'management_http_lifetime' | translate}}"
+										ng-keyup="enableApplyhttpBtn()">
+									</div>
+								</div>
+								<div class="row form-group">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label" ng-bind="'management_http_max_request' | translate"></span>
+									</div>
+									<div class="col-sm-3">
+										<input  name="maxRequest" id="maxRequest"
+										ng-model="timeoutPolicy.maxRequest"
+										class="form-control k-textbox"
+										data-numericcheck
+										data-numericcheck-msg="{{'management_http_timeout' | translate}}"
+										data-maximum="86400" data-maximum-msg="{{'management_http_lifetime' | translate}}"
+										data-minimum="1" data-minimum-msg="{{'management_http_lifetime' | translate}}"
+										ng-keyup="enableApplyhttpBtn()">
+
+									</div>
+								</div>
+
+						</form>
+
+					</div>
+				</div>
+			</div>
+				
+				</div>
+			</li>
+			
+			
+			<li ng-click="loadSnmp()">
+				<span class="panelbar__header panel-gradient-blue clearfix">
+					<div class="panelbar__open-icon">
+						<i class="icon-chevron" name="wssiArrow"></i>
+					</div>
+					<div class="panelbar__title">
+						{{'menu_snmp' | translate}}
+					</div> </span>
+				
+				<div>
+<!-- SNMP Page code -->		
+    <div class="row form-group">
+    <div class="col-sm-2 webui-leftpanel-label setpadding">
+								<span class="label">{{'management_snmp_gen_status' | translate}}</span>
+							</div>
+							<div class="col-sm-3">
+							<span class="toggleClass">
+								<toggle-button button-options="Enable,Disable" display-options="{{::'com_enable' | translate }},{{::'com_disable' | translate }}"
+								ng-model="snmpModel.status" ng-change="enableApplybtn1(snmpModel.status)"></toggle-button>
+							</span>	
+								<tooltip helptext="{{'help_SNMP_status' | translate}}" position="top"></tooltip>
+							</div>
+	</div>		
+	<div ng-hide="snmpModel.displayAllGrid === 'Disable' || snmpModel.status === 'Disable' " id="snmpTabTrip" kendo-tab-strip="snmpTabStrip" name="snmpTabStrip"
+	ng-model="snmpTab">
+		<ul>
+			<li class="k-state-active" ng-init="snmpTab = 'General'" name="snmpGeneralTab" ng-click="disableApply()">
+				{{'management_snmp_gen' | translate}}	
+			</li>
+			<li ng-hide="snmpModel.displayAllGrid === 'Disable' || snmpModel.status === 'Disable' " name="snmpCommunityTab" ng-click="disableApplyCommunity()">
+				{{'management_snmp_community' | translate}}	
+			</li>
+			<li ng-hide="snmpModel.displayAllGrid === 'Disable' || snmpModel.status === 'Disable'" name="snmpUserTab" ng-click="disableApplyUser()">
+				{{'management_snmp_users' | translate}}	
+			</li>
+			<li ng-hide="snmpModel.displayAllGrid === 'Disable' || snmpModel.status === 'Disable'" name="snmpHostTab" ng-click="disableApplyHost()">
+				{{'management_snmp_host' | translate}}	
+			</li>
+			<li ng-hide="snmpModel.displayAllGrid === 'Disable' || snmpModel.status === 'Disable'" name="snmpHostTab" ng-click="disableApplyV3GroupUser()">
+				{{'management_snmp_v3_group_user' | translate}}
+			</li>
+		</ul>
+
+		<div>
+			<div class="well">
+				<form name="snmpForm" id="snmpForm" kendo-validator="snmpValidator"
+				k-options="snmpValidations" >
+					<div>
+					    <div class="row form-group"></div>
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label">{{'management_snmp_gen_location' | translate}}</span>
+							</div>
+							<div class="col-sm-3">
+								<input type="text" class="k-textbox form-control" placeholder="" name="systemLocation"
+								ng-disabled="snmpModel.status === 'Disable'"
+								ng-model="snmpModel.systemLocation"		
+								ng-keyup="enableApplybtn()"					
+								/>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label">{{'management_snmp_gen_contact' | translate}}</span>
+							</div>
+							<div class="col-sm-3">
+								<input type="text" class="k-textbox form-control"  name="systemContact"
+								ng-disabled="snmpModel.status == 'Disable'"
+								ng-model="snmpModel.systemContact"
+								data-maximum-message="{{'management_snmp_contact_maxchar' | translate}}"
+								ng-keyup="enableApplybtn()"
+								/>
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label">{{'config_file_transfer_tftp_server' | translate}}</span>
+							</div>
+							<div class="col-sm-3">
+								<input type="text" class="k-textbox form-control"  name="snmpTftp"
+								ng-model="snmpModel.snmpTftp"
+								data-numericcheck-msg="{{'management_http_timeout' | translate}}"
+								data-maximum="99" data-maximum-msg="{{'management_snmp_tftp' | translate}}"
+								data-minimum="1" data-minimum-msg="{{'management_snmp_tftp' | translate}}"
+								ng-keyup="enableApplybtn()"
+								/>
+								<tooltip helptext="{{'help_SNMP_global_tftp' | translate}}" position="top"></tooltip>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label">{{'management_snmp_gen_globaltrap' | translate}}</span>
+							</div>
+
+							<div class="col-sm-3">
+								 <span class="toggleClass">
+								<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}" name="status"  id="status" ng-disabled="snmpModel.status == {{'com_disable' | translate}}"  ng-model="snmpModel.globalTrap" ng-change="enableApplybtn()"></toggle-button>
+									 </span>
+								<tooltip helptext="{{'help_SNMP_global_trap' | translate}}" position="top"></tooltip>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label">{{'management_snmp_gen_logging' | translate}}</span>
+							</div>
+							<div class="col-sm-3 mobility-center">
+								<span>{{snmpModel.logging}}</span>
+							</div>
+						</div>
+						<div class="row form-group">
+						    <div class="col-sm-4 webui-centerpanel-label">
+								
+							</div>
+						    <div class="col-sm-4 mobility-center">
+								<button class="btn btn-primary " kendo-button="applyBtn" ng-click="generalApply()" ng-disabled="disableApplyButton">
+								<span class="fa pl-apply"></span> {{'com_apply' | translate}}
+							</button>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+		<div>
+			<div >
+				<form kendo-validator="snmpCommunityValidator" k-options="snmpCommunityValidation">
+					<div kendo-grid="communityGrid" id="communityGrid" name="communityGrid"
+					k-options="communityGridOptions"
+					k-data-source="communityGridDataSource"
+					k-on-change="rowSelected(data)"
+					></div>
+				</form>
+				<div kendo-window="vlanGridWindow" k-title="'community_setup' | translate" k-visible="false" k-width="700" k-modal="true" id="vlanGridPopup" >
+					<div>
+						<form name="vlanForm" id="vlanForm" kendo-validator="snmpCommunityValidator" k-options="snmpCommunityValidation">
+							<div class="well">
+								<div class="row form-group"></div>          
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_community_name' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+										   name="vlanId"
+										   ng-model="snmpCommunity.Name"
+										   required data-required-msg="{{'management_snmp_name_required' | translate}}"
+										   ng-disabled="EditcommunityChanges"
+										   data-namevalidation-msg="{{'SNMP_community_name_exist' | translate}}">
+										<tooltip helptext="{{'help_SNMP_community_name' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_community_mode' | translate}}</span>
+									</div>
+									<div class="col-sm-7  fieldinput">
+                                        <select kendo-drop-down-list="communityDropDown"
+                                                name="AccessMode" id="AccessMode"
+                                                ng-model="snmpCommunity.AccessMode"
+                                                k-data-source="communityAccessModeOptions"
+									 			k-data-text-field="'modeName'"
+									            k-data-value-field="'modeValue'"
+												k-ng-delay ="snmpCommunity.AccessMode"></select>
+                                        <tooltip helptext="{{'help_SNMP_access_mode' | translate}}"></tooltip>
+                                    </div>
+								</div>
+								<div class="row form-group">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'com_access_value' | translate}}</span>
+									</div>
+									<div class="col-sm-3">
+										<input type="text" class="k-textbox form-control"  name="snmpTftp"
+										ng-model="snmpCommunity.accessValue"
+										data-numericcheck-msg="{{'management_http_timeout' | translate}}"
+										data-range="" data-range-msg="{{'management_snmp_community_invalid_access_value' | translate}}"
+										/>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div ng-show="communityChanges" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="apply()">
+						<i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="vlanCancel()">
+						<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+
+					<div ng-show="!communityChanges" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="apply()">
+						<i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="vlanCancel()">
+						<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div>
+			<div>
+				<form kendo-validator="snmpV3UserValidator"
+				k-options="snmpV3UsersValidations">
+					<div kendo-grid="snmpUserGrid" id="snmpUserGrid" name="snmpUserGrid"
+					k-options="userGridOptions"
+					k-data-source="userGridDataSource"
+					k-on-change="rowSelected(data)"
+					></div>
+				</form>
+				 <div kendo-window="v3UsersWindow" k-title="'user_setup' | translate" k-visible="false" k-width="700" k-modal="true" id="snmpUserPopup" >
+					 <div>
+						<form name="v3Form" id="v3Form" kendo-validator="snmpV3UserValidator" k-options="snmpV3UsersValidations">
+							<div class="well">
+								<div class="row form-group"></div>          
+								 <div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_v3user_name' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+										   name="userName"
+										   ng-model="snmpUser.userName"
+										   required data-required-msg="{{'management_snmp_username' | translate}}"
+										   data-duplicate data-duplicate-msg="{{'user_administration_username_exist' | translate}}"
+										   ng-disabled="EditUserChanges">
+									</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_v3user_group' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+										   name="groupName"
+										   ng-model="snmpUser.groupName"
+										   required data-required-msg="{{'management_snmp_grpname' | translate}}"
+										   data-groupnamevalidation data-groupnamevalidation-msg="{{'vlan_id_exist_msg' | translate}}">
+										<tooltip helptext="{{'help_SNMP_group' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_host_version' | translate}}</span>
+									</div>
+									<div class="col-sm-7  fieldinput">
+                                        <select kendo-drop-down-list="versionDropDown"
+                                                name="version" id="version"
+                                                ng-model="snmpUser.Version"
+                                                k-data-source="snmpVersionOptions"
+									 			k-data-text-field="'name'"
+									            k-data-value-field="'value'"
+												k-ng-delay ="snmpUser.Version"></select>
+                                        <tooltip helptext="{{'help_SNMP_version' | translate}}"></tooltip>
+                                    </div>
+								</div>
+								<div class="row form-group" ng-if="snmpUser.Version !='v3'">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'com_access_value' | translate}}</span>
+									</div>
+									<div class="col-sm-4">
+										<input type="text" class="k-textbox form-control"  name="snmpTftp"
+										ng-model="snmpUser.acessNumber"
+										data-numericcheck-msg="{{'management_http_timeout' | translate}}"
+										data-maximum="99" data-maximum-msg="{{'management_snmp_tftp' | translate}}"
+										data-minimum="1" data-minimum-msg="{{'management_snmp_tftp' | translate}}"
+										/>
+										<tooltip helptext="{{'help_SNMP_user_tftp' | translate}}"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group" ng-show="snmpUser.Version =='v3'">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_v3user_auth_protocol' | translate}}</span>
+									</div>
+									<div class="col-sm-7  fieldinput">
+                                        <select kendo-drop-down-list="authDropDown"
+                                                name="authProtocol" id="authProtocol"
+                                                ng-model="snmpUser.authProtocol"
+                                                k-data-source="authenticationProtocolOptions"
+									 			k-data-text-field="'nameAuth'"												
+									            k-data-value-field="'valueAuth'"
+												k-ng-delay ="snmpUser.authProtocol"></select>
+                                        <tooltip helptext="{{'help_SNMP_auth_protocol' | translate}}"></tooltip>
+                                    </div>
+								</div>
+								<div class="row form-group" ng-if="snmpUser.authProtocol != 'None'">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_v3user_auth_password' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+										   name="authPassword"
+										   ng-model="snmpUser.authPassword"
+										   type = "password"
+										   required data-required-msg="{{'management_snmp_password_required' | translate}}">
+										<tooltip helptext="{{'help_VLAN_ID' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group" ng-show="snmpUser.Version =='v3'">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_v3user_priv_protocol' | translate}}</span>
+									</div>
+									<div class="col-sm-7  fieldinput">
+                                        <select kendo-drop-down-list="privDropDown"
+                                                name="privProtocol" id="privProtocol"
+                                                ng-model="snmpUser.privProtocol"
+                                                k-data-source="privacyProtocolOptions"
+									 			k-data-text-field="'namePriv'"
+									            k-data-value-field="'valuePriv'"
+												k-ng-delay ="snmpUser.privProtocol"></select>
+                                        <tooltip helptext="{{'help_SNMP_priv_protocol' | translate}}"></tooltip>
+                                    </div>
+								</div>
+								<div class="row form-group" ng-if="snmpUser.privProtocol != 'None'">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_v3user_priv_password' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+										   name="privPassword"
+										   ng-model="snmpUser.privPassword"
+										   type = "password"
+										   required data-required-msg="{{'management_snmp_password_required' | translate}}">
+									</div>
+								</div> 
+							</div>
+						</form>
+					</div> 
+					<div ng-show="snmpUserChanges" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="apply()">
+						<i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="userCancel()">
+						<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+
+					<div ng-show="!snmpUserChanges" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="apply()">
+						<i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="userCancel()">
+						<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+				</div> 
+			</div>
+		</div>
+		<div>
+			<div>
+				<form kendo-validator="snmpHostValidator"
+				k-options="snmpHostValidaiton">
+					<div kendo-grid="snmpHostGrid" id="snmpHostGrid" name="snmpHostGrid"
+					k-options="hostGridOptions"
+					k-data-source="hostGridDataSource"
+					k-on-change="rowSelected(data)"></div>
+				</form>
+                <div kendo-window="hostWindow" k-title="'host_setup' | translate" k-visible="false" k-width="700" k-modal="true" id="snmpUserPopup" >
+					 <div>
+						<form name="HostForm" id="v3Form" kendo-validator="snmpHostValidator" k-options="snmpHostValidaiton">
+							<div class="well">
+								<div class="row form-group"></div>          
+								 <div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'common_ipv4_ipv6_address' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+										   name="ipAddress" id="ipAddress"
+										   ng-model="snmpHost.ipAddress"
+										   placeholder="X.X.X.X / X:X:X:X::X"
+										   autocomplete="off"
+										   data-ip data-ip-msg="{{::'com_invalidIp' | translate }}"
+										   required data-required-msg="{{::'management_snmp_ipaddress_required' | translate }}"
+										   data-duplicate data-duplicate-msg="{{'exclude_ip_exist' | translate}}"
+										   ng-disabled="EditHostChanges">
+									</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_host_port' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+										   name="udpPort"
+										   ng-model="snmpHost.udpPort"
+										   placeholder="0-65535"
+										   data-udpportvalidation-msg="{{::'acl_invalid_portString'|translate}}">
+										<tooltip helptext="{{'help_SNMP_port' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_host_version' | translate}}</span>
+									</div>
+									<div class="col-sm-7  fieldinput">
+                                        <select kendo-drop-down-list="versionDropDown"
+                                                name="version" id="version"
+                                                ng-model="snmpHost.version"
+                                                k-data-source="snmpVersionOptions"
+									 			k-data-text-field="'name'"
+									            k-data-value-field="'value'"
+												k-ng-delay ="snmpHost.version"
+												k-on-change="versionChange()"></select>
+                                        <tooltip helptext="{{'help_SNMP_version' | translate}}"></tooltip>
+                                    </div>
+								</div>
+								<div class="row form-group" ng-if="snmpHost.version =='v1'">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_host_type' | translate}}</span>
+									</div>
+									<div class="col-sm-7  fieldinput">
+                                        <select kendo-drop-down-list="type"
+                                                name="type" id="type"
+                                                ng-model="snmpHost.type"
+                                                k-data-source="messageTypeOptionsV1"
+									 			k-data-text-field="'name'"
+									            k-data-value-field="'value'"
+												k-ng-delay ="snmpHost.type"></select>
+                                    </div>
+								</div>
+								<div class="row form-group" ng-if="snmpHost.version !='v1'">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_host_type' | translate}}</span>
+									</div>
+									<div class="col-sm-7  fieldinput">
+                                        <select kendo-drop-down-list="type"
+                                                name="type" id="type"
+                                                ng-model="snmpHost.type"
+                                                k-data-source="messageTypeOptionsV2andV3"
+									 			k-data-text-field="'name'"
+									            k-data-value-field="'value'"
+												k-ng-delay ="snmpHost.type"></select>
+                                    </div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_host_community' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+										   name="communityName"
+										   ng-model="snmpHost.communityName"
+										   required data-required-msg="{{'management_snmp_comname_required' | translate}}">
+										<tooltip helptext="{{'snmp_host_community' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group" ng-show="snmpHost.version =='v3'">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_host_security' | translate}}</span>
+									</div>
+									<div class="col-sm-7  fieldinput">
+                                        <select kendo-drop-down-list="privDropDown"
+                                                name="securityLevel" id="securityLevel"
+                                                ng-model="snmpHost.securityLevel"
+                                                k-data-source="securityLevelOptions"
+									 			k-data-text-field="'name'"
+									            k-data-value-field="'value'"
+												k-ng-delay ="snmpHost.securityLevel"></select>
+                                        <tooltip helptext="{{'help_ports_switch_mode' | translate}}"></tooltip>
+                                    </div>
+								</div>
+							</div>
+						</form>
+					</div> 
+					<div ng-show="snmpHostChanges" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="apply()">
+						<i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="HostCancel()">
+						<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+
+					<div ng-show="!snmpHostChanges" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="apply()">
+						<i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="HostCancel()">
+						<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+				</div> 
+			</div>
+		</div>
+		<div>
+			<div >
+				<form kendo-validator="snmpV3UserGroupValidator" k-options="snmpV3UserGroupValidation">
+					<div kendo-grid="v3UserGroupGrid" id="v3UserGroupGrid" name="v3UserGroupGrid"
+						 k-options="v3UserGroupGridOptions"
+						 k-data-source="v3UserGroupGridDataSource"
+						 k-on-change="rowSelected(data)"
+					></div>
+				</form>
+				<div kendo-window="v3GroupUserWindow" k-title="'management_snmp_v3groupuser_setup' | translate" k-visible="false" k-width="700" k-modal="true" id="v3GroupUserGridPopup" >
+					<div>
+						<form name="v3GroupUserForm" id="v3GroupUserForm" kendo-validator="snmpV3UserGroupValidator" k-options="snmpV3UserGroupValidation">
+							<div class="well">
+								<div class="row form-group"></div>
+								<div class="row form-group">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_v3user_group' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+											   name="groupName"
+											   ng-model="snmpV3GroupUser.groupName"
+											   required data-required-msg="{{'management_snmp_grpname' | translate}}"
+											   data-groupnamevalidation data-groupnamevalidation-msg="{{'vlan_id_exist_msg' | translate}}"
+											   data-duplicate data-duplicate-msg="GroupName already exists">
+										<tooltip helptext="{{'help_SNMP_group' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group">
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'management_snmp_host_security' | translate}}</span>
+									</div>
+									<div class="col-sm-7  fieldinput">
+										<select kendo-drop-down-list="versionDropDown"
+												name="securityLevel" id="v3securityLevel"
+												ng-model="snmpV3GroupUser.securityLevel"
+												k-data-source="securityLevelOptions"
+												k-data-text-field="'name'"
+												k-data-value-field="'value'"
+												k-ng-delay ="snmpV3GroupUser.securityLevel"></select>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+					<div ng-show="snmpV3GroupUserChanges" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="apply()">
+							<i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="v3GroupUserCancel()">
+							<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+
+					<div ng-show="!snmpV3GroupUserChanges" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="apply()">
+							<i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="v3GroupUserCancel()">
+							<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div ng-hide="snmpModel.displayAllGrid === 'Disable' || snmpModel.status === 'Disable' ">
+		<div class="gridActionButtons">
+			<span ng-show = "IsShow">
+				<button kendo-button="addBtn" class="k-button btn btn-primary "
+				ng-click="addBtnFunction(true)">
+					<span class="fa pl-add"></span> {{'com_add' | translate}}
+				</button>
+				<button kendo-button="deleteBtn" class="k-button btn btn-primary"
+				ng-click="deleteBtnFunction()"
+				ng-disabled="enableDeleteBtn">
+					<span class="fa pl-delete"></span> {{'com_delete' | translate}}
+				</button>
+			</span>
+		</div>
+	</div>
+	<div kendo-notification="missingFieldNotification"></div>				
+				</div>				
+			</li>		
+			
+		</ul>
+	</div>
+</div>
+

@@ -1,0 +1,179 @@
+<!--
+Description: Library wiring of WebUI application
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+<!doctype html>
+<!--[if lt IE 7]>
+<html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>
+<html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>
+<html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js">
+    <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <script>
+            var createCanvas = document.createElement("canvas");
+            var canvascheck = (createCanvas.getContext) ? true : false;
+            if (window.FormData == undefined || !canvascheck) {
+                var msg = "The application is not supported in this browser\n\n";
+                msg += "Supported Browsers are:\n\n";
+                msg += "IE > 9\nGoogle Chorme >= 6\nMozilla >= 4\nSafari >= 11.1";
+                alert(msg);
+            }
+            delete createCanvas;
+        </script>
+        <!-- Wire Bootstrap CSS -->
+        <link rel="stylesheet" href="lib/bootstrap/css/bootstrap.min.css"/>
+
+        <!-- Wire any Kendo theme from the below location. Here kendo bootstrap look is wired -->
+        <link rel="stylesheet" href="lib/kendo/styles/kendo.common-bootstrap.min.css"/>
+        <link rel="stylesheet" href="lib/kendo/styles/kendo.bootstrap.min.css"/>
+        <link rel="stylesheet" href="lib/kendo/styles/kendo.dataviz.min.css"/>
+        <link rel="stylesheet" href="lib/kendo/styles/kendo.dataviz.bootstrap.min.css"/>
+
+        <!-- Wire icon font -->
+        <link rel="stylesheet/less" href="resources/fonts/style.css"/>
+
+        <!-- Wire Font Awesome CSS for icon fonts -->
+        <link rel="stylesheet" href="lib/fontawesome/css/font-awesome.min.css">
+
+        <!-- This is the custom CSS for WebUI -->
+
+        <link rel="stylesheet/less" href="resources/styles/bootstrap_customization.css"/>
+        <link rel="stylesheet/less" href="resources/styles/angular-wizard.css"/>
+        <link rel="stylesheet/less" href="resources/styles/typography.css"/>
+        <link rel="stylesheet/less" href="resources/styles/kendo_customization.css" />
+        <link rel="stylesheet" href="utils/megamenu/css/style.css">
+        <link rel="stylesheet/less" href="resources/styles/main.css"/>
+        <link rel="stylesheet/less" href="features/common/switch/resource/switch.css"/>
+
+        <!-- ng-cloak to wait until angular loads -->
+        <style>
+            [ng-cloak] {
+                display: none !important;
+            }
+            div.busyLoadingContainer {
+                display: none;
+            }
+            .busy div.busyLoadingContainer {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                background: #000;
+                opacity: 0.5;
+                filter: alpha(opacity=50);
+                display: block;
+                z-index: 99999;
+                text-align: center;
+            }
+            div.busyLoadingContainer span.spinner {
+                color: #fff;
+                font-size: 60px;
+                position: relative;
+                top: 50%;
+            }
+        </style>
+    </head>
+
+    <!-- Declare the app -->
+    <body ng-app="webUiDevApp" class="busy">
+        <div class="busyLoadingContainer">
+            <span class="spinner fa fa-spin fa-spinner"></span>
+        </div>
+        <div class="main-container">
+            <div>
+                <!-- Header-->
+                <div ng-include="'utils/header/views/header.html'"></div>
+                <div class="main">
+                    <span id="notification"></span>
+                    <!--Left Mega Menu-->
+                    <div ng-include="'utils/megamenu/megaMenu/views/megaMenu.html'"></div>
+                    <div ng-view="" class="webui-container">
+                        <!-- The view is filled via routes -->
+                    </div>
+		    <!-- for online help-->
+		    <div class="inlineHelpContainer">
+			<span class="fa fa-close inlineHelpClose" onclick='angular.element("body").removeClass("inlineHelp")'></span>
+			<iframe src="" width="100%" height="95%" id="inlineHelp"></iframe>
+		    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- use the css class no-js on top to get the exact container width -->
+
+        <!-- Scripts wired in Angular, D3, Boostrap -->
+
+        <script src="resources/styles/variables.js"></script>
+        <script src="lib/less/less.min.js"></script>
+        <script src="lib/d3/d3.min.js"></script>
+        <script src="lib/jquery/jquery.min.js"></script>
+        <script src="lib/ang/angular.min.js"></script>
+        <script src="lib/ang/angular-resource.min.js"></script>
+        <script src="lib/ang/angular-cookies.min.js"></script>
+        <script src="lib/ang/angular-sanitize.min.js"></script>
+        <script src="lib/ang/angular-route.min.js"></script>
+        <script src="lib/ang/ng-csv.min.js"></script>
+        <script src="lib/kendo/js/kendo.all.min.js"></script>
+        <script src="lib/kendo/js/kendo.angular.min.js"></script>
+        <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+        <script src="lib/ngDraggable/ngDraggable.js"></script>
+        <script src="lib/xml2json/xml2json.js"></script>
+        <script src="utils/directives/angular-wizard.js"></script>	
+        <script src="lib/lang/ja_lang.js"></script>
+        <script src="lib/lang/ko_lang.js"></script>
+        <script src="lib/lang/zh_lang.js"></script>
+        <script src="lib/lang/scrypt.js"></script>
+        <!-- Angular App, Controller and any other script wired here -->
+        <script src="config.js"></script>
+        <script src="version.js"></script>
+        <script src="js/deviceCommunicator.js"></script>
+        <script src="js/deviceCommunicatorCLI.js"></script>
+        <script src="app.js"></script>
+        <script src="utils/filters/translateFilter.js"></script>
+        <script src="utils/directives/commonDirectives.js"></script>
+        <!-- Add services here -->
+        <script src="utils/services/commonServices.js"></script>
+        <script src="utils/services/validationService.js"></script>
+        <script src="features/portsConfig/portsConfDataService.js"></script>
+        <script src="utils/services/datasourceService.js"></script>
+        <script src="features/common/db/dashlet/DashletService.js"></script>
+        <script src="features/stp/stpDataService.js"></script>
+        <script src="features/common/switch/switchService.js"></script>
+        <script src="features/common/stackConf/switchService.js"></script>
+        <script src="utils/directives/addEditDirective.js"></script>
+        <!-- Add Filters here -->
+        <script src="utils/filters/customFilter.js"></script>
+        <!--Add Controllers here-->
+        <script src="utils/header/headerCtrl.js"></script>
+        <script src="utils/megamenu/megaMenu/megaMenuCtrl.js"></script>
+        <script src="utils/directives/toggleButtonDirective.js"></script>
+        <script src="utils/directives/validationDirective.js"></script>
+        <script src="features/common/db/dashlet/dashletDirectives.js"></script>
+        <script src="features/common/db/cl/criticalLogController.js"></script>
+        <script src="features/common/switch/switchController.js"></script>
+        <script src="features/common/stackConf/switchController.js"></script>
+        <script src="features/common/db/CPUMemory/CPUMemoryController.js"></script>
+        <script src="features/common/db/sysInfo/systemInfoCtrl.js"></script>
+        <script src="features/aaa/aaaService.js"></script>
+        <script src="features/poe/poeController.js"></script>
+        <script>
+            $(window).on('load', function() {
+                angular.element("body.busy").removeClass("busy");
+            });
+        </script>
+        <style parse-style>
+		div[button-options~="{{'com_switch' | translate}},{{'portconfig_port_routed' | translate}}"] .toggle-slider
+			{
+			background-color: rgba(11, 132, 20, 0.73);
+		}
+    </body>
+</html>

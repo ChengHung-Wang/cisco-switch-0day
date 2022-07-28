@@ -1,0 +1,27 @@
+###
+show cdp neighbors detail
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show cdp neighbors detail</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="showCdpNeighborsDetail">
+<Container name="Device ID" alias="wnwebdata" dynamic="true">
+<Property name="Device ID" alias="ClientName" distance = "1.0" length = "1" type = "String"/>
+<Property name="IP address" alias="IP" distance = "1.0" length = "1" type = "String"/>
+<Property name="Platform" alias="Manufacturer" distance = "1.0" length = "1"  end-delimiter = "," type = "String"/>
+<Property name="Capabilities" distance = "1.0" length = "3"  type = "String"/>
+<Property name="Interface"  alias="SwitchPort" distance = "1.0" length = "1" end-delimiter = "," type = "String"/>
+<Property name="Version" alias="OS" distance = "1.0" length = "1" end-delimiter = "," type = "String"/>
+<Property name="Power drawn" alias="PoEDrawn" distance = "1.0" length = "1" type = "String"/>
+<Property name="Native VLAN" alias="VLAN" distance = "1.0" length = "1"  type = "String"/>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

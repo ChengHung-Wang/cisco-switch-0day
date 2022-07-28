@@ -1,0 +1,98 @@
+###
+show running-config aaa accounting
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show running-config aaa accounting</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowRunningconfigAaaAccounting">
+<Container name="wnwebdata">
+
+<Container name="aaa accounting" alias="entry" dynamic="true">
+<Container name="aaa accounting login" alias = "loginAccounting" dynamic = "true">
+<Property name="aaa accounting login" alias = "name" distance = "1" length = "1" type = "String"/>
+<Container name="group">
+<Property name="group" alias="list1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="list2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="list3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="list4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+
+<Container name="aaa accounting exec" alias = "execaccounting" dynamic = "true">
+<Property name="aaa accounting exec" alias = "name" distance = "1" length = "1" type = "String"/>
+<Property name="aaa accounting" alias = "type" distance = "1" length = "1" type = "String"/>
+<Container name="group">
+<Property name="group" alias="list1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="list2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="list3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="list4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+
+<Container name="aaa accounting network" alias = "networkaccounting" dynamic = "true">
+<Property name="aaa accounting network" alias = "name" distance = "1" length = "1" type = "String"/>
+<Property name="aaa accounting" alias = "type" distance = "1" length = "1" type = "String"/>
+<Container name="group">
+<Property name="group" alias="list1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="list2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="list3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="list4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+
+<Container name="aaa accounting commands" alias = "commandsaccounting" dynamic = "true">
+<Property name="aaa accounting commands" alias = "name" distance = "2" length = "1" type = "String"/>
+<Property name="aaa accounting" alias = "type" distance = "1" length = "1" type = "String"/>
+<Container name="group">
+<Property name="group" alias="list1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="list2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="list3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="list4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+
+<Container name="aaa accounting system" alias = "systemaccounting" dynamic = "true">
+<Property name="aaa accounting system" alias = "name" distance = "1" length = "1" type = "String"/>
+<Property name="aaa accounting" alias = "type" distance = "1" length = "1" type = "String"/>
+<Container name="group">
+<Property name="group" alias="list1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="list2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="list3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="list4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+
+<Container name="aaa accounting dot1x" alias = "dot1xaccounting" dynamic = "true">
+<Property name="aaa accounting dot1x" alias = "name" distance = "1" length = "1" type = "String"/>
+<Property name="aaa accounting" alias = "type" distance = "1" length = "1" type = "String"/>
+<Container name="group" >
+<Property name="group" alias="list1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="list2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="list3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="list4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+
+<Container name="aaa accounting Identity" alias = "identityaccounting" dynamic = "true">
+<Property name="aaa accounting Identity" alias = "name" distance = "1" length = "1" type = "String"/>
+<Property name="aaa accounting" alias = "type" distance = "1" length = "1" type = "String"/>
+<Container name="group" >
+<Property name="group" alias="list1" distance = "1" length = "1" type = "String"/>
+<Property name="group" alias="list2" distance = "3" length = "1" type = "String"/>
+<Property name="group" alias="list3" distance = "5" length = "1" type = "String"/>
+<Property name="group" alias="list4" distance = "7" length = "1" type = "String"/>
+</Container>
+</Container>
+
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->

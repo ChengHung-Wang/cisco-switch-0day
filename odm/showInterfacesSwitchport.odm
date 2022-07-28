@@ -1,0 +1,28 @@
+###
+show interfaces * switchport
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show interfaces * switchport</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="showInterfacesSwitchport">
+<Container name="wnwebdata" >
+<Container name="Name" dynamic="true">
+<Property name="Name" alias="intfName" distance="1" length="1" type ="String"/>
+<Property name="Administrative Mode" alias="swtMode" distance="1" length="2" type ="String"/>
+<Property name="Access Mode VLAN" alias="accessVlan" distance="1" length="1" type ="String"/>
+<Property name="Trunking Native Mode VLAN" alias="nativeVlan" distance="1" length="1" type ="String"/>
+<Property name="Voice VLAN" alias="voiceVlan" distance="1" length="1" type ="String"/>
+<Property name="Trunking VLANs Enabled" alias="vlanIDs" distance="1" length="1" type ="String"/>
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

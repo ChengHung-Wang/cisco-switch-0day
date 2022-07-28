@@ -1,0 +1,20 @@
+<div class="submenuTitle " ng-click='show = !show' ng-init="leftPaddingCount = (leftPaddingCount +1);leftPadding = leftPaddingCount*(leftPaddingCount==1?45:30); iconLeftPosition=leftPaddingCount*15;">
+	<div ng-if="submenu.icon" class="icon-megamenu-submenu menuIcon" ng-style="{left:iconLeftPosition + 'px'}">
+		<!-- Description: submenus
+		Copyright (c) 2016 by Cisco Systems, Inc.
+		All rights reserved.-->
+		<img ng-src="utils/megamenu/{{submenu.icon}}">
+	</div>
+
+	<div class="menu-item">
+		<a  ng-if="submenu.url" href="{{submenu.url}}" ng-click="selectTab(submenu.id)" ng-style="{paddingLeft:leftPadding + 'px'}" title="{{((submenu.nlskey || submenu.title) | translate)}}">{{((submenu.nlskey || submenu.title) | translate)}}</a>
+		<a ng-if="! submenu.url"  ng-click="selectTab(submenu.id)" ng-style="{paddingLeft:leftPadding + 'px'}" title="{{((submenu.nlskey || submenu.title) | translate)}}">{{((submenu.nlskey || submenu.title) | translate)}}</a>
+	</div>
+	<div ng-if="submenu.fontawesome" class="icon-megamenu-submenu">
+		<i class="fa {{submenu.fontawesome}} {{(show?'fa-angle-down':'')}}"></i>
+	</div>
+</div>
+
+<ul  ng-if="submenu.submenus" ng-show="show" style="padding:0">
+	<li ng-repeat="submenu in submenu.submenus" ng-include="'utils/megamenu/megaMenu/views/submenus.html'"></li>
+</ul>

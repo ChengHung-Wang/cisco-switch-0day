@@ -1,0 +1,23 @@
+###
+show interfaces * description
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show interfaces * description</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="showInterfacesDescription">
+<Table  name="wnwebdata">
+<Header name = "Interface" start = "0" end = "30" type = "String"/>
+<Header name = "Status" start = "31" end = "40" type = "String"/>
+<Header name = "Protocol" start = "42" end = "49" type = "String"/>
+<Header name = "Description" start = "54" end = "-1" type = "String"/>
+</Table>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

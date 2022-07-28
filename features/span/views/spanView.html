@@ -1,0 +1,246 @@
+<!--
+Description: View for span and rspan
+Copyright (c) 2018 by Cisco Systems, Inc.
+All rights reserved.
+-->
+<div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+ <div class="btnView">
+	<div class="pageTitle" ng-hide = "isEz1kDevice" ng-bind="'span_rspan_title' | translate"></div>
+	<div class="pageTitle" ng-show = "isEz1kDevice" ng-bind="'span_title' | translate"></div>
+    <div class="form-group">
+        <div>
+            <button kendo-button="addspanButton" class="btn btn-primary margin-right-10" ng-click="addspanRspan()" ng-disabled="disableAddButton"><span class="fa pl-add"></span> {{'com_add' | translate}}</button>
+            <button kendo-button="deleteSpanButton" class="btn btn-primary" ng-click="showDeleteWindow(true)" ng-disabled="disableDeleteButton"><span class="fa pl-delete"></span> {{'com_delete' | translate}}</button>
+        </div>
+    </div>
+	<div class="form-group"></div>
+    <div class="form-group">
+        <div>
+            <div kendo-grid="spanGrid" id="spanGrid" name="spanGrid"
+                 k-options="spanGridOptions"
+                 k-data-source="spanDataSource"
+                 k-on-change="onSelectSpanHandler(data)" >
+            </div>
+        </div>
+        <div kendo-window="deletespanWindow" k-title="'{{'msg_delete_confirmation_window' | translate}}'"
+             k-modal="true"
+             k-width="500" k-visible="false" class="static_deleteWindow"
+                >{{'msg_delete_confirmation' | translate}}
+            <div class="margin-top-05">
+
+                <button kendo-button="deleteCancelBtn" class="btn btn-primary margin-top-14px  pull-right"
+                        ng-click="showDeleteWindow(false)">
+                   {{'com_cancel' | translate}} 
+                </button>
+                <button kendo-button="deleteOkBtn"
+                        class="btn btn-primary margin-top-14px margin-right-07px pull-right"
+                        ng-click="deleteSpan()"> {{'com_ok' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="window">
+	<div>
+		<form name="spanForm" id="spanForm" kendo-validator="spanValidations" k-options="spanValidations" data-role="validator" novalidate="novalidate">
+				<div class="row form-group"></div>									
+				
+				<div class="row form-group">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<span class="label">{{'span_rspan_src' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<select kendo-drop-down-list name="source_dropdown" id="source_dropdown" ng-model="span.sourceDropVal" k-data-source="sourceDropData" k-data-text-field="'sourceName'" k-data-value-field="'sourceValue'" k-ng-delay="span.sourceDropVal" k-on-change="checkSpanStatus()"></select>
+						<tooltip helptext="{{'span_help_source' | translate}}"></tooltip>
+					</div>
+				</div>
+								
+				<div class="row form-group"  ng-if="span.sourceDropVal=='Local'">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<span class="label">{{'span_rspan_src_dir' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<select kendo-drop-down-list name="traf_dropdown" id="traf_dropdown" ng-model="span.trafDropVal" k-data-source="trafDropData" k-data-text-field="'trafName'" k-data-value-field="'trafValue'" k-ng-delay="span.trafDropVal"></select>
+						<tooltip helptext="{{'span_help_source_direction' | translate}}"></tooltip>
+					</div>
+				</div>								
+						
+				<div class="row form-group"  ng-if="span.sourceDropVal=='Remote'">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<span class="label">{{'vlan_id' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<input class="k-textbox form-control" name="vlanID" id="vlanID" ng-model="span.vlanID" 
+							num-only autocomplete="off"	placeholder="" required data-required-msg="{{'vlan_id_req_msg' | translate}}" />
+					</div>
+				</div>		
+										
+				
+				<div class="row form-group" ng-if="span.sourceDropVal=='Local'">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<strong>{{'db_power_available' | translate}}</strong>
+					</div>
+					<div class="col-sm-1 arrW"></div>
+					<div class="col-sm-3 text-left">
+						<strong>{{'span_rspan_select' | translate}}</strong>
+					</div>
+				</div>
+				<div class="row form-group" ng-if="span.sourceDropVal=='Local'">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<select multiple name="sourceFrom" size="8" class="multiselectbox"
+												id="sourceFrom"
+												ng-model="span.sourceintMethod"
+												ng-options="serverOption for serverOption in availableSourceListOptions"></select>
+					</div>
+					<div class="col-sm-1 arrW">
+						<input type="button" id="aaaServerGroupMoveRight"
+														ng-click="moveToSourceServerGroup()"
+														value=">">
+														<br/><br/>
+														<input type="button" id="sourceGroupMoveLeft"
+														ng-click="moveFromSourceServerGroup()"
+														value="<">
+					
+					</div>
+					<div class="col-sm-2">
+						<select multiple name="sourceTo" size="8" class="multiselectbox"
+												id="sourceTo"
+												ng-model="span.sourceselList"
+												ng-options="serverOption for serverOption in sourceSelectedServerGroupOptions"></select>
+					</div>
+				</div>
+
+
+				<div class="row form-group">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<span class="label">{{'trouble_shoot_ping_test' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<select kendo-drop-down-list name="dest_dropdown" id="dest_dropdown" ng-model="span.destDropVal" k-data-source="destDropData" k-data-text-field="'destName'" k-data-value-field="'destValue'" k-ng-delay="span.destDropVal" k-on-change="checkSpanStatus()"></select>
+						<tooltip helptext="{{'span_help_destination' | translate}}"></tooltip>
+					</div>
+				</div>
+				
+				<div class="row form-group"  ng-if="span.destDropVal=='Remote'">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<span class="label">{{'vlan_id' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<input class="k-textbox form-control" name="rvlanID" id="rvlanID" ng-model="span.rvlanID" 
+							num-only autocomplete="off"	placeholder="" required data-required-msg="{{'vlan_id_req_msg' | translate}}" />
+					</div>
+				</div>	
+				
+				<div class="row form-group" ng-if="span.destDropVal=='Local'">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<strong>{{'db_power_available' | translate}}</strong>
+					</div>
+					<div class="col-sm-1 arrW"></div>
+					<div class="col-sm-3 text-left">
+						<strong>{{'span_rspan_select' | translate}}</strong>
+					</div>
+				</div>
+				<div class="row form-group" ng-if="span.destDropVal=='Local'">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<select multiple name="destFrom" size="8" class="multiselectbox"
+												id="destFrom"
+												ng-model="span.destintList"
+												ng-options="serverOption for serverOption in availableDestListOptions"></select>
+					</div>
+					<div class="col-sm-1 arrW">
+						<input type="button" id="aaaServerGroupMoveRight"
+														ng-click="moveToDestServerGroup()"
+														value=">"/>
+														<br/><br/>
+														<input type="button" id="aaaServerGroupMoveLeft"
+														ng-click="moveFromDestServerGroup()"
+														value="<"/>
+					
+					</div>
+					<div class="col-sm-2">
+						<select multiple name="destTo" size="8" class="multiselectbox"
+												id="destTo"
+												ng-model="span.destselList"
+												ng-options="serverOption for serverOption in destSelectedServerGroupOptions"></select>
+					</div>
+				</div>
+				
+				<div class="row form-group"></div>
+				<div class="row form-group" ng-show="filterView">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<span class="label">{{'span_rspan_filter' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<input  type="checkbox" name="filterName" ng-model="span.filterValue" ng-disabled="disableFilter" ng-change="filterOnChange()"/>
+					</div>
+				</div>
+				<div class="row form-group" ng-show="displayMsg">			
+					<div class="col-sm-3 toolPos"></div>
+					<div class="col-sm-3 toolPos">
+						<span class="k-widget k-tooltip" style="width:480px">
+						<span class="k-icon k-warning"> </span>{{'span_source_dest_filter_select' | translate }}</span>
+					</div>
+				</div>
+				<div class="row form-group"></div>
+				<div class="row form-group" ng-show="span.filterValue == true">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<span class="label">{{'span_rspan_filter_type' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<select kendo-drop-down-list name="filter_dropdown" id="filter_dropdown" ng-model="span.filterDropVal" k-data-source="filterData" k-data-text-field="'filterName'" k-data-value-field="'filterValue'" k-ng-delay="span.filterDropVal"></select>
+						<tooltip helptext="{{'span_help_filter' | translate}}"></tooltip>
+					</div>
+				</div>
+				
+				<div class="row form-group" ng-if="span.filterValue == true && span.filterDropVal == 'vlan'">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<span class="label">{{'vlan_id' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<input class="k-textbox form-control" name="filtervlanID" id="filtervlanID" ng-model="span.filtervlanID"
+						autocomplete="off"	num-only min="1" max="4094" data-range="" 
+							data-range-msg="{{'portconfig_vlan_range' | translate}}" required data-required-msg="{{'vlan_id_req_msg' | translate}}"/>
+					</div>
+				</div>	
+				
+				<div class="row form-group" ng-show="span.filterValue == true && span.filterDropVal == 'ipv4'">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<span class="label">{{'span_rspan_available_acl' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<select kendo-drop-down-list name="filter_drop" id="filter_drop" ng-model="span.filterAddDropVal" k-data-source="filteraddData" k-data-text-field="'filterAddName'" k-data-value-field="'filterAddValue'" k-ng-delay="span.filterAddDropVal"></select>
+					</div>
+				</div>
+				
+				<div class="row form-group" ng-show="span.filterValue == true && span.filterDropVal == 'ipv6'">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<span class="label">{{'span_rspan_available_acl' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<select kendo-drop-down-list name="filter_dropip" id="filter_dropip" ng-model="span.filteripDropVal" k-data-source="filteripData" k-data-text-field="'filteripName'" k-data-value-field="'filteripValue'" k-ng-delay="span.filteripDropVal"></select>
+					</div>
+				</div>
+				
+		
+		</form>   
+	</div>
+	<div ng-show="kendoWindow.isEditMode" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="doneAddEditKendoWindow()" ng-disabled="disableSaveButton"><i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelAddEditKendoWindow()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+	
+	<div ng-show="!kendoWindow.isEditMode" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="doneAddEditKendoWindow()" ng-disabled="disableSaveButton"><i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelAddEditKendoWindow()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+
+</div>
+

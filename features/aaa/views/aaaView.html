@@ -1,0 +1,619 @@
+<div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+<div class="btnView">
+	<div class="pageTitle" ng-bind="'menu_security' | translate">
+	</div>
+	<div kendo-tab-strip="aaaTab">
+			<ul>
+				<li class="k-state-active" name="">{{'aaa_server_title' | translate}}</li>	
+				<li name="" ng-click="loadPolicyTab()">{{'aaa_access_policy' | translate}}</li>
+			</ul>
+			<div kendo-tab-strip="aaaServerTab">
+			<ul>
+				<li class="k-state-active" >{{'aaa_server' | translate}}</li>	
+				<li ng-click="onClickAAAServerGroupTab()">{{'aaa_servergroups' | translate}}</li>
+				<li ng-click="onClickAAAAdvanceTab()">{{'aaa_aaa_advance' | translate}}</li>
+			</ul>
+			<!-- AAA Server Start -->
+			<div >			
+				<div class="row form-group">
+					<div class="col-sm-3 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label pl-mandatory"> {{'aaa_enable_title' | translate}}</span>
+					</div>
+					<div class="col-sm-3">
+						<span class="toggleClass">
+							<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+								ng-change="globalStatusChange()"
+								ng-model="aaaStatus"></toggle-button>
+						</span>                                        
+					</div>
+					<button kendo-button="applyButton" class="btn btn-primary"
+							ng-disabled="disableApplyButton" ng-click="applyAAAStatus()">
+					   <span class="fa pl-apply"></span> {{'com_apply' | translate}}
+					</button>
+				</div>
+		
+				<div>
+					<div>
+						<div kendo-grid="aaaServerRadiusGrid" id="aaaServerRadiusGrid" name="aaaServerRadiusGrid" k-options="serverRadiusGridOptions" 
+						k-data-source="serverRadiusGridDataSource" 
+						k-on-change="onSelectAAAserverHandler(data)"></div>
+						<div class="gridActionButtons">
+							<button kendo-button="addServerRadiusBtn" class="btn btn-primary pl-add" ng-click="addServerRadiusRow()">
+								{{'com_add' | translate}}
+							</button>
+							<button kendo-button="deleteServerRadiusBtn" class="btn btn-primary pl-delete" ng-disabled="deleteRadiusServers" ng-click="deleteConfirmation('deleteServer')">
+								{{'com_delete' | translate}}
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- AAA Server End -->
+			
+			
+			
+			<!-- AAA Server Group Start -->
+			<div>
+					<div>
+						<div kendo-grid="aaaServerGroupsGrid" id="aaaServerGroupsGrid" name="aaaServerGroupsGrid" k-options="servergroupsGridOptions" 
+						k-data-source="serverGroupDataSource" k-rebind="servergroupsGridOptions" k-on-change="onSelectAAAServerGroupData(data)"
+						></div>
+						<div class="gridActionButtons">
+							<button kendo-button="addServerGroupsBtn" class="btn btn-primary pl-add" ng-click="addServerGroupsRow()">
+								{{'com_add' | translate}}
+							</button>
+							<button kendo-button="deleteServerGroupsBtn" class="btn btn-primary pl-delete" ng-disabled="deleteServerGroups" ng-click="serverGroupDeleteConfirm()">
+								{{'com_delete' | translate}}
+							</button>
+						</div>
+					</div>
+			</div>
+			<!-- AAA Server Group End-->
+			
+			<!-- AAA Advanced Start -->
+			<div id="aaaConfServerId" >
+					<div>
+					<div class="row form-group">
+						   <div class="col-sm-3">
+						   <div class="panel panel-default noborder">
+						                <div class="panel-heading noborder panelHeadingCustom">
+						                <span class="headerfont" style="font-weight: bold;">{{'aaa_configuration_title' | translate}}</span>
+						        </div>
+						      </div>
+						   </div>
+							    <div class="col-sm-9">
+						    </div>
+						</div>
+								<div class="row form-group">
+								<div class="col-sm-3">
+									<span class="label">{{'aaa_local_authentication' | translate}}</span>
+								</div>
+								<div class="col-sm-3 fieldinput">
+									<select kendo-drop-down-list name="aaaAdvancedLocalAuthentication" id="aaaAdvancedLocalAuthentication" ng-model="aaaAdvanced.localAuthentication" ng-change="validateForAAAAdvancedConfig()" k-data-source="LocalAuthentication1"  k-data-text-field="'name'" k-data-value-field="'value'" ></select>
+								</div>
+						    </div>
+							    <div class="row form-group">
+								    <div class="col-sm-3">
+								        <span class="label webui-centerpanel-label">{{'aaa_local_authorization' | translate}}</span>
+								    </div>
+								    <div class="col-sm-3 fieldinput">
+								        <select kendo-drop-down-list name="aaaAdvancedLocalAuthorization" id="aaaAdvancedLocalAuthorization"
+								                ng-model="aaaAdvanced.localAuthorization" k-data-source="LocalAuthorization1" 
+								                k-data-text-field="'name'" k-data-value-field="'value'" ng-change="checkStatus()"
+												k-ng-delay ="aaaAdvanced.localAuthorization"></select>
+								     </div>
+								</div>
+								<div class="row form-group">
+								    <div class="col-sm-3">
+								        <span class="label">{{'aaa_configuration_loadBalance' | translate}}</span>
+								    </div>
+								    <div class="col-sm-3">
+								    <span class="toggleClass">
+								        <toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}" 
+								                      ng-model="aaaAdvanced.radiusServerLoadBalance" ng-change="validateForAAAAdvancedConfig()"></toggle-button></span>								
+								    </div>
+								</div>
+								<div class="row form-group">
+						   <div class="col-sm-2">
+						   <div class="panel panel-default noborder">
+						                <div class="panel-heading noborder panelHeadingCustom">
+						                <span class="headerfont" style="font-weight: bold;">{{'aaa_configuration_radiusFallBack' | translate}}</span>
+						        </div>
+						      </div>
+						   </div>
+							    <div class="col-sm-10">
+						    </div>
+						    </div>
+						    <div class="row form-group ">
+							    <div class="col-sm-3">
+							        <span class="label">{{'aaa_retransmit_interval' | translate}}</span>
+							    </div>
+							    <div class="col-sm-3">
+							        <input class="k-textbox form-control"
+							               name="retransmitInterval" id="retransmitInterval"
+							               placeholder="0-100" min="0" max="100" maxlength="3"
+				                           data-range data-range-msg="Invalid Retranmit Interval"
+							               data-check data-check-msg="{{'aaa_configuration_retransmitInterval_invalid' | translate}}"
+							               data-numericrange="0-101" data-numericrange-msg="{{'aaa_configuration_retransmitIntervalNum_range' | translate}}"
+							               ng-model="aaaAdvanced.retransmitInterval" ng-change="validateForAAAAdvancedConfig()">
+							               <tooltip helptext="{{'help_aaa_configuration_retransmitInterval' | translate}}"></tooltip>
+							    </div>
+							</div>
+							<div class="row form-group">
+							    <div class="col-sm-3">
+							        <span class="label">{{'aaa_timeout_interval_seconds' | translate}}</span>
+							    </div>
+							    <div class="col-sm-3">
+							        <input class="k-textbox form-control"
+							               name="timeoutInterval" id="timeoutInterval"
+							               placeholder="1-1000" min="1" max="1000" maxlength="4"
+				                           data-range data-range-msg="Invalid Timeout Interval"
+							               data-check data-check-msg="{{'aaa_configuration_timeoutInterval_invalid' | translate}}"
+							               data-numericrange="1-1001" data-numericrange-msg="{{'aaa_configuration_timeoutIntervalNum_range' | translate}}"
+							               ng-model="aaaAdvanced.timeoutInterval" ng-change="validateForAAAAdvancedConfig()">
+							               <tooltip helptext="{{'help_aaa_configuration_timeoutInterval' | translate}}"></tooltip>
+							    </div>
+							</div>
+							<div class="row form-group">
+							    <div class="col-sm-3">
+							        <span class="label">{{'aaa_dead_time_Minutes' | translate}}</span>
+							    </div>
+							    <div class="col-sm-3">
+							        <input class="k-textbox form-control"
+							               name="deadTime" id="deadTime"
+							               placeholder="1-1440" min="1" max="1440" maxlength="4"
+				                           data-range data-range-msg="Invalid Deadtime Interval"
+							               data-check data-check-msg="{{'aaa_configuration_deadTime_invalid' | translate}}"
+							               data-numericrange="1-1441" data-numericrange-msg="{{'aaa_configuration_deadTimeNum_range' | translate}}"
+							               ng-model="aaaAdvanced.deadtime" ng-change="validateForAAAAdvancedConfig()">
+							               <tooltip helptext="{{'help_aaa_configuration_deadTime' | translate}}"></tooltip>
+							    </div>
+							</div>
+							<div ng-hide="true">
+							<div class="row form-group">
+						   <div class="col-sm-3">
+						   <div class="panel panel-default noborder">
+						                <div class="panel-heading noborder panelHeadingCustom">
+						                <span class="headerfont" style="font-weight: bold;">{{'aaa_configuration_radiusSession' | translate}}</span>
+						        </div>
+						      </div>
+						   </div>
+							    <div class="col-sm-9">
+						    </div>
+						</div>
+						<div class="row form-group">
+								  <div class="col-sm-3">
+									 <span class="label">{{'aaa_configuration_commit' | translate}}</span>
+								  </div>
+								  <div class="col-sm-3 custom-checkbox">
+									 <input type="checkbox" name="commit" id="commit" ng-change="validateForAAAAdvancedConfig()" class="k-checkbox form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="aaaAdvanced.commit">
+									<label class="k-checkbox-label" for="commit"></label>
+									<tooltip helptext="{{'help_aaa_configuration_commit' | translate}}"></tooltip>	
+								  </div>					  	
+							   </div>
+							   <div class="row form-group">
+								  <div class="col-sm-3">
+									 <span class="label">{{'aaa_configuration_discard' | translate}}</span>
+								  </div>
+								  <div class="col-sm-3 custom-checkbox">
+									 <input type="checkbox" name="discard" id="discard" ng-change="validateForAAAAdvancedConfig()" class="k-checkbox form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="aaaAdvanced.discard">
+									<label class="k-checkbox-label" for="discard"></label>
+									<tooltip helptext="{{'help_aaa_configuration_discard' | translate}}"></tooltip>	
+								  </div>					  	
+							   </div>
+							   <div class="row form-group">
+								  <div class="col-sm-3">
+									 <span class="label">{{'aaa_configuration_clear' | translate}}</span>
+								  </div>
+								  <div class="col-sm-3 custom-checkbox">
+									 <input type="checkbox" name="clear" id="clear" ng-change="validateForAAAAdvancedConfig()" class="k-checkbox form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="aaaAdvanced.clear">
+									<label class="k-checkbox-label" for="clear"></label>
+									<tooltip helptext="{{'help_aaa_configuration_clear' | translate}}"></tooltip>	
+								  </div>					  	
+							   </div>
+							   </div>
+							   
+							   <div class="row form-group">
+								   <div class="col-sm-4">
+								   <div class="panel panel-default noborder">
+								                <div class="panel-heading noborder panelHeadingCustom">
+								                <span class="headerfont" style="font-weight: bold;">{{'aaa_configuration_authenticationMethod' | translate}}</span>
+								        </div>
+								      </div>
+								   </div>
+									    <div class="col-sm-8">
+								    </div>
+							   </div>
+							   <div class="row form-group">
+								<div class="col-sm-3">
+									<span class="label">{{'aaa_configuration_console' | translate}}</span>
+								</div>
+								<div class="col-sm-3 fieldinput">
+									<select kendo-drop-down-list name="consoleConfAuthMethod" id="consoleConfAuthMethod" ng-model="aaaAdvanced.consoleAuthMethod" ng-change="validateForAAAAdvancedConfig()" k-data-source="aaaAdvancedServerGroupOptions"  k-data-text-field="'text'" k-data-value-field="'value'" ></select>
+								</div>
+						    </div>
+						    <div class="row form-group">
+								<div class="col-sm-3">
+									<span class="label">{{'aaa_configuration_default' | translate}}</span>
+								</div>
+								<div class="col-sm-3 fieldinput">
+									<select kendo-drop-down-list name="defaultConfAuthMethod" id="defaultConfAuthMethod" ng-model="aaaAdvanced.defaultAuthMethod" ng-change="validateForAAAAdvancedConfig()" k-data-source="aaaAdvancedServerGroupOptions"  k-data-text-field="'text'" k-data-value-field="'value'" ></select>
+								</div>
+						    </div>
+						    <div class="row form-group">
+								<div class="col-sm-3">
+									<span class="label">{{'aaa_configuration_mschap' | translate}}</span>
+								</div>
+								<div class="col-sm-3 fieldinput">
+									<select kendo-drop-down-list name="mschapConfAuthMethod" id="mschapConfAuthMethod" ng-model="aaaAdvanced.mschapAuthMethod" ng-change="validateForAAAAdvancedConfig()" k-data-source="aaaAdvancedServerGroupOptions"  k-data-text-field="'text'" k-data-value-field="'value'" ></select>
+								</div>
+						    </div>
+							<div class="row form-group">
+							    <div class="col-sm-6 col-sm-offset-1">
+							        <button kendo-button="saveBtn" class="k-button btn pull-right btn-primary"
+							                ng-click="aaaAdvancedConfigDataApply()" ng-disabled="disableApplyRadiusFallback">
+							            <span class="fa pl-apply"></span>{{'com_apply' | translate}}
+							        </button>
+							    </div>
+							</div>
+						
+					</div>
+			</div>
+			<!-- AAA Advanced End -->
+			</div>
+			
+			
+		<!-- access policy start -->	
+			<div>	
+					<div class="pagePolicyLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+					<div>
+						<div kendo-grid="aaaPolicyGrid" id="aaaPolicyGrid" name="aaaPolicyGrid" k-options="aaaPolicyGridOptions" 
+						k-data-source="aaaPolicyGridDataSource" k-on-change="onSelectAAAPolicyHandler(data)"></div>
+						<div class="gridActionButtons">
+							<button kendo-button="addaaaPolicyBtn" class="btn btn-primary pl-add" ng-click="addaaaPolicyRow()">
+								{{'com_add' | translate}}
+							</button>
+							<button kendo-button="deleteaaaPolicyBtn" class="btn btn-primary pl-delete" ng-disabled="deleteaaaPolicy" ng-click="deletePolicyConfirmation('deletePolicyServer')">
+								{{'com_delete' | translate}}
+							</button>
+						</div>
+					</div>
+					
+			</div>	
+	</div>
+	
+	
+</div>
+
+
+<div id="serverWindow" class="btnView">
+	<div>
+		<form name="radiusServersForm" id="radiusServersForm" kendo-validator="radiusServersValidator" k-options="aaaValidations" class="margin-top-10">
+			<div class="k-block k-info-colored">
+				<div class="row form-group">
+					<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label">{{'etherchannel_protocol' |  translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<select kendo-drop-down-list name="prot_dropdown" id="prot_dropdown" ng-model="aaa.servers.radius.aaaProtocol" k-data-source="protocolData" k-data-text-field="'protocolName'" ng-change="protocolChange()" k-data-value-field="'protocolValue'" k-ng-delay="aaa.servers.radius.aaaProtocol" ng-disabled="disableProtocolName"></select>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label pl-mandatory">{{'com_name' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<input class="k-textbox form-control"
+						name="radiusServersName" id="radiusServersName"
+						ng-model="aaa.servers.radius.name"
+						autocomplete="off"
+						data-check data-check-msg="{{'aaa_invalid_name' | translate}}"
+						data-radiusduplicate data-radiusduplicate-msg="{{'aaa_name_exists_name' | translate}}"
+						required data-required-msg="{{'management_snmp_name_required' | translate}}"
+						ng-if="!hideQuickSetupRadiusServers" ng-disabled="disableRadiusServersName">
+						<tooltip helptext="{{'aaa_help_serverradius_name' | translate}}"></tooltip>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label pl-mandatory">{{'aaa_server_address' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<input class="k-textbox form-control"
+						name="radiusServersIP" id="radiusServersIP"
+						ng-model="aaa.servers.radius.address"
+						placeholder="X.X.X.X/X:X:X:X::X"
+						data-ipportradius data-ipportradius-msg="{{'aaa_rad_server_already_msg' | translate}}"
+						autocomplete="off" required data-required-msg="{{'aaa_ip_msg' | translate}}" data-validate-ip="" data-validateip-msg="{{'com_invalidIp' | translate}}">
+						<tooltip helptext="{{'aaa_help_serverradius_address' | translate}}"></tooltip>
+					</div>
+				</div>
+				<div ng-if="aaa.servers.radius.aaaProtocol != 'ldap'">	
+					<div class="row form-group">
+						<div class="col-sm-5 webui-centerpanel-label">
+							<span class="label pl-mandatory">{{'aaa_ser_rad_shared_sec' | translate}}</span>
+						</div>
+						<div class="col-sm-5 fieldinput">
+							<input class="k-textbox form-control" type="password" name="password"
+							ng-model="aaa.servers.radius.password"
+							autocomplete="off"
+							required data-required-msg="{{'aaa_server_rad_secret' | translate}}" 
+							data-check data-check-msg="{{'aaa_server_rad_secret_question_space' | translate}}">
+							<tooltip helptext="{{'aaa_help_serverradius_password' | translate}}"></tooltip>
+						</div>
+					</div>	
+				</div>	
+				<div ng-show="aaa.servers.radius.aaaProtocol == 'radius'">										
+					<div class="row form-group">
+						<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+							<span class="label">{{'aaa_authport' | translate}}</span>
+						</div>
+						<div class="col-sm-5">
+							<input class="k-textbox form-control"
+							name="radiusServersAuthPort"
+							ng-init="aaa.servers.radius.authport=1645"
+							data-check data-check-msg="{{'aaa_server_rad_auth_invalid' | translate}}"
+							num-only min="0" max="65534" data-range="" 
+							data-range-msg="{{'aaa_radius_server_rad_auth_port_range' | translate}}"
+							autocomplete="off"
+							placeholder="0-65534"
+							ng-model="aaa.servers.radius.authport">
+							<tooltip helptext="{{'aaa_help_serverradius_acctport' | translate}}"></tooltip>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+							<span class="label">{{'aaa_acctport' | translate}}</span>
+						</div>
+						<div class="col-sm-5">
+							<input class="k-textbox form-control"
+							name="radiusServersAcctPort"
+							ng-init="aaa.servers.radius.acctport=1646"
+							autocomplete="off"
+							data-check data-check-msg="{{'aaa_server_rad_acct_invalid' | translate}}"
+							num-only min="0" max="65534" data-range="" 
+							data-range-msg="{{'aaa_radius_server_rad_acct_port_range' | translate}}"
+							placeholder="0-65534"
+							ng-model="aaa.servers.radius.acctport">
+							<tooltip helptext="{{'aaa_help_serverradius_authport' | translate}}"></tooltip>
+						</div>
+					</div>
+				</div>
+				<div ng-show="aaa.servers.radius.aaaProtocol != 'radius'">	
+					<div class="row form-group">
+						<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+							<span class="label">{{'management_snmp_host_port' | translate}}</span>
+						</div>
+						<div class="col-sm-5">
+							<input class="k-textbox form-control"
+							name="radiusTacacsPort"
+							ng-init="aaa.servers.radius.port=49"
+							autocomplete="off"
+							data-check data-check-msg="{{'aaa_server_tac_port_invalid' | translate}}"
+							num-only min="1" max="65535" data-range="" 
+							data-range-msg="{{'aaa_server_rad_acct_port_range' | translate}}"
+							placeholder="1-65535"
+							ng-model="aaa.servers.radius.port">
+							<tooltip helptext="{{'aaa_help_servertacacs_port' | translate}}"></tooltip>
+						</div>
+					</div>
+				</div>
+				<div ng-if="aaa.servers.radius.aaaProtocol == 'ldap'">	
+					<div class="row form-group">
+						<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+							<span class="label pl-mandatory">{{'aaa_server_ldap_base' | translate}}</span>
+						</div>
+						<div class="col-sm-5">
+							<input class="k-textbox form-control" name="ldapServerUserBaseDN"
+							placeholder=""
+							required="" data-required-msg="{{'aaa_server_ldap_base_req' | translate}}"
+							data-check data-check-msg="{{'aaa_server_ldap_base_check' | translate}}"
+							ng-model="aaa.servers.radius.ldapServerUserBaseDN">
+							<tooltip helptext="{{'aaa_help_serverldap_userBase' | translate}}"></tooltip>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div ng-show="kendoWindow.isEditMode" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="doneAddEditKendoWindow('save')"><i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelAddEditKendoWindow()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+
+	<div ng-show="!kendoWindow.isEditMode" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="doneAddEditKendoWindow('update')"><i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelAddEditKendoWindow()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+	
+</div>
+
+
+<div id="serverGroupsWindow" class="btnView">
+	<div>
+		<form name="serverGroupsForm" id="serverGroupsForm" kendo-validator="serverGroupsValidator" k-options="serverGroupsValidations" class="margin-top-10">
+			<div class="k-block k-info-colored">
+			<div class="row form-group">
+					<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label pl-mandatory">{{'aaa_serverGroup_name' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<input class="k-textbox form-control"
+						name="serverGrpName" id="serverGrpName"
+						ng-model="serverGroup.groupName" ng-disabled="isServerGroupEditModeFlag"
+						required data-required-msg="{{'management_snmp_grpname' | translate}}">
+						<tooltip helptext="{{'help_aaa_serverGroup_name' | translate}}"></tooltip>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label">{{'etherchannel_protocol' |  translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<select kendo-drop-down-list name="groupTypeName" ng-disabled="isServerGroupEditModeFlag" id="groupTypeName" ng-model="serverGroup.groupType" k-data-source="protocolData" k-data-text-field="'protocolName'" k-data-value-field="'protocolValue'" ng-change="updateAssignedServers(serverGroup.groupType)"  k-ng-delay="aaa.servers.radius.aaaProtocol" ></select>
+					</div>
+				</div>
+				<div ng-if="serverGroup.groupType == 'radius'"  >
+				<div class="row form-group">
+				    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+				        <span class="label">{{'aaa_serverGroup_deadTime' | translate}}</span>
+				    </div>
+				    <div class="col-sm-5">
+				        <input class="k-textbox form-control"
+				               placeholder="1-1440" min="1" max="1440" maxlength="4"
+				               name="radiusDeadTime" id="radiusDeadTime" data-range data-range-msg="Invalid Deadtime"
+				               data-numericrange="0-1441" data-numericrange-msg="{{'aaa_serverGroup_deatTimeNumeric_range' | translate}}"
+				               ng-model="serverGroup.deadtime">
+				    </div>
+				</div>
+				</div>
+				<div class="row form-group" ng-show="serverGroup.groupType == 'radius' && ez1kDevice">
+					<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label">{{'aaa_server_ldap_name' |  translate}}</span>
+					</div>
+					<div class="col-sm-5" >
+						<select kendo-drop-down-list name="serverNameRadius"  id="serverNameRadius" ng-model="serverGroup.serverNameRadius" k-data-source="aaaServerNameRadius" k-data-text-field="'sName'" k-data-value-field="'sValue'"   k-ng-delay="serverGroup.serverNameRadius" ></select>
+					</div>
+					
+				</div>
+				<div class="row form-group" ng-show="serverGroup.groupType == 'tacacs' && ez1kDevice">
+					<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label">{{'aaa_server_ldap_name' |  translate}}</span>
+					</div>
+					<div class="col-sm-5" >
+						<select kendo-drop-down-list name="serverNameTacacs"  id="serverNameTacacs" ng-model="serverGroup.serverNameTacacs" k-data-source="aaaServerNameTacacs" k-data-text-field="'sName'" k-data-value-field="'sValue'"   k-ng-delay="serverGroup.serverNameTacacs" ></select>
+					</div>
+					
+				</div>
+				<div class="row form-group" ng-show="serverGroup.groupType == 'ldap' && ez1kDevice">
+					<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label">{{'aaa_server_ldap_name' |  translate}}</span>
+					</div>
+					<div class="col-sm-5" >
+						<select kendo-drop-down-list name="serverNameLdap"  id="serverNameLdap" ng-model="serverGroup.serverNameLdap" k-data-source="aaaServerNameLdap" k-data-text-field="'sName'" k-data-value-field="'sValue'"   k-ng-delay="serverGroup.serverNameLdap" ></select>
+					</div>
+					
+				</div>
+				<div class="row form-group" ng-hide="ez1kDevice">
+				    <div class="col-sm-7 col-sm-offset-2" style="text-align: center;">
+				        <strong>{{'aaa_server_group_avail_servers' | translate}}</strong>
+				    </div>
+				    <div class="col-sm-3 col-sm-offset-2">
+				        <strong>{{'aaa_server_group_assaign_servers' | translate}}</strong>
+				    </div>
+				</div>
+				<div class="row form-group" ng-hide="ez1kDevice">
+				    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+				        <select multiple name="serverGrpsFrom" size="6" class="multiselectbox overflow-xauto"
+				                id="grpsFrom"
+				                ng-model="serverGroup.availableServer"
+				                ng-options="serverOption for serverOption in availableGroupOptions"></select>
+				    </div>
+				    <div class="col-sm-1">
+				        <div class="row">
+				            <div class="col-sm-10 margin-top-10">
+				                <input type="button" id="aaaServerGrpMoveRight"
+				                       ng-click="moveToServerGroupOption()"
+				                       value=">">
+				            </div>
+				        </div>
+				        <div class="row">
+				            <div class="col-sm-10 margin-top-10">
+				                <input type="button" id="aaaServerGrpMoveLeft"
+				                       ng-click="moveFromServerGroupOption()"
+				                       value="<">
+				            </div>
+				        </div>
+				
+				    </div>
+				    <div class="col-sm-3" >
+				        <select multiple name="serverGrpsTo" size="6" class="multiselectbox overflow-xauto"
+				                id="serverGrpsTo" data-required-msg="Select atleast one server"
+				                ng-model="serverGroup.selectedServerList" 
+				                ng-options="serverOption for serverOption in selectedServerGroupOptions"></select>
+				                <span class="label pl-mandatory" ng-if="assignedServerCheck">Select atleast one server</span>
+				    </div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div ng-show="!isServerGroupEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="doneAddEditServerGrpKendoWindow('save')"><i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelServerGroupsWindow()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+
+	<div ng-show="isServerGroupEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="doneAddEditServerGrpKendoWindow('update')"><i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelServerGroupsWindow()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+	
+</div>
+
+
+<div id="policyWindow" class="btnView">
+	<div>
+		<form name="aaaPolicyForm" id="aaaPolicyForm" kendo-validator="aaaPolicyValidator" k-options="aaaPolicyValidations" class="margin-top-10">
+			<div class="k-block k-info-colored">
+				<div class="row form-group">
+					<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label pl-mandatory">{{'etherchannel_protocol' |  translate}}</span>
+					</div>
+					<div class="col-sm-5 dropdownToolPos">
+						<select kendo-drop-down-list name="policyProt_dropdown" id="policyProt_dropdown" ng-model="aaa.servers.policy.aaapolicyProt" k-data-source="policyProtData" k-data-text-field="'policyProtName'" k-data-value-field="'policyProtValue'" ng-change="policyProtocolChange()" data-policyduplicate data-policyduplicate-msg="{{'aaa_name_exists_name' | translate}}"
+						k-ng-delay="aaa.servers.policy.aaapolicyProt" ng-disabled="disablepolicyProtocolName"></select>
+					</div>
+				</div>	
+				<div class="row form-group">
+					<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label pl-mandatory">{{'com_name' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<input class="k-textbox form-control"
+						name="serversPolicyName" id="serversPolicyName"
+						ng-model="aaa.servers.policy.name"
+						autocomplete="off"
+						required data-required-msg="{{'aaa_server_rad_name_req' | translate}}"
+						ng-disabled="disablepolicyName"
+						ng-if="!hideQuickSetupRadiusServers">
+						<tooltip helptext="{{'aaa_help_serverradius_name' | translate}}"></tooltip>
+					</div>
+				</div>									
+				<div class="row form-group">
+					<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+						<span class="label pl-mandatory">{{'aaa_access_policy_group' | translate}}</span>
+					</div>
+					<div class="col-sm-5">
+						<select kendo-drop-down-list name="policy_dropdown" id="policy_dropdown" ng-model="aaa.servers.policy.aaaProtocol" k-data-source="policyProtocolData" k-data-text-field="'policyprotocolName'" k-data-value-field="'policyprotocolValue'" k-ng-delay="aaa.servers.policy.aaaProtocol"></select>
+						<tooltip helptext="{{'aaa_policy_help_servergrp' | translate}}"></tooltip>
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="col-sm-3 text-center">{{'aaa_interface_list' | translate}}</div>
+					<div class="col-sm-2 text-right">
+						<strong>{{'portconfig_general_interface' | translate}}</strong>
+					</div>
+					<div class="col-sm-1 arrW"></div>
+					<div class="col-sm-3 text-left">
+						<strong>{{'acl_associated' | translate}}</strong>
+					</div>
+				</div>
+				<div class="row form-group">
+					<div class="col-sm-2 text-right"></div>
+					<div class="col-sm-3 text-right">
+						<select multiple name="groupsFrom" size="6" class="multiselectbox"
+												id="groupsFrom"
+												ng-model="aaa.methodList.auth.groupMethods"
+												ng-options="serverOption for serverOption in availableAuthMethodListOptions"></select>
+					</div>
+					<div class="col-sm-1 arrW">
+						<input type="button" id="aaaServerGroupMoveRight"
+														ng-click="moveToAAAServerGroup()"
+														value=">">
+														<input type="button" id="aaaServerGroupMoveLeft"
+														ng-click="moveFromAAAServerGroup()"
+														value="<">
+					
+					</div>
+					<div class="col-sm-2">
+						<select multiple name="serverGroupsTo" size="6" class="multiselectbox"
+												id="serverGroupsTo"
+												ng-model="aaa.methodList.auth.list"
+												ng-options="serverOption for serverOption in authSelectedServerGroupOptions"></select>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div ng-show="kendoWindow.isEditMode1" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="doneAddEditpolicyWindow('save')"><i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelAddEditpolicyWindow()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+
+	<div ng-show="!kendoWindow.isEditMode1" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="doneAddEditpolicyWindow('update')"><i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelAddEditpolicyWindow()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+</div>

@@ -1,0 +1,25 @@
+###
+show diagnostic result
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show diagnostic result</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="TestPortAsicStackPortLoopback" alias = "entry" dynamic = "true">
+<Property name="TestPortAsicStackPortLoopback" alias="testPortAsicStackPortLoopback" distance = "2" length = "1" type = "String"/>
+<Property name="TestPortAsicLoopback" alias="testPortAsicLoopback" distance = "2" length = "1" type = "String"/>
+<Property name="TestPortAsicRingLoopback" alias="testPortAsicRingLoopback" distance = "2" length = "1" type = "String"/>
+<Property name="TestPortAsicCam" alias="testPortAsicCam" distance = "2" length = "1" type = "String"/>
+<Property name="TestMicRingLoopback" alias="testMicRingLoopback" distance = "2" length = "1" type = "String"/>
+<Property name="TestPortAsicMem" alias="testPortAsicMem" distance = "2" length = "1" type = "String"/>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+
+

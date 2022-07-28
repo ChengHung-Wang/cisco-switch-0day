@@ -1,0 +1,198 @@
+<!--
+Description: EnergySaver Screen
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->
+<div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+<div ng-show="esView">
+   <div class="pageTitle" ng-bind="'es_title' | translate"></div>
+	<div kendo-tab-strip="esTab">
+		<ul>
+			<li class="k-state-active" ng-show="true">
+				{{'com_ports' |  translate}}
+			</li>
+			<li ng-click="loadClientTab()">
+				{{'es_clients' |  translate}}
+			</li>
+		</ul>
+		<div name="domainName" id="domainName">
+			<div ng-include="'features/common/switch/views/switchView.html'" class="portSwitchContainer"></div>
+			<div class="well">
+				<form name="esForm" id="esForm" kendo-validator="esValidator" k-options="esValidations">
+					<div class="row form-group">
+						<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+							<span class="label pl-mandatory"> {{'es_status' |  translate}}</span>
+						</div>
+						<div class="col-sm-5">
+							<span class="toggleClass">
+								<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+									ng-change="esGlobalStatusChange()"
+									ng-model="domainStatus"></toggle-button>
+							</span>                                        
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+							<span class="label pl-mandatory">{{'eee_status' |  translate}}</span>
+						</div>
+						<div class="col-sm-5">
+							<span class="toggleClass">
+								<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+									ng-change="eeeGlobalStatusOnChange()"
+									ng-model="eeeGStatus"></toggle-button>
+							</span>                                        
+						</div>
+					</div>
+				</form>
+				<div class="row form-group"></div>
+				<div class="form-group">					
+					<div kendo-grid="portsGrid" id="portsGrid" name="portsGrid"
+                             k-options="portsGridOptions" class="gridWidth"
+                             k-data-source="portsDataSource"></div>
+				 </div>
+				 <div class="row form-group"></div>
+				 <div class="form-group">
+					<div class="form-group applyWidth">
+						<span ng-click="showEnergy()" class="configDomain"><a>{{'es_config_domain' |  translate}}</a></span>
+					</div>
+				</div>					
+				<div kendo-window="esGridWindow" grid-id="esGrid" add-edit-window window-done="applyDomainPopup" class="cloakVisiblility" k-visible="false" k-width="900"  window-cancel="cancelesGrid" style="height:338px">
+					<div class="windowContainer">
+						<form name="esForm" id="esForm" kendo-validator="esValidator" k-options="esValidations" ng-disabled="isSaving">
+							<div class="row form-group"></div>
+							<div class="row form-group">
+								<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+									<span class="label pl-mandatory">{{'stack_virtual_domain' |  translate}}</span>
+								</div>
+								<div class="col-sm-5">
+									<input  class="k-textbox form-control"
+											data-ng-model="es.domainName" placeholder="Text"
+											name="domainName" ng-change="enableApplybtn()"
+											id="domainName" required data-required-msg="{{'domain_name_req_msg' | translate}}" maxlength ="32"/>
+								 </div>
+							</div>
+							<div class="row form-group">
+								<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+									<span class="label pl-mandatory">{{'aaa_help_servergroup_macfil' |  translate}}</span>
+								</div>
+								<div class="col-sm-4">
+									<select kendo-drop-down-list name="Interface_dropdown" id="Interface_dropdown" ng-model="sharedSecret" k-data-source="interfaceData" k-data-text-field="'interfaceName'" k-data-value-field="'interfaceValue'" k-ng-delay="sharedSecret"></select>
+									<tooltip helptext="{{'help_es_security' | translate}}"></tooltip>
+									<div ng-hide="true" ng-init="loadEnergywiseData()"></div>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+									<span class="label pl-mandatory">{{'es_domain_pwd' |  translate}}</span>
+								</div>
+								 <div class="col-sm-6">   
+									<input  class="k-textbox form-control" type="password" data-ng-model="es.energyNameText" name="energyName" ng-change="enableApplybtn()"  id="energyName" placeholder="word" required data-required-msg="{{'user_administration_password_required' | translate}}" maxlength ="32"/>
+									 <select kendo-drop-down-list name="pwd_dropdown" id="pwd_dropdown" ng-model="energyValue" k-data-source="pwdData" k-data-text-field="'pwdName'" k-data-value-field="'pwdValue'" k-ng-delay="energyValue"></select>
+									<tooltip helptext="{{'help_es_domain_pwd_msg' |  translate}}"></tooltip>
+									<div ng-hide="true" ng-init="loadEnergywiseData()"></div>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+									<span class="label" ng-class="{'pl-mandatory': (energywiseRoute == 'ip' || energywiseRoute == 'interface')}" >{{'es_portno' |  translate}}</span>
+								</div>
+								 <div class="col-sm-5">                         
+									 <input class="k-textbox form-control" ng-model="es.portnoValue"  
+									 name="portNo" ng-change="switchmtuSizeOnchange()"	id="portNo"
+									 placeholder="1-65000" data-port data-port-msg="{{'aaa_server_ldap_portno_req' | translate}}" num-comma-hyphen-only data-range data-range-msg="{{'es_portno_range_msg' | translate}}"
+									 min="1" max="65000"/>
+									 <tooltip helptext="{{'help_es_portno_msg' | translate}}"></tooltip>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+									<span class="label">{{'es_int_ip' |  translate}}</span>
+								</div>
+								<div class="col-sm-3">
+									<select kendo-drop-down-list name="Interface_dropdown" id="Interface_dropdown" ng-model="energywiseRoute" k-data-source="energywiseData" k-data-text-field="'energywiseName'" k-data-value-field="'energywiseValue'" k-ng-delay="energywiseRoute"></select>
+									<div ng-hide="true" ng-init="loadEnergywiseData()"></div>
+								</div>
+							</div>	
+							<div class="row form-group" ng-show="energywiseRoute=='interface'">
+								<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+								<span class="label pl-mandatory">{{'portconfig_general_interface' |  translate}}</span>
+								</div>
+								<div class="col-sm-3">
+								<select kendo-drop-down-list name="Interface_dropdown" id="Interface_dropdown" ng-model="domaininterface1" k-data-source="interfaceDomainData" k-data-text-field="'interfaceDomainDataName'" k-data-value-field="'interfaceDomainDataValue'" k-ng-delay="interfaceDomainData"></select>
+								<tooltip helptext="{{'help_es_int_msg' |  translate}}"></tooltip>
+								</div>			
+							</div>					
+							<div class="row form-group" ng-if="energywiseRoute=='ip'">
+								<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">	
+								<span class="label pl-mandatory">{{'portconfig_port_ipv4_ip' |  translate}}</span>
+								</div>
+								<div class="col-sm-3">
+								<input class="k-textbox form-control" ng-model="energy.domainip" name="domainip" id="domainip" numeric-dot-only  data-validate-ip="" data-validateip-msg="{{'com_invalidIp' | translate}}" required data-required-msg="{{'aaa_ip_msg' | translate}}">
+								<tooltip helptext="{{'help_es_ip_msg' |  translate}}"></tooltip>
+								</div>
+							</div>
+							<div class="row form-group"></div>
+						 </form>				
+					</div>
+				</div>											
+				<div class="formActionButtons fieldinput-center">
+					<button kendo-button="saveBtn" class="btn btn-primary" ng-disabled="diableESApplyButton" 
+						ng-click="applyESPorts($event)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {{'com_loading_applying' | translate}} ">
+								<span class="fa pl-apply"></span> {{'com_apply' | translate}}
+					</button>
+					<button kendo-button="cancelBtn" class="btn btn-primary" ng-disabled="diableESCancelButton"
+							ng-click="cancelESGlobalConfig()">
+						<span class="fa pl-cancel"></span> {{'com_cancel' | translate}}
+					</button>
+				</div>
+			</div>	
+		</div>
+		<div name="clientPage">
+					<div class="clientSection">
+						<div class="form-group">
+							<div class="form-group">
+								<div class="row form-group">
+									<div class="col-sm-3 col-sm-offset-2 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'es_status' |  translate}}</span>
+									</div>
+									<div class="col-sm-5">
+										<span class="toggleClass">
+											<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+												ng-change="keepAliveOnChange()"
+												ng-model="domainStatus"></toggle-button>
+										</span>                                        
+									</div>
+								</div>
+							</div>
+						</div>	
+						<div class="row form-group"></div>
+						<div class="form-group">
+							<div kendo-grid="clientsGrid" id="clientsGrid" name="clientsGrid"
+						 k-options="clientsGridOptions" k-data-source="clientsGridDataSource" class="gridWidth"></div>	
+						</div>
+						 <div class="form-group">
+							<div class="form-group applyWidth">
+								<input type="checkbox" name="clientsApplyAll" id="clientsApplyAll" ng-disabled="clientsApplyAllName" ng-checked="" ng-model="clientsApplyAll" ng-click="checkApplyAll()">
+								<label for="fallback"></label>
+								<span ng-click="applyAll()" class="configDomain1"><a>{{'es_applyall' |  translate}}</a></span>
+							</div>
+						</div>
+						 <div class="row form-group"></div>
+						 <div class="row form-group"></div>
+						<div class="formActionButtons fieldinput-center">
+							<button kendo-button="saveBtn" class="btn btn-primary"
+									ng-disabled="diableApplyButton"
+									ng-click= "applyClients()">
+								<span class="fa pl-apply"></span> {{'com_apply' | translate}}
+							</button>
+							<button kendo-button="cancelBtn" class="btn btn-primary" ng-disabled="cancelButton"
+									ng-click="cancelSwitchConfig()">
+								<span class="fa pl-cancel"></span> {{'com_cancel' | translate}}
+							</button>
+						</div>								
+					</div>		
+		</div>
+		
+	</div>	
+</div>
+

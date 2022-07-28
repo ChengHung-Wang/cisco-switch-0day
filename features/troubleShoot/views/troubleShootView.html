@@ -1,0 +1,634 @@
+<style>
+.textbox-caption {
+    font-size: 13px;
+    font-style: italic;
+    color: #0095d7;
+}
+.header-description {
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+.bundle-name-info-icon {
+    height: 33px;
+    font-size: 14px;
+    line-height: 1.5;
+    cursor: pointer;
+    color: #5a94c7;
+}
+.invalid-clitext-icon {
+    line-height: 34px;
+}
+.has-feedback .form-control {
+    padding-right: 37.5px;
+}
+.error-msg {
+    color: red;
+}
+.btn {
+    padding: 3px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #006591;
+    background-color: #0095d7;
+}
+.btn[disabled] {
+    color: #ccc;
+    border-color: #ccc;
+    background-color: #fbfbfb;
+}
+.cli-icon {
+    line-height: 0.7;
+    float: left !important;
+    margin-left: -15px;
+    margin-right: 10px;
+	font-size: 2em;
+}
+textarea {
+    font-family: monospace;
+    border-color: rgb(169, 169, 169);
+    border-top-color: rgb(169, 169, 169);
+    border-right-color: rgb(169, 169, 169);
+    border-bottom-color: rgb(169, 169, 169);
+    border-left-color: rgb(169, 169, 169);
+}
+textarea {
+    -webkit-appearance: textarea;
+    background-color: white;
+    -webkit-rtl-ordering: logical;
+    flex-direction: column;
+    resize: auto;
+    cursor: text;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border-width: 1px;
+    border-style: solid;
+    border-color: initial;
+    border-image: initial;
+    padding: 2px;
+	margin-left: 10px;
+	margin-top: 10px;
+}
+
+div.k-window .windowButtonContainer {
+    background-color: #f7f7f7;
+    text-align: right;
+    border-top: 1px solid #c5c5c5;
+    padding: 10px;
+}
+</style>
+
+<div>
+	<!--
+    Description: Trouble Shooting page
+    Copyright (c) 2016 by Cisco Systems, Inc.
+    All rights reserved.
+    -->
+
+	<div class="pageTitle" ng-bind="'menu_troubleshooting' | translate"></div>
+	<div kendo-tab-strip="troubleTab" id="troubleshootPage">
+		<ul>
+			<li class="k-state-active" name="pingTab" ng-click="findSwitchLoader('ping')">{{'trouble_shoot_ping' | translate}}</li>	
+			<li name="traceRoute" ng-click="findSwitchLoader('traceRoute')">{{'trouble_shoot_traceRoute' | translate}}</li>		
+			<li name="diagnostic" ng-show="showDiagnostic" ng-click="findSwitchLoader('diagnostic')">{{'trouble_shoot_diagnostic' | translate}}</li>	
+			<li name="rebootTab" ng-click="findSwitchLoader('reboot')">{{'trouble_shoot_rebootSwitch' | translate}}</li>
+			<li name="findSwitchTab" ng-show="showFindTab" ng-click="findSwitchLoader('findswitch')">{{'find_switch' | translate}}</li>
+			<li name="logTab" ng-click="showLogsDetails('logConfig')">{{'com_log' | translate}}</li>
+			<li name="debugTab" ng-click="showLogsDetails('logConfig')">{{'com_debug' | translate}}</li>
+		</ul>
+		
+		<!----- start Ping Section --->
+		<div name="pingSection" id="pingSection">
+		  <form name="pingForm" id="pingForm" kendo-validator="pingValidator" k-options="pingValidations">
+			<div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'trouble_shoot_ping_source' | translate}}</span>
+                    </div>
+                    <div class="col-sm-5">
+                        <select kendo-drop-down-list ng-model="pingSource"
+                        	k-data-source="pingSourceInterface" id="pingSource" name="pingSource"
+                        	k-data-text-field="'intNameAddress'"
+                        	k-data-value-field="'name'"
+                        	k-ng-delay="pingSource" ></select>
+                        <tooltip position="bottom" helptext="{{'help_trouble_shoot_ping_source' | translate}}"></tooltip>
+                    </div>
+            </div>
+			<div class="row form-group">
+				<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+					<span class="label pl-mandatory">{{'trouble_shoot_ping_test' | translate}}</span>
+				</div>
+				<div class="col-sm-3">
+					<input class="k-textbox form-control" placeholder="X.X.X.X / X:X:X:X::X" data-ng-model="pingName" name="pingName" ng-change="disablePing = false" id="pingName" required data-required-msg="{{'trouble_shoot_ping_required' | translate}}" 
+					placeholder="" data-validate-ip="" data-validateip-msg="{{'destination_invalid_msg' | translate}}" >
+					<tooltip position="bottom" helptext="{{'help_trouble_shoot_ping_destination' | translate}}"></tooltip>
+				</div>
+				<div class="col-sm-3">					
+					<button type="button" class="btn btn-primary pl-apply" ng-disabled="disablePing" ng-click="startPing($event)">
+							{{'com_ping' | translate}}
+					</button>
+				</div>				
+			</div>
+			<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8" ng-show="flowTrace">
+				<div class="TexareaOverRideStyle textAreaSmall">
+					<div class="diagramContainer">
+						<div class="pingAndTraceConnection" ng-class="testStep.pingOrTrace=='success'?'colorGreen':testStep.pingOrTrace=='fail'?'colorRedBck':''">
+							<div ng-if="testStep.pingOrTrace=='checking'"></div>
+							<div class="connectedLine fieldinput-center" ng-if="testStep.pingOrTrace=='success' || testStep.pingOrTrace=='fail' || testStep.pingOrTrace=='warning'">
+								<em ng-show="testStep.pingOrTrace=='success'" class="fa fa-check-circle fa-2x"></em>
+								<em ng-show="testStep.pingOrTrace=='fail'" class="fa fa-times-circle fa-2x"></em>
+								<em ng-show="testStep.pingOrTrace=='warning'" class="fa fa-warning fa-2x"></em>
+							</div>
+							<div ng-if="testStep.pingOrTrace=='checking'" class="pinging addEllipses"><em class="fa fa-spinner fa-spin"></em> {{currentOp}} <i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+						</div>
+						<div class="sourceIcon">
+							<div class="titleNode">{{::'trouble_shoot_trace_source' | translate}}</div>
+							<em class="icon-wired-mini fontSize20" ></em>
+							<div class="titleNode posAbsolute nodeText" title="{{source.value()}}">{{source.value()}}</div>
+						</div>
+						<div class="destinationIcon">
+							<div class="titleNode">{{::'trouble_shoot_ping_test' | translate}}</div>
+							<em class="icon-medium-campus fontSize20" ></em>
+							<div class="titleNode posAbsolute nodeText" title="{{destination.value()}}">{{destination.value()}}</div>
+						</div>
+					</div>
+					<div ng-show="troubleshootText!==undefined && troubleshootText!==''" class="alert alert-warning troubleshootWarning">
+						<em class="fa fa-info-circle"></em> {{troubleshootText}}
+					</div>
+				</div>
+				</div>
+				<div class="col-md-2"></div>
+				</div>
+			<div class="row form-group">
+			   <div class="col-sm-4 col-sm-offset-2 webui-centerpanel-label"></div>
+			   <div class="col-sm-6"><div class="txtBold"><span>{{statusMsg}}</span></div></div>
+			</div>	
+			<div class="row form-group">
+			   <div class="col-sm-4 col-sm-offset-2 webui-centerpanel-label"></div>
+			   	<div class="col-sm-6 col-sm-offset-4 webui-centerpanel-label" ng-show="isChartShown">
+        	    	<div id="chart"></div>
+    	    	</div>
+			</div>		  
+			
+    	    </form>	
+		</div>
+		<!----- End Ping Section --->
+		
+		<!----- start Trace Route Section --->
+		<div name="traceRouteSection" id="traceRouteSection">
+		  <form name="traceRouteForm" id="traceRouteForm" kendo-validator="traceRouteValidator" k-options="traceRouteValidations">
+			<div class="row form-group">
+				<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+					<span class="label pl-mandatory">{{'trouble_shoot_ping_test' | translate}}</span>
+				</div>
+				<div class="col-sm-3">
+					<input class="k-textbox form-control" placeholder="X.X.X.X / X:X:X:X::X" data-ng-model="traceRouteName" ng-change="disableTrace = false" name="traceRouteName" id="traceRouteName" required data-required-msg="{{'trouble_shoot_ping_required' | translate}}"
+					placeholder="" data-validate-ip="" data-validateip-msg="{{'destination_invalid_msg' | translate}}">
+					<tooltip position="bottom" helptext="{{'help_trouble_shoot_tracerouting_destination' | translate}}"></tooltip>
+				</div>
+				<div class="col-sm-3">					
+					<button type="button" class="btn btn-primary pl-apply" ng-disabled="disableTrace" ng-click="startTraceRoute($event)">
+							{{'trouble_shoot_traceroute_button' | translate}}
+					</button>
+				</div>				
+			</div>
+			<div class="row">
+			<div class="col-md-2"></div>
+			<div class="col-md-8" ng-show="flowTrace">
+				<div class="TexareaOverRideStyle textAreaSmall">
+					<div class="diagramContainer">
+						<div class="pingAndTraceConnection" ng-class="testStep.pingOrTrace=='success'?'colorGreen':testStep.pingOrTrace=='fail'?'colorRedBck':''">
+							<div ng-if="testStep.pingOrTrace=='checking'"></div>
+							<div class="connectedLine fieldinput-center" ng-if="testStep.pingOrTrace=='success' || testStep.pingOrTrace=='fail' || testStep.pingOrTrace=='warning'">
+								<em ng-show="testStep.pingOrTrace=='success'" class="fa fa-check-circle fa-2x"></em>
+								<em ng-show="testStep.pingOrTrace=='fail'" class="fa fa-times-circle fa-2x"></em>
+								<em ng-show="testStep.pingOrTrace=='warning'" class="fa fa-warning fa-2x"></em>
+							</div>
+							<div ng-if="testStep.pingOrTrace=='checking'" class="pinging addEllipses"><em class="fa fa-spinner fa-spin"></em> {{currentOp}} <i class="fa fa-ellipsis-h" aria-hidden="true"></i></div>
+						</div>
+						<div class="sourceIcon">
+							<div class="titleNode">{{::'trouble_shoot_trace_source' | translate}}</div>
+							<em class="icon-wired-mini fontSize20" ></em>
+							<div class="titleNode posAbsolute nodeText" title="{{source.value()}}">{{source.value()}}</div>
+						</div>
+						<div class="destinationIcon">
+							<div class="titleNode">{{::'trouble_shoot_ping_test' | translate}}</div>
+							<em class="icon-medium-campus fontSize20" ></em>
+							<div class="titleNode posAbsolute nodeText" title="{{destination.value()}}">{{destination.value()}}</div>
+						</div>
+					</div>
+					<div ng-show="troubleshootText!==undefined && troubleshootText!==''" class="alert alert-warning troubleshootWarning">
+						<em class="fa fa-info-circle"></em> {{troubleshootText}}
+					</div>
+				</div>
+				</div>
+				<div class="col-md-2"></div>
+				</div>
+			 <div ng-show="isTraceRouteGrid" kendo-grid="traceRouteGrid" id="traceRouteGrid" name="traceRouteGrid" 
+                k-options="traceRouteGridOptions" 
+                k-data-source="traceRouteDataSource">
+              </div>
+    	    </form>	
+		</div>
+		<!----- End Trace Route Section --->
+		
+		<!----- start Diagnostic Section --->
+		<div name="diagnosticSection" id="diagnosticSection" ng-show="showDiagnostic">		
+		     <form id="diagnosticForm" name="diagnosticForm" target="statusDetails">		
+			     <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'trouble_shoot_diagnostic_title' | translate}}</span>
+                    </div>
+                    <div class="col-sm-3">
+                        <select kendo-drop-down-list ng-model="diagnosticTest"
+                        	k-data-source="diagnosticTestSource" id="diagnosticTest" name="diagnosticTest"
+                        	k-data-text-field="'testText'"
+							k-on-change="testoptionsSelected()"								   
+                        	k-data-value-field="'testValue'"
+                        	k-ng-delay="diagnosticTest" ></select>
+                        <tooltip position="bottom" helptext="{{'help_trouble_shoot_diagnostic' | translate}}"></tooltip>
+                    </div>
+                    <div class="col-sm-3">					
+					    <button type="button" class="btn btn-primary" ng-disabled ="diableDiagnostic" ng-class="{'pl-apply' : showTick == true}"
+							ng-click="startDiagnostic($event)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {{'execute_command_text' | translate}} ">
+							{{'trouble_shoot_diagnostic_start' | translate}}
+					    </button>
+				    </div>		
+                 </div> 
+               </form>              
+			 <div class="row form-group"> 
+			 </div>
+            <div class="row form-group"> 
+				<div class="col-sm-5 col-sm-offset-4" style="margin-left:300px">
+					<table class="responstable">
+						<tr> 
+							<th colspan="2"><div class="headerLabel">{{'ts_diagnostic_lastresult' | translate}}</div></th> 
+						</tr> 
+						<tr ng-if="testView1">
+							<td><div class="infoTitle">{{'ts_diagnostic_testPortAsicStackPortLoopback' | translate}}</div></td>
+							<td>
+								<span class="{{testResult1}}"></span>
+								<span class="label" style="margin-top: 2px;">{{ testResult1Text}}</span>
+							</td>   
+						</tr>
+						<tr ng-if="testView2">
+							<td><div class="infoTitle">{{'ts_diagnostic_testPortAsicLoopback' | translate}} </div></td>
+							<td>
+								<span class="{{testResult2}}"></span>
+								<span class="label" style="margin-top: 2px;">{{testResult2Text}}</span>
+							</td>  
+						</tr>
+						<tr ng-if="testView3"> 
+							<td><div class="infoTitle">{{'ts_diagnostic_testPortAsicRingLoopback' | translate}} </div></td>
+							<td>
+								<span class="{{testResult3}}"></span>
+								<span class="label" style="margin-top: 2px;">{{testResult3Text}}</span>
+							</td>  
+						</tr>
+						<tr ng-if="testView4"> 
+							<td><div class="infoTitle">{{'ts_diagnostic_testPortAsicCam' | translate}} </div></td>
+							<td>
+								<span class="{{testResult4}}"></span>
+								<span class="label" style="margin-top: 2px;">{{testResult4Text}}</span>
+							</td>  
+						</tr>
+						<tr ng-if="testView5"> 
+							<td><div class="infoTitle">{{'ts_diagnostic_testMicRingLoopback' | translate}} </div></td>
+							<td>
+								<span class="{{testResult5}}"></span>
+								<span class="label" style="margin-top: 2px;">{{testResult5Text}}</span>
+							</td>  
+						</tr>
+						<tr ng-if="testView6"> 
+							<td><div class="infoTitle">{{'ts_diagnostic_testPortAsicMem' | translate}} </div></td>
+							<td>
+								<span class="{{testResult6}}"></span>
+								<span class="label" style="margin-top: 2px;">{{testResult6Text}}</span>
+							</td>  
+						</tr>
+						<tr ng-if="testView7">
+							<td><div class="infoTitle">{{'ts_diagnostic_testInlinePwrCtlr' | translate}} </div></td>
+							<td>
+								<span class="{{testResult7}}"></span>
+								<span class="label" style="margin-top: 2px;">{{testResult7Text}}</span>
+							</td>  
+						</tr>
+					</table>
+				</div>	
+			</div>
+            <div class="ng-hide">
+				<iframe name="statusDetails" id="statusDetails" width="400" height="100" align="center"></iframe>
+			</div>
+    	   
+		</div>
+		<!----- End Diagnostic Section --->
+	
+		<!----- start Reboot Section --->
+		<div name="rebootSection" id="rebootSection">
+			<div ng-if="switchDisplayreboot" ng-include="'features/common/stackConf/views/switchView.html'" class="portSwitchContainer"></div>
+			<div class="top-buffer top200">
+				<div class="formActionButtons fieldinput-center">
+                            <button kendo-button="reloadStack" ng-show="showStackRestart" class="pl-apply k-button btn btn-primary ng-binding" ng-click="showReloadStackConfirmDialog()" data-role="button" role="button" aria-disabled="false" tabindex="0">
+                                           {{'reload_stack_title' | translate}}
+                            </button>
+							<button kendo-button="restart" class="pl-apply k-button btn btn-primary ng-binding" ng-click="showRebootConfirmDialog()" data-role="button" role="button" aria-disabled="false" tabindex="0">
+								{{'factory_reset' | translate}}
+							</button>
+							<button kendo-button="restart" ng-show="showConnectCtrl" class="pl-apply k-button btn btn-primary ng-binding" ng-click="showConnectController()" data-role="button" role="button" aria-disabled="false" tabindex="0">
+								{{'connect_controller' | translate}}
+							</button>
+				</div>
+			</div>
+		</div>
+		<!----- End Reboot Section --->
+		
+		<!----- Start find switch Section --->
+		<div name="findSwitchTab" id="findSwitchTab" ng-show="showFindTab">		
+				<div class="row">					
+				   <div class="col-sm-8">				
+				     <div ng-if="switchDisplayfindSwitch" ng-include="'features/common/stackConf/views/switchView.html'" class="portSwitchContainer"></div>			
+				   </div>		
+				</div>			
+		</div>
+		<!----- End find switch Section --->
+		
+		<!-- Log Details Start -->
+		<div class="well container logView" style="overflow: hidden;">
+			<div class="row form-group">
+				<div class="col-sm-4">
+					<span class="label pl-mandatory" style="margin-left: 5px;">{{'logs_tobe_displayed' | translate}}</span>
+				</div>
+				
+					<div class="col-sm-2">
+						<input class="k-textbox" name="syslogsinfo" type="text" id="syslogsinfo"
+							ng-model="syslogsinfo" placeholder="1 - 10000"							
+							style="margin-top: 1px; margin-left: -64px;">
+					</div>
+					<div class="col-sm-1" style="margin-left: 15px;">
+						<button kendo-button="applyBtn"
+							class="btn btn-primary margin-right-07px pull-right"
+							ng-click="showLogsDetails()">
+							{{'show_logs' | translate}}</button>
+					</div>
+				
+
+				<div class="col-sm-1" >
+					<button kendo-button="clearLogsBtn" class="btn btn-primary"
+						ng-click="clearLogs()" style="margin-left: -20px;">{{'clear_logs' | translate}}</button>
+				</div>
+				<div class="col-sm-1 col-sm-offset-1">
+					<button kendo-button="clearLogsBtn" class="btn btn-primary"
+						ng-click="configLogs()" style="margin-left: 22px;">{{'conf_logs' | translate}}
+					</button>
+				</div>
+			</div>
+
+			<div class="row" style ="margin-top: 35px;">
+				<div class="row form-group">
+					<div class="col-md-4" style="margin-left: 18px;">						
+					</div>
+					
+				</div> 
+				<div class="col-sm-9"
+					style="border-bottom: 2px solid #ccc; margin-top: 0px; margin-left: -3px;">
+				</div>
+				<div class="col-sm-1"
+					style="border-top: 1px solid #ccc; padding-top: 12px; margin-top: -25px; border-left: 1px solid #ccc; border-right: 1px solid #ccc; margin-left: 0px; border-radius: 2px; border-bottom: none;">
+					<span><i class="fa fa-download"
+						aria-hidden="true" style="font-size: 22px; margin-left: -6px;"
+						ng-click="downloadFullLog();" ng-hide="false"></i></span> <span
+						class="col-sm-1 pull-right" style="border-left: 1px solid #000;"><i
+						class="fa fa-copy" aria-hidden="true"
+						style="font-size: 22px; margin-left: -6px;"
+						ng-click="copy_syslog_output();" ng-hide="false"></i></span>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class="col-sm-10">
+					<pre id="displayLog" class="k-textbox logs-text"
+						style="width: 950px; height: 350px; overflow: auto; padding: 0 2px; background: #ffffff; line-height: 1; border-top: none; margin-top: -1px;font-size: 0.8rem;">
+					<div ng-bind="logsData" id="clearLogsInfo"	ng-init="logsData=''">
+					</div>
+				</pre>
+				</div>
+			</div>
+		</div>
+		<!-- Log Details End -->
+		<!-- Popup For Log Config starts-->
+		<div kendo-window="logGridWindow"
+			k-title="'logconfig_setup' | translate" k-visible="false"
+			k-width="700" k-modal="true" id="logGridPopup">
+			<div>
+				<form name="logForm" id="logForm" kendo-validator="sysLogValidator"
+					k-options="syslogValidations">
+					<div class="well">
+						<div class="row form-group"></div>
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label pl-mandatory">{{'console_logging' | translate}}</span>
+							</div>
+							<div class="col-sm-6">
+								<select kendo-drop-down-list name="consoleLog" id="consoleLog"
+									ng-model="logging.consoleLogging"
+									k-data-source="consoleLoggingOptions"
+									k-data-text-field="'severityText'"
+									k-data-value-field="'severityValue'"
+									k-ng-delay="logging.consoleLogging">
+								</select>
+								<tooltip helptext="{{'console_logging_help' | translate}}" position="top"></tooltip>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label pl-mandatory">{{'monitor_logging' | translate}} </span>
+							</div>
+							<div class="col-sm-6">
+								<select kendo-drop-down-list name="monitorLog" id="monitorLog"
+									ng-model="logging.monitorLogging"
+									k-data-source="monitorLoggingOptions"
+									k-data-text-field="'severityText'"
+									k-data-value-field="'severityValue'"
+									k-ng-delay="logging.monitorLogging">
+								</select>
+								<tooltip
+									helptext="{{'monitor_logging_help' | translate}}
+									position="top"></tooltip>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label pl-mandatory">{{'buffer_logging' | translate}}</span>
+							</div>
+							<div class="col-sm-6">
+								<select kendo-drop-down-list name="bufferLog" id="bufferLog"
+									ng-model="logging.bufferLogging"
+									k-data-source="bufferLoggingOptions"
+									k-data-text-field="'severityText'"
+									k-data-value-field="'severityValue'"
+									k-ng-delay="logging.bufferLogging">
+								</select>
+								<tooltip helptext="{{'buffer_logging_help' | translate}}" position="top"></tooltip>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label pl-mandatory">{{'buffer_logg_size' | translate}} </span>
+							</div>
+							<div class="col-sm-6">
+								<input class="k-textbox form-control" name="bufferLogSize" type="text" 
+									id="bufferLogSize" ng-model="bufferLogggingSize" num-only min="4096" max="2147483647"  data-required-msg="{{'buffer_logsize_required' | translate}}" data-numericrange-msg="{{'buffer_logsize_range' | translate}}" required>
+							</div>							
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label pl-mandatory">{{'exception_logg_size' | translate}} </span>
+							</div>
+							<div class="col-sm-6">
+								<input class="k-textbox form-control" name="exceptionLogSize" type="text"
+									id="exceptionLogSize" ng-model="exceptionLogggingSize" min="4096" max="2147483647"  data-required-msg="{{'exception_logsize_required' | translate}}"  data-numericrange-msg="{{'exception_logsize_range' | translate}}" required>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label right">{{'count_time_logg' | translate}} </span>
+							</div>
+							<div class="col-sm-6">
+								<span class="toggleClass"> <toggle-button
+										button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+										ng-model="countLoggingStatus"></toggle-button>
+								</span>
+								<tooltip helptext="{{'count_time_logg_help' | translate}}"></tooltip>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label right">{{'persist_logg' | translate}} </span>
+							</div>
+							<div class="col-sm-6">
+								<span class="toggleClass"> <toggle-button
+										button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+										ng-model="persistLoggingStatus"></toggle-button>
+								</span>
+								<tooltip helptext="{{'persist_logg_help' | translate}} "></tooltip>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label pl-mandatory">{{'trap_logg' | translate}} </span>
+							</div>
+							<div class="col-sm-6">
+								<select kendo-drop-down-list name="trapLog" id="trapLog"
+									ng-model="logging.trapLogging"
+									k-data-source="trapLoggingOptions"
+									k-data-text-field="'severityText'"
+									k-data-value-field="'severityValue'"
+									k-ng-delay="logging.trapLogging">
+								</select>
+								<tooltip helptext="{{'trap_logg_help' | translate}}" position="top"></tooltip>
+							</div>
+						</div>
+
+					</div>
+				</form>
+			</div>
+			<div class="confirm ng-scope windowButtonContainer marginWindowButtons">
+				<button class="btn btn-primary k-button btnClr" type="button"
+					ng-click="saveLogConfig()">
+					<i class="icon-save-device"></i> {{'com_save_and_apply' |
+					translate}}
+				</button>
+				<button class="btn btn-primary k-button pull-left btnClr"
+					type="button" ng-click="cancelLogConfig()">
+					<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}
+				</button>
+			</div>
+		</div>
+		<!-- Popup For Log Config ends-->
+		
+	<!-- Start Debugging -->
+	   <div class="row" style="margin-top: 10px;">
+		<div class="col-sm-12">
+			<section class="row">
+				<div class="col-sm-12">
+                        <span class="label ng-binding">{{'debug_output' | translate}}</span>
+                </div>
+				<div class="col-lg-3 col-md-4 col-sm-5 form-group debug-bundle-input">
+					<div ng-init="bundleNameTitle=['troubleshooting_enterthedebugbundlename','troubleshooting_invaliddebugbundlename']" ng-class="{'has-error has-feedback':!validNameStatus}">
+						<input maxlength="50" ng-trim="false" type="text" class="form-control ng-pristine ng-untouched ng-valid ng-not-empty ng-valid-maxlength" ng-model="debugBundleName" title="Enter the debug bundle name" placeholder="Enter the debug bundle name">
+						<i class="fa fa-exclamation-triangle form-control-feedback invalid-clitext-icon ng-hide" title="{{'debug_invalid' | translate}}" ng-hide="validNameStatus" aria-hidden="true"></i>
+					</div>
+					<!-- <div class="error-msg ng-binding ng-hide" ng-hide="validNameStatus">{{'debug_invalid' | translate}}</div> -->
+				</div>
+				<div class="col-lg-2 col-md-3 col-sm-3 form-group bundle-name-info">
+				  <tooltip helptext="{{'debug_help_name' | translate}}" position="top"></tooltip>
+				</div>
+			</section>			
+			<section class="row">
+				<div class="col-sm-12">
+                        <span class="label ng-binding">{{'debug_cli_list' | translate}}</span>
+                </div>
+			</section>
+			<section class="row">
+				<div class="col-lg-5 col-md-6 col-sm-5 form-group">
+					<div ng-init="cliTitle='troubleshooting_entercliforoutputpackage'" ng-class="{'has-error has-feedback':resultStatus}">
+						<input type="text" ng-focus="resultStatus=false; duplicateCLI=true;" class="form-control ng-pristine ng-untouched ng-valid ng-empty" ng-model="textCli" title="{{'debug_enter_cli' | translate}}" placeholder="{{'debug_enter_cli' | translate}}">
+						<i class="fa fa-exclamation-triangle form-control-feedback invalid-clitext-icon ng-hide" title="" ng-hide="!resultStatus" aria-hidden="true"></i>
+					</div>
+					
+				</div>
+				<div class="col-lg-1 col-md-3 col-sm-3 form-group bundle-name-info">	
+				   <tooltip helptext="{{'debug_help_clilist' | translate}}" position="top"></tooltip>			
+			    </div>
+				<div class="col-lg-5 col-md-6 col-sm-7 form-group">
+					<button class="btn btn-primary ng-binding" ng-disabled="!allowedCli || textCli.length<=0" ng-click="viewCliResult();"><i class="fa fa-compass" aria-hidden="true"></i> {{'com_btn_view' | translate}}</button> 
+					<span></span>
+					<button ng-disabled="!allowedCli || textCli.length<=0" class="btn btn-primary ng-binding" ng-click="addCli();"><i class="fa fa-plus-square" aria-hidden="true"></i> {{'com_btn_add' | translate}}</button>
+				</div>
+				
+			</section>
+			<section class="row">
+				<div class="col-lg-5 col-md-8 col-sm-10" style="height: 80px;">
+				<div class="alert alert-danger ng-binding ng-hide" role="alert" ng-hide="!resultStatus &amp;&amp; duplicateCLI">
+					
+					<strong class="ng-binding">{{'com_warning' | translate}}</strong> {{errorMessageCLI}}
+				</div>
+					<ul class="list-group">
+						<li class="list-group-item ng-binding ng-scope" ng-repeat="cli in cliList">{{cli}}<i title="{{testedCliList.indexOf(cli) != -1?'Verified':'Not Verified'}}" style=" {{testedCliList.indexOf(cli) != -1?'color: green':'color: orange'}}" ng-class="{'fa-check-circle':(testedCliList.indexOf(cli) != -1),'fa-question-circle':(testedCliList.indexOf(cli) == -1)}" class="fa fa-2x cli-icon" aria-hidden="true"></i><a href="" class="pull-right" ng-click="deleteCli(cli)" title="Delete"><i class="fa fa-times" aria-hidden="true"></i></a></li><!-- end ngRepeat: cli in cliList -->
+					</ul>
+				</div>				
+			</section>			
+			<section class="row">
+				<div class="col-sm-12">
+					<button ng-disabled="downloadDebugLogs" download-content="debugBundleDownload" class="btn btn-primary ng-binding" ng-click="createDebugOutput();"><i class="fa fa-file-archive-o" aria-hidden="true"></i>{{'com_download_output' | translate}} </button>
+				</div>
+			</section>
+		</div>			
+		<div kendo-window="viewGridWindow" k-title="'debug_view_setup' | translate" k-visible="false" k-width="700" k-modal="true" id="vlanGridPopup" data-role="window" class="k-window-content k-content" aria-labelledby="vlanGridPopup_wnd_title">
+					<div>
+						<form name="vlanForm" id="vlanForm" kendo-validator="vlanValidator" k-options="vlanValidations" class="ng-pristine ng-invalid ng-invalid-required ng-valid-maxlength" data-role="validator" novalidate="novalidate">
+						
+							<div class="windowContainer" style="height: 400px;">
+								<textarea style="width:96%; height:94%;" data-ng-model="viewResult" class="ng-pristine ng-untouched ng-valid ng-not-empty"></textarea>
+							</div>
+						</form>
+					</div>
+					<div ng-show="!isEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr ng-binding" type="button" ng-click="addCli()">
+						<i class="fa fa-plus-square"></i>{{'debug_add_cli' | translate}} </button>
+						<button class="btn btn-primary k-button pull-left btnClr ng-binding" type="button" ng-click="viewCancel()">
+						<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+		</div>
+   </div>
+	   
+<!-- End Debugging -->
+		
+	</div>
+</div>

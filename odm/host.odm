@@ -1,0 +1,27 @@
+###
+show snmp host
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show snmp host</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowSnmpHost">
+<Container name="wnwebdata">
+<Container name="Notification host" alias = "entry" dynamic = "true">
+<Property name="Notification host" alias="ipAddress" distance = "1" length = "1" type = "String"/>
+<Property name="udp-port" alias="udpPort" distance = "1" length = "1" type = "String"/>
+<Property name="type" distance = "1" length = "1" type = "String"/>
+<Property name="user" alias="communityName" distance = "1" length = "1" type = "String"/>
+<Property name="security model" alias="version" distance = "1" length = "1" type = "String"/>
+<Property name="security model" alias="securityLevel" distance = "2" length = "1" type = "String"/>
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

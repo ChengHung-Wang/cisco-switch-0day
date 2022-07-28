@@ -1,0 +1,72 @@
+<div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+<div class="btnView">
+    <!--
+      Description: Clients Monitoring html
+      Copyright (c) 2016 by Cisco Systems, Inc.
+      All rights reserved.
+      -->
+    <div class="row">
+	    <div class="pageTitle col-sm-8" ng-bind="'ports_monitoring' | translate">
+	    </div>
+	    <div class="gridActionButtons col-sm-4"> 
+	            <button class="btn btn-primary pull-right"
+	                    ng-csv="getArray()" csv-header="getHeader()" filename="{{portsFileName}}.csv">
+	                <i class="fa fa-file-text-o"></i>
+	                <span>{{'clients_export' | translate}}</span>
+	            </button>
+	    </div>
+    </div>
+    <div ng-include="'features/common/stackConf/views/switchView.html'" class="portSwitchContainer"></div>
+    <div class="pageContent">        
+            <div>
+                <div class="row">
+                    <div class="col-sm-12 table-responsive">
+						<div class="portMonitor">
+							<span class="spinner fa fa-spin fa-spinner"></span>
+						</div>
+                        <div kendo-grid="portsGrid" id="portsGrid" name="portsGrid"
+                             k-options="portsGridOptions"
+                             k-data-source="portsDataSource"></div>
+                    </div>
+                </div>
+                <div class="portIntimationContainer">                
+					<div class="txtBold" ng-if="currentPort">{{"management_snmp_host_port" | translate}} : <span>{{currentPort}}</span></div>
+				</div>
+                <div class="row">
+                    <div  class=" col-sm-6">
+                        <div kendo-grid="portsPacketGrid" id="portsPacketGrid" name="portsPacketGrid"
+                             k-options="portsPacketGridOptions"
+                             k-data-source="portsPacketDataSource"></div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div kendo-grid="portsStatusGrid" id="portsStatusGrid" name="portsStatusGrid"
+                             k-options="portsStatusGridOptions"
+                             k-data-source="portsStatusDataSource"></div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                </div>
+                <div>
+                	<div class="formActionButtons fieldinput-center">
+	            		<button class="btn btn-primary" ng-click="deleteConfirmation()" ng-disabled="clearCounterStatus">{{'clear_counter' | translate}}</button>
+    	    			</div>
+              </div>
+              <div class="row form-group">
+              </div>
+                <div class="row">
+                    <div class="col-sm-6 editSection1">
+                        <div class="title" ng-bind="'port_channel_summary' | translate"></div>
+                    </div>
+                </div>
+                <div class="row">
+                  <div class="col-sm-8">
+                      <div kendo-grid="etherChannelGrid" id="etherChannelGrid" name="etherChannelGrid"
+                           k-options="etherChannelGridOptions"
+                           k-data-source="etherChannelDataSource"></div>
+                  </div>
+                </div>
+              <div class="row form-group">
+              </div>
+            </div>       
+    </div>
+</div>

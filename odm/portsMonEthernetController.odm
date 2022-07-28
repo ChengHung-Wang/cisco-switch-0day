@@ -1,0 +1,30 @@
+###
+show interface * counters
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show interface * counters</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowPackets">
+<Table  name="ReceivedPacketTable">
+<Header name = "Port" alias="port" start = "0" end = "14" type = "String"/>
+<Header name = "InOctets" alias="totalReceived" start = "15" end = "27" type = "String"/>
+<Header name = "InMcastPkts" alias = "multicastReceived" start = "43" end = "54" type = "String"/>
+<Header name = "InBcastPkts" alias = "broadcastReceived"   start = "57" end="-1"/>
+
+<Header name = "OutOctets" alias="totalSent" start = "15" end = "27" type = "String"/>
+<Header name = "OutMcastPkts" alias = "multicastSent" start = "43" end = "54" type = "String"/>
+<Header name = "OutBcastPkts" alias = "broadcastSent"   start = "57" end="-1"/>
+
+</Table>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+
+

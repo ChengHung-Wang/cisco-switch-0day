@@ -1,0 +1,717 @@
+<!--
+	Description: VLAN Configuration.
+	Copyright (c) 2016 by Cisco Systems, Inc.
+	All rights reserved.
+	
+-->
+ <div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+  <div class="btnView">
+	<div class="pageTitle" ng-bind="'menu_vlan' | translate"></div>
+		<div kendo-tab-strip="tabExample">
+			<ul>
+				<li class="k-state-active" ng-show="true" ng-click="tabChange('vlanShowEditSection')">
+					{{'vlan_layer2' | translate}}
+				</li>
+				<li ng-show="!isMobilityAgent && showVlanGroups" ng-click="tabChange('vlanGrpShowEditSection')">
+					{{'vlan_group' | translate}}
+				</li>				
+				<li ng-show="!isMobilityAgent" ng-click="vlanInterface()">
+					{{'svi_title' | translate}}
+				</li>
+			</ul>
+
+			<!-- Vlan Layer2 page design -vlanApplySection-->
+		  <div>				
+           <!-- IGMP Global Configuration -->
+            <form name="igmpForm" id="igmpForm" kendo-validator="igmpValidator" k-options="igmpValidations">
+            <div class="well">     
+               <div class="webui-centerpanel-subtitle col-sm-11">
+                    <span><label>{{'igmp_global_config' | translate}}</label></span>
+               </div>         
+	           <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'igmp_snooping' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="toggleClass">
+								<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+									ng-change="diableIGMPApplyButton= diableIGMPCancelButton = false" ng-model="igmpGlobalConfig"></toggle-button>
+						</span>
+                        <tooltip helptext="{{'igmp_snooping_help' | translate}}"></tooltip>                        
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'igmp_snooping_query' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="toggleClass">
+								<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+										ng-change="diableIGMPApplyButton= diableIGMPCancelButton = false" ng-model="igmpGlobalQurier"></toggle-button>
+						</span>                                            
+                    </div>
+                </div>
+                <div class="row form-group">
+                     <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                           <span class="label">{{'igmp_last_member_count' | translate}}</span>
+                     </div>
+					 <div class="col-sm-5">   
+						<input  class="k-textbox form-control" placeholder="1-7" ng-change="diableIGMPApplyButton= diableIGMPCancelButton = false" type="text" data-ng-model="igmpGlobalQueryCount" name="queryCount" id="queryCount" 
+						num-only min="1" max="7" data-range1 data-range1-msg="{{'igmp_last_member_count_range' | translate}}"/>																																	
+					 </div>
+               </div> 
+                <div class="row form-group">
+                       <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                           <span class="label">{{'igmp_member_interval' | translate}}</span>
+                       </div>
+					 <div class="col-sm-5">   
+						<input  class="k-textbox form-control" placeholder="100-32767" ng-change="diableIGMPApplyButton= diableIGMPCancelButton = false" type="text" data-ng-model="igmpGlobalQueryInterval" name="queryInterval" id="queryInterval" 
+						num-only min="100" max="32767" data-range1 data-range1-msg="{{'igmp_member_interval_range' | translate}}" />																																	
+					  </div>
+               </div> 
+			   
+               <div class="webui-centerpanel-subtitle col-sm-11">
+					<span><label>{{'dhcp_global_config' | translate}}</label></span>
+               </div>
+			   
+			   <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'portconfig_port_dhcpsnooping' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="toggleClass">
+								<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+									ng-change="diableIGMPApplyButton= diableIGMPCancelButton = false" ng-model="dhcpGlobalConfig"></toggle-button>
+						</span>
+                        <tooltip helptext="{{'help_ports_DHCP_snooping' | translate}}"></tooltip>                        
+                    </div>
+                </div>
+				
+				<div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'dhcp_snooping_glean' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="toggleClass">
+								<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+									ng-change="diableIGMPApplyButton= diableIGMPCancelButton = false" ng-model="dhcpGlean"></toggle-button>
+						</span>
+                        <tooltip helptext="{{'help_dhcp_snooping_config_glean' | translate}}"></tooltip>                        
+                    </div>
+                </div>
+				
+				<!--<div class="row form-group " >
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'portconfig_options_allow_untrusted' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3" >
+                        <span class="toggleClass">
+							<toggle-button   button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+								ng-change="diableIGMPApplyButton=diableIGMPCancelButton = false"
+								ng-model="dhcpAllowUntrusted"></toggle-button>
+                        </span>
+                        <tooltip helptext="{{'help_dhcp_snooping_allow_untrusted' | translate}}"></tooltip>
+                    </div>
+				</div>
+				
+				<div class="row form-group " >
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'eigrp_unicast' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3" >
+                        <span class="toggleClass">
+							<toggle-button   button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+								ng-change="diableIGMPApplyButton=diableIGMPCancelButton = false"
+								ng-model="dhcpUnicast"></toggle-button>
+                        </span>
+                        <tooltip helptext="{{'help_dhcp_snooping_allow_untrusted' | translate}}"></tooltip>
+                    </div>
+				</div>-->				
+              
+               <div class="formActionButtons fieldinput-center">
+					<button kendo-button="saveBtn" class="btn btn-primary" ng-disabled="diableIGMPApplyButton" ng-click="applyGlobalIGMP()">
+						<span class="fa pl-apply"></span> {{'com_apply' | translate}}
+					</button>
+					<button kendo-button="cancelBtn" class="btn btn-primary" ng-disabled="diableIGMPCancelButton"	ng-click="loadVlanDetails()">
+						<span class="fa pl-cancel"></span> {{'com_cancel' | translate}}
+					</button>
+				</div>
+				
+				
+             </div> 
+			</form>
+			    <div class="row">
+						<div class="col-sm-5">
+							<div class="panel panel-default panel-custom noborder">
+								<div class="panel-heading noborder panelHeadingCustom">								
+									<h3 class="panel-title custom-panel-title"><span class="dashletPanelHeader headerfont" style="font-weight: bold;"> {{'dhcp_global_igmp_snooping_vlan_configuration'|translate}}</span></h3>
+								</div>
+							</div>
+						</div>
+				</div>
+				<div kendo-grid="layer2VlanGrid" id="layer2VlanGrid" name="layer2VlanGrid"
+					 k-options="layer2VlanGridOptions"></div>
+				<div class="gridActionButtons">
+					<button kendo-button="addPeerBtn" class="btn btn-primary pl-add" ng-click="addVlanRow()" ng-disabled="!vlanAddSection">
+						{{'com_add' | translate}}
+					</button>
+					<button kendo-button="deletePeerBtn" class="btn btn-primary pl-delete" ng-disabled="vlanDeleteSection" ng-click="vlanDeleteConfirm()">
+						{{'com_delete' | translate}}
+					</button>
+				</div>
+				
+				<!-- Popup For Vlan starts-->
+				<div kendo-window="vlanGridWindow" k-title="'vlan_setup' | translate" k-visible="false" k-width="700" k-modal="true" id="vlanGridPopup" >
+					<div>
+						<form name="vlanForm" id="vlanForm" kendo-validator="vlanValidator" k-options="vlanValidations">
+							<div class="well">
+								<div class="row form-group"></div>          
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'vlan_id' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control"
+										   name="vlanId" ng-disabled="vlanIdState"
+										   ng-model="vlanEditData.vlan" placeholder="2-4094" min="2" max="4094"
+										   required data-required-msg="{{'vlan_id_req_msg' | translate}}"
+										   num-only maxlength="4" data-duplicate data-duplicate-msg="{{'vlan_id_exist_msg' | translate}}" data-range data-range-msg="{{'vlan_id_invalid_msg' | translate}}">
+										<tooltip helptext="{{'help_VLAN_ID' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label pl-mandatory">{{'com_name' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control" name="vlanName"
+										   ng-model="vlanEditData.name"
+										   required data-required-msg="{{'vlan_name_req_msg' | translate}}" data-checkVlanName data-checkVlanName-msg="{{'vlan_name_invalid_msg' | translate}}">
+									</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label right">{{'com_state' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<span class="toggleClass">
+										<toggle-button  button-options="{{'com_active' | translate}},{{'com_suspended' | translate}}"
+														ng-model="vlanEditData.status">
+										</toggle-button></span>
+										<tooltip helptext="{{'help_VLAN_State' | translate}}" position="top"></tooltip>
+									</div>
+								</div>
+								<div class="row form-group">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label right">{{'vlan_ip_dhcp_snooping' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<span class="toggleClass">
+										<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+													   ng-model="vlanEditData.dhcpSnooping" ng-change="ipDhcpToggleBtn();"></toggle-button></span>
+										<tooltip helptext="{{'help_VLAN_IP_DHCP_snooping' | translate}}"></tooltip>
+									</div>
+								</div>
+							<!-- Start IGMP related configuration -->
+								<div class="row form-group">
+				                    <div class="col-sm-4 webui-centerpanel-label">
+				                        <span class="label">{{'igmp_snooping' | translate}} </span>
+				                    </div>
+				                    <div class="col-sm-6">
+				                        <span class="toggleClass">
+												<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+													ng-change="ipIGMPToggleBtn();"  ng-model="vlanEditData.igmpSnooping"></toggle-button>
+										</span>
+				                        <tooltip helptext="{{'igmp_snooping_help1' | translate}}"></tooltip>                        
+				                    </div>
+				                </div>				                
+				                <div class="row form-group" ng-show="igmpStatus">
+	                                <div class="col-sm-4 webui-centerpanel-label">
+	                                    <span class="label">{{'igmp_immediate_leave' | translate}}</span>
+	                                </div>
+									<div class="col-sm-6" ><input
+												type="checkbox" class="  ng-valid ng-dirty" id="ipv4"
+												name="igmpImmediateleave" ng-model="igmpImmediateleave" checked="checked"
+												ng-change="igmpImmediateleaveChange(igmpImmediateleave)">
+												<tooltip helptext="{{'igmp_immediate_leave_help' | translate}}"></tooltip> 
+										</div>
+                                </div>                                
+								<div class="row form-group" ng-show="igmpStatus">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'igmp_last_member_count' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control" name="igmpQueryCount" placeholder="1-7" num-only min="1" max="7" data-range1 data-range1-msg="{{'igmp_last_member_count_range' | translate}}"
+										   ng-model="vlanEditData.igmpQueryCount"  ng-change="disVlanListApplyBtn=false">
+									</div>
+								</div>
+								<div class="row form-group" ng-show="igmpStatus">     
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'igmp_member_interval' | translate}}</span>
+									</div>
+									<div class="col-sm-6">
+										<input class="k-textbox form-control" name="igmpQueryInterval" placeholder="100-32767" num-only min="100" max="32767" data-range1 data-range1-msg="{{'igmp_member_interval_range' | translate}}"
+										   ng-model="vlanEditData.igmpQueryInterval"  ng-change="disVlanListApplyBtn=false">
+									</div>
+								</div>	
+								<div class="row form-group" ng-show="igmpStatus">									
+									<div class="col-sm-4 webui-centerpanel-label">
+										<span class="label">{{'igmp_mcast_learning_mode' | translate }}</span>
+									</div>
+									<div class="col-sm-6">							
+										<select kendo-drop-down-list name="mlearningMode" id="mlearningMode"
+											ng-model="mlearningMode"
+											k-data-source="mlearningModeOption" k-data-text-field="'modeText'"
+											k-data-value-field="'modeValue'"
+											k-ng-delay ="mlearningMode"></select>
+											<tooltip helptext="{{'igmp_mcast_learning_mode_help' | translate}}"></tooltip> 
+									</div>	
+								</div>
+								<!-- End IGMP config -->
+								<!-- ARP Inspection -->
+								<div ng-hide="hideElement" class="row form-group">
+				                    <div class="col-sm-4 webui-centerpanel-label">
+				                        <span class="label">{{'port_arp' | translate}} </span>
+				                    </div>
+				                    <div class="col-sm-6">
+				                        <span class="toggleClass">
+												<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+													ng-change="disVlanListApplyBtn=false"  ng-model="vlanEditData.arpStatus"></toggle-button>
+										</span>
+				                        <tooltip helptext="{{'arp_enable_vlan' | translate}}"></tooltip>                        
+				                    </div>
+				                </div>	
+							</div>
+						</form>
+					</div>
+					<div ng-show="!isEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveVlanData()">
+						<i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="vlanCancel()">
+						<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+
+					<div ng-show="isEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+						<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveVlanData()">
+						<i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button>
+						<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="vlanCancel()">
+						<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+					</div>
+				</div>
+				
+				<!-- Popup For Vlan ends-->
+				<div class="row">
+						<div class="col-sm-5">
+							<div class="panel panel-default panel-custom noborder">
+								<div class="panel-heading noborder panelHeadingCustom">								
+									<h3 class="panel-title custom-panel-title"><span class="dashletPanelHeader headerfont" style="font-weight: bold;"> {{'dhcp_global_dhcp_snooping_vlan_configuration'|translate}}</span></h3>
+								</div>
+							</div>
+						</div>
+				</div>				
+				<div class="row">
+					<div class="col-sm-8">
+					<div>
+						<div kendo-grid="dhcpSnoopingVLANGrid" id="dhcpSnoopingVLANGrid" name="dhcpSnoopingVLANGrid"
+							 k-options="dhcpSnoopingVLANOptions"
+							 k-data-source="dhcpSnoopingVLANDataSource"
+							 k-on-change="onSelectDHCPSnoopingVLANHandler(data)">
+						</div>
+					</div>
+					</div>
+				</div>
+				<div class="row">
+				    <div class="col-sm-8">
+					<div class="gridActionButtons">
+						<div>
+							<button kendo-button="addDHCPSnoopingVLANButton" class="btn btn-primary margin-right-10" ng-click="addDHCPSnoopingVLAN()"><span class="fa pl-add"></span> {{'com_add' | translate}}</button>
+							<button kendo-button="deleteDHCPSnoopingVLANButton" class="btn btn-primary" ng-click="showDeleteWindow(true)" ng-disabled="disableDeleteButton"><span class="fa pl-delete"></span> {{'com_delete' | translate}}</button>
+						</div>
+					</div>
+					</div>
+                </div>				
+				<div kendo-window="dhcpSnoopingVLANGridWindow" k-title="'portconfig_dhcp_snoop_vlan' | translate" k-visible="false" k-width="700" k-modal="true" id="dhcpSnoopingVLANGridPopup" >
+						<div>
+							<form name="dhcpSnoopingVlanForm" id="dhcpSnoopingVLANForm" kendo-validator="dhcpSnoopingVLANValidator" k-options="dhcpSnoopingVLANValidations">
+								<div class="well">
+									<div class="row form-group"></div>
+										<div class="row form-group">
+										    <div class="col-sm-2 webui-centerpanel-label">
+												<div class="label pl-mandatory">
+													{{'vlan_list' | translate}}
+												</div>
+											</div>
+											<div class="col-sm-4">
+                                            <input class="k-textbox"
+                                                   name="dhcpVlanId" id="dhcpVlanId" class="form-control"
+                                                   placeholder="{{'vlan_vlan_list_pholder' | translate}}" 
+                                                   ng-model="dhcpVlanList"
+												   required data-required-msg="{{'vlan_vlan_list_required' | translate}}"                                                   
+                                                   k-ng-delay="dhcpVlanList"
+                                                   data-special="" data-special-msg="{{'common_special_chars_not_allowed' | translate}}" 
+                                                   data-multivlan="1-4095" data-multivlan-msg="{{'vlan_vlan_id_invalid_range' | translate}}"
+                                                   data-invalidTags="" data-invalidTags-msg="{{'vlan_invalidtags_msg' | translate}}"/>
+												   <tooltip helptext="{{'help_vlan_list_range' | translate}}"></tooltip>
+														
+											</div>											
+										</div>									
+								</div>
+							</form>
+						</div>
+						<div ng-show="!isEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+							<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveDhcpSnoopingVlanData()">
+							<i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button>
+							<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="dhcpSnoopingVlanCancel()">
+							<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+						</div>
+
+						<div ng-show="isEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+							<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveDhcpSnoopingVlanData()">
+							<i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button>
+							<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="dhcpSnoopingVlanCancel()">
+							<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+						</div>
+				</div>
+			</div>
+
+
+			<!-- Vlan group page design -->
+			<div ng-show="showVlanGroups">
+			   <div class="gridActionButtons">
+					<button kendo-button="addPeerBtn" class="btn btn-primary pl-add" ng-click="addVlanGrpRow()">
+						{{'com_add' | translate}}
+					</button>
+					<button kendo-button="deletePeerBtn" class="btn btn-primary pl-delete" ng-disabled="vlanGrpDelBtn" ng-click="delConfirmationWindow()">
+						{{'com_delete' | translate}}
+					</button>					
+				</div>
+				<div kendo-grid="vlanGroupGrid" id="vlanGroupGrid" name="vlanGroupGrid"
+					 k-options="vlanGroupGridOptions"></div>
+					 
+				<div kendo-window="vlanGroupDiv" k-title="'{{'vlan_group_edit_title' | translate}}'" k-visible="false" k-width="700" k-modal="true">				
+				<div ng-show="vlanGrpShowEditSection">                      				
+					<form name="vlanGroupForm" id="vlanGroupForm" kendo-validator="vlanGroupValidator" k-options="vlanGroupValidations">
+					<div class="row form-group"></div>
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label pl-mandatory" for="vlanGroup">{{'vlan_group_name' | translate}}</span>
+							</div>
+							<div class="col-sm-6">
+								<input class="k-textbox form-control" id="vlanGroup" name="vlanGroup" ng-model="vlanGrpEditData.VlanGroup" alpa-numeric-hyphen-only required data-required-msg="{{'vlan_group_req_msg' | translate}}"
+									   data-duplicate="" data-duplicate-msg="{{'vlan_group_exist_msg' | translate}}" data-checkvlangroup data-checkvlangroup-msg="{{'vlan_group_invalid_msg' | translate}}" 
+									   domainspace data-domainspace-msg="{{'stack_domain_space' | translate}}">
+								<tooltip helptext="{{'help_VLAN_group_name' | translate}}" position="top"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group">
+							<div class="col-sm-4 webui-centerpanel-label">
+								<span class="label pl-mandatory">{{'vlan_list' | translate}}</span>
+							</div>
+							<div class="col-sm-6">
+								<input class="k-textbox form-control" name="vlanList" ng-model="vlanGrpEditData.VlanList"  required data-required-msg="{{'vlan_list_req_msg' | translate}}"
+									   min="1" max="4094"  num-comma-hyphen-only data-checkVlanList data-checkVlanList-msg="{{'vlan_list_invalid_msg' | translate}}" data-range="" data-range-msg="{{'vlan_list_invalid_msg' | translate}}">
+								<tooltip helptext="{{'help_VLAN_list' | translate}}" position="top"></tooltip>
+							</div>
+						</div>						
+					</form>
+				</div>
+				<div ng-show="kendoWindow.isEditMode" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="saveVlanGrpData()"><i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelVlanGrpData()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+				<div ng-show="!kendoWindow.isEditMode" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="saveVlanGrpData()"><i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelVlanGrpData()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+
+			</div>
+
+			</div>
+					
+			<!-- sviconfig page design -->
+			<div>
+			<div>
+				<div class="gridActionButtons">
+					<button kendo-button="addPeerBtn" class="btn btn-primary pl-add" ng-click="addSviRow()">
+							{{'com_add' | translate}}
+					</button>
+					<button kendo-button="deletePeerBtn" class="btn btn-primary pl-delete" ng-disabled="sviDelBtn" ng-click="sviDeleteConfirm()">
+							{{'com_delete' | translate}}
+					</button>
+				</div>
+				<div kendo-grid="sviGrid" id="sviGrid" name="sviGrid" k-options="sviGridOptions" k-data-source="vlanDataSource" k-on-change="showEditTabsOnClick(data)"></div>
+				<div kendo-window="sviGridWindow" k-title="'{{'svi_edit_title' | translate}}'" k-visible="false" k-width="800" k-modal="true" id="sviGridPopup">
+					<div>
+						<form name="sviQuicksetupForm" id="sviQuicksetupForm" kendo-validator="sviValidator" k-options="sviValidations">
+								<div class="well">
+									<div class="row form-group"></div>                                                         
+									<div class="row form-group" ng-hide="vlanInterfaceName">     
+										<div class="col-sm-5 webui-centerpanel-label">
+												<span class="label  pl-mandatory">{{'svi_vlan_no' | translate}}</span>
+										</div>
+										<div class="col-sm-5">
+												<input class="k-textbox form-control" id="vlanNumber" name="vlanNumber" ng-model="vlanNumber" placeholder="1-{{vlanNumRangeUpto}}" min="1" max="{{vlanNumRangeUpto}}" required data-required-msg="{{'svi_vlan_req_msg' | translate }}" data-range="" 
+												data-range-msg="{{'svi_vlan_id_invalid_msg' | translate}}">
+												<tooltip helptext="{{'svi_help_vlan_no' | translate}}"></tooltip>
+										</div>
+									</div>
+									<div class="row form-group" ng-hide="mtuSize">
+										<div class="col-sm-5 webui-centerpanel-label">
+											<span class="label">{{'switch_mtusize' | translate}}</span>
+										</div>
+										<div class="col-sm-4 fieldinput ">
+											<input kendo-masked-text-box name="mtu" id="mtu"
+												ng-model="mtu"
+												class="form-control medium_textField"
+												placeholder="68 - 1500" min="68" max="1500"
+												data-range="" data-range-msg="{{'mtu_invalid_msg' | translate }}">
+												<tooltip helptext="{{'svi_help_mtu_size' | translate}}"></tooltip>
+										</div>
+									</div>
+									<div class="row form-group ">
+										<div class="col-sm-5 webui-centerpanel-label">
+											<span class="label">{{'portconfig_general_description' | translate }}</span>
+										</div>
+										<div class="col-sm-4">
+											<textarea class="k-textbox description-text" name="sviDescription" id="sviDescription"
+												  ng-model="sviDescription" data-check spellcheck="false"
+												  data-check-msg="{{'portconfig_invalid_desc' | translate }}"
+												  data-maximum="201" data-maximum-msg="{{'logicalinterface_descriptionmsg' | translate }}">
+											</textarea>
+											<tooltip helptext="{{'svi_help_desc' | translate}}"></tooltip>
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col-sm-5 webui-centerpanel-label">
+											<span class="label ">{{'portconfig_adv_dhcprelay' | translate }}</span>
+										</div>
+										<div class="col-sm-6">
+											<span class="toggleClass">
+												<toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}" ng-model="dhcpRelay">
+												</toggle-button>
+											</span>
+											<tooltip helptext="{{'svi_help_relay_info' | translate}}"></tooltip>
+										</div>
+									</div>
+									<div class="row form-group">
+										<div class="col-sm-5 webui-centerpanel-label">
+											<span class="label">{{'svi_dhcp_server' | translate}}</span>
+										</div>
+										<div class="col-sm-4">
+											<input class="form-control k-textbox"
+										   name="vlanDhcp" id="vlanDhcp" ng-model="vlanDhcp" placeholder="xxx.xxx.xxx.xxx"
+										   numeric-dot-only data-validate-ip="" data-validateip-msg="{{'com_invalidIp' | translate}}">
+										   <tooltip helptext="{{'svi_help_dhcp_address' | translate}}"></tooltip>
+										</div>										
+									</div>
+									<div class="row form-group">
+										<div class="col-sm-5 webui-centerpanel-label">
+												<span class="label">{{'svi_admin_status' | translate}}</span>
+										</div>
+										<div class="col-sm-5">
+											<span class="toggleClass">
+												<toggle-button button-options="{{'toggle_up' | translate}},{{'toggle_down' | translate}}"
+												ng-model="adminStatus"></toggle-button>
+											</span>
+											<tooltip helptext="{{'svi_help_admin_status' | translate}}"></tooltip>
+										</div>
+									</div>
+                                    <div>
+									<div class="row form-group">
+										<div class="col-sm-5 webui-centerpanel-label">
+											<span class="label">{{'com_ip_option' | translate }}</span>
+										</div>
+										<div class="col-sm-2" >
+											<span class="label"> &nbsp;{{'sys_dhcp_ipv4'| translate}}</span> <input
+												type="checkbox" class="pull-left  ng-valid ng-dirty" id="ipv4"
+												name="ipv4" ng-model="iptype.ipv4" checked="checked">
+										</div>
+										<div class="col-sm-2" ng-hide = "hideIpv6 && hideElement">
+											<span class="label"> &nbsp;{{'iptype_ipv6'| translate}}</span> <input
+												type="checkbox" class="pull-left  ng-valid ng-dirty" id="ipv6"
+												name="ipv6" ng-model="iptype.ipv6" checked="checked">										
+										</div>
+									</div>
+									<!-- IPv4 -->
+										 <div ng-show="(iptype.ipv4 == true)">
+											<div class=" row form-group"
+												ng-if="(iptype.ipv4 == true && iptype.ipv6 == true)">										
+												<div class="col-sm-5 webui-centerpanel-label">                        					
+														<span class="innerheaderdesign" id="wizardTitle">{{'sys_dhcp_ipv4' | translate }}</span>                        					
+												</div>							
+											</div>
+											<div class="row form-group">
+												<div class="col-sm-5 webui-centerpanel-label">
+													<span class="label">{{'staticrouting_ip_type' | translate}}</span>
+												</div>
+												<div class="col-sm-3">
+													<select kendo-drop-down-list
+													name="portconfigIPType" id="portconfigIPType"
+													ng-model="portconfigIPType"
+													ng-change="portconfigIPTypeChange(portconfigIPType)"
+													k-data-source="portconfigIPTypeOptions" k-data-text-field="'text'"
+													k-data-value-field="'value'" k-ng-delay="portconfigIPType" ng-disabled="portConfigIpDisabled"></select>
+												</div>
+											</div>
+											<div class="ng-hide" ng-init="portconfigIPTypeOptionsLoad()"></div>
+											<div class="row form-group" ng-if="portconfigIPType == 'static'">
+												<div class="col-sm-5 webui-centerpanel-label">
+													<span class="label pl-mandatory">{{'portconfig_port_ipv4_ip' | translate }}</span>
+												</div>
+												<div class="col-sm-4">
+													<input kendo-masked-text-box class="form-control"
+												   name="vlanIP" id="vlanIP" ng-model="ports.portConfigIp" placeholder="xxx.xxx.xxx.xxx"
+												   numeric-dot-only data-customreq="iptype.ipv4" data-customreq-msg="{{'aaa_ip_msg' | translate}}" data-validate-ip=""data-validateip-msg="{{'com_invalidIp' | translate}}">
+												   <tooltip helptext="{{'portconfig_port_ipv4_ip' | translate}}"></tooltip>
+												</div>
+											</div>
+											<div class="row form-group" ng-if="portconfigIPType == 'static'">
+												<div class="col-sm-5 webui-centerpanel-label">
+													<span class="label pl-mandatory">{{'portconfig_port_ipv4_subnet' | translate }}</span>
+												</div>
+												<div class="col-sm-4">
+													<input name="vlanSubnet" id="vlanSubnet" class="k-textbox form-control"
+														ng-model="ports.portConfigSubnet" numeric-dot-only data-validate-subnet="" data-validatesubnet-msg="{{'staticroute_subnet_invalid_msg' | translate}}" data-customreq="iptype.ipv4" data-customreq-msg="{{'staticroute_subnet_req_msg' | translate}}" placeholder="xxx.xxx.xxx.xxx">
+														<tooltip helptext="{{'portconfig_port_ipv4_subnet' | translate}}"></tooltip>
+												</div>
+											</div>
+											<div class="row form-group" ng-if="portconfigIPType == 'dhcp'">
+												<div class="col-sm-5 webui-centerpanel-label">
+													<span class="label">{{'portconfig_port_ipv4_host' | translate}} </span>
+												</div>
+												<div class="col-sm-4">
+													<input class="k-textbox form-control" name="dhcpHostName" id="dhcpHostName"
+													   ng-model="ports.dhcpHostName"
+													   ng-change="keepAliveOnChange()" required
+													   data-required-msg="{{'day0_wizard_hostname_req_msg' | translate}}">
+													<tooltip helptext="{{'help_dhcp_hostname' | translate}}"></tooltip>
+												</div>
+											</div>
+											<div class="row form-group" ng-show="portconfigIPType == 'pool' && dhcpPoolArr.length > 0">
+												<div class="col-sm-5 webui-centerpanel-label">
+													<span class="label">{{'com_dhcp_pool' | translate}}</span>
+												</div>
+												<div class="col-sm-5">
+													<select kendo-drop-down-list
+															name="portconfigPool" id="portconfigPool"
+															ng-model="portconfigPool"
+															ng-change="disablePortConfGlbApplyBtn=disablePortConfGlbCancelBtn = false"
+															k-data-source="dhcpPoolDataSource" k-data-text-field="'text'"
+															k-data-value-field="'value'" k-ng-delay="portconfigPool"></select>
+													<tooltip helptext="{{'help_dhcp_pool' | translate}}"></tooltip>
+												</div>
+											</div>
+										  </div>
+									<!-- IPv6 address --> 
+									<div ng-show="(iptype.ipv6 == true)">	
+										<div class=" row form-group"
+												ng-if="(iptype.ipv4 == true && iptype.ipv6 == true)">
+												<div class="col-sm-5 webui-centerpanel-label">                        					
+														<span class="innerheaderdesign" id="wizardTitle">{{'iptype_ipv6' | translate }}</span>                        					
+												</div>							
+										</div>							
+										<div class="row form-group">									
+											<div class="col-sm-5 webui-centerpanel-label">
+												<span class="label">{{'com_ipaddress_static' | translate }}</span>
+											</div>
+											<div class="col-sm-2">							
+												<select kendo-drop-down-list name="ipv6SubType" id="ipv6SubType"
+													ng-model="ipv6SubType"
+													k-data-source="ipv6TypeOptions" k-data-text-field="'ipv6Text'"
+													k-data-value-field="'ipv6Value'"
+													k-ng-delay ="ipv6SubType"></select>
+											</div>	
+										</div>
+										
+										<div class="row form-group">									
+											<div class="col-sm-5 webui-centerpanel-label">
+												<span class="label">{{'portconfig_port_ipv4_ip' | translate}}</span>
+											</div>
+											<div class="col-sm-4">							
+												<input ng-if="ipv6SubType !='link-local'"
+													class="k-textbox form-control" name="vlanIpAddress"
+													id="vlanIPAddress" ng-model="logicalInterface.vlan.vlanIPV6Address"
+													data-ipv6
+													data-ipv6-msg="{{::'com_invalidIpv6' | translate }}"
+													placeholder="X:X:X:X:X:X:X:X/X" data-reservedIp
+													data-reservedIp-msg="{{::'common_invalidipv6address' | translate }}">
+									
+												<input ng-if="ipv6SubType =='link-local'"
+													class="k-textbox" name="layer3linklocal" id="layer3linklocal"
+													ng-model="logicalInterface.vlan.vlanIPV6Address"
+													data-ipv6linklocal
+													data-ipv6linklocal-msg="{{::'com_invalidIpv6' | translate }}"
+													data-duplicatipv6
+													data-duplicatipv6-msg="{{::'physicalinterface_duplicateipv6address' | translate }}"
+													placeholder="fe80::x">
+												<a ng-click="addIpv6Address()"
+													style="font-size: 23px; vertical-align: middle"><i
+													class="fa fa-plus-square-o"></i></a>
+											</div>	
+										</div>
+										
+										<div class="row form-group">									
+											<div class="col-sm-5 webui-centerpanel-label">									
+											</div>
+											<div class="col-sm-5 svibox" style="margin-left: 15px">						
+												<div id="rowIpv6List" 
+													ng-repeat="rowData in logicalInterface.vlan.listIpb6Address">
+													<div>
+														{{rowData.name}} <a ng-click="removeIpv6Address(rowData)"
+															style="float: right; color: red"><i class="fa fa-times"></i></a>
+													</div>
+												</div>
+											</div>	
+										</div>
+										<div class="row form-group">
+                                <div class="col-sm-5 webui-leftpanel-label">
+									
+								</div>
+                                <div class="col-sm-2 vlanipv6 webui-leftpanel-label">
+								<span class="label"> &nbsp;{{::'staticrouting_dhcp' | translate }}</span>
+                                    <input type="checkbox" class="pull-left ng-valid ng-dirty" id="dhcp"
+                                           name="dhcp"  ng-model="logicalInterface.vlan.dhcp"  checked="checked" >
+								</div>			
+								<div class="col-sm-3 webui-leftpanel-label" ng-if="logicalInterface.vlan.dhcp" >
+											<span class="label"> &nbsp;{{::'portconfig_port_ipv6_rapidcommit' | translate }}</span>								
+											<input type="checkbox" name="rapid" value="rapidCommit"  class="pull-left  ng-valid ng-dirty" id="rapid" 
+											ng-model="logicalInterface.vlan.rapid">
+											
+											 
+								</div>
+                            </div>
+							<div class="row form-group">
+                                <div class="col-sm-5 webui-leftpanel-label">
+									
+								</div>
+                                <div class="col-sm-5 vlanipv6 webui-leftpanel-label">
+								<span class="label"> &nbsp;{{::'common_ipv6types_autoconfig' | translate }}</span>	
+											<input type="checkbox" name="autoconfig" value="rapidCommit"  class="pull-left ng-valid ng-dirty" id="autoconfig" 
+											ng-model="logicalInterface.vlan.autoconfig">
+								</div>
+                            </div>
+										
+									</div> 
+								 </div>										
+						</div>
+					</form>     
+				</div>
+				<div ng-show="kendoWindow.isEditMode" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+				<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveSviData('add')">
+				<i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button>
+				<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelSviData()">
+				<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+
+				<div ng-show="!kendoWindow.isEditMode" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+				<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveSviData('edit')">
+				<i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button>
+				<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelSviData()">
+				<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+				
+				</div>
+			</div>
+        </div>
+		
+		
+		</div>
+	</div>
+<script>
+	$("#mail-switch").kendoMobileSwitch({
+		onLabel: "YES",
+		offLabel: "NO"
+	});
+</script>

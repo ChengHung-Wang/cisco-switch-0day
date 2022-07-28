@@ -1,0 +1,887 @@
+<style>
+.stpfieldset{
+    border: 1px solid #c0c0c0;
+    padding: 10px;
+    width: 700px;
+}
+.stpLegend{
+    margin-bottom: 0px;
+    width: auto;    
+    text-shadow: #000;   
+    padding: 2px 5px 2px 5px;
+    border: 0 solid #c0c0c0;
+    margin-left:50px;
+}
+.stpLegendSec {
+    padding: 10px;
+    margin: 0;
+    border: 1px solid silver;
+    width: auto;
+    font-size: 14px;
+    color: #000;
+    font-weight: 500;
+    text-shadow: #000;
+    background: #d6d6d6;
+    border: 0 solid #c0c0c0;
+    text-align: center;   
+}
+</style>
+
+<div>
+    <!--
+    Description:Switch and STP page
+    Copyright (c) 2016 by Cisco Systems, Inc.
+    All rights reserved.
+    -->
+
+    <div class="pageTitle" ng-bind="'menu_switch' | translate">      
+    </div>
+    <div kendo-tab-strip="switchTab" >
+        <ul>
+            <li class="k-state-active" name="switchconfigTab" ng-click="onClickstpTab('switch')">
+                {{'menu_switch' | translate}}
+            </li>
+            <li name="stpTab" ng-click="onClickstpTab('stp')">
+                {{'switch_stp' | translate}}
+            </li>
+            <li name="vtpTab" ng-click="onClickstpTab('vtp')">
+                {{'switch_vtp' | translate}}
+            </li>
+			<li name="bluetoothTab" ng-show="showBluetoothTab" ng-click="onClickstpTab('bluetooth')">
+                {{'switch_bluetooth' | translate}}
+            </li>
+            <li name="hstackTab" ng-show="hStackStatus" ng-click="onClickstpTab('hstack')">
+                {{'switch_hstack' | translate}}
+            </li>
+         </ul>
+
+        <!--Switch Tab-->
+        <div>
+            <div class="well stpPage">
+				<div ng-if="isACluster" ng-include="'features/common/stackConf/views/switchView.html'" class="portSwitchContainer"></div>
+                <form name="stpForm" id="stpForm" kendo-validator="stpValidator"	k-options="stpValidations">
+                    <div class="row form-group">
+                        <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                            <span class="label pl-mandatory">{{'switch_hostname' | translate}}</span>
+                        </div>						
+                        <div class="col-sm-5">
+                            <input  class="k-textbox form-control"
+                                    data-ng-model="switchConfigData.hostName"
+                                    name="hostName" ng-change="enableApplybtn()"
+                                    id="hostName" required data-required-msg="{{'switch_hostname_msg' | translate}}" data-dataspace data-dataspace-msg="{{'switch_hostname_invalid' | translate}}" maxlength ="32"/>
+                            <tooltip helptext="{{'help_switch_hostname' | translate}}"></tooltip>
+                        </div>
+                    </div>                    
+                    <div class="row form-group">
+                        <div>
+                        <div class="row form-group">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6">
+                                <fieldset ng-class="{'stpfieldset': tabV == true}">
+                                    <legend class="stpLegend">
+                                        <div class="stpLegendSec"  ng-model="tabV">{{'switch_mgmt' | translate}}</div>
+                                    </legend>
+                                    <div ng-show="tabV">
+                                        <div class="row form-group">
+                                            <div class="col-sm-1"></div>
+                                            <div class="col-sm-5 text-right">
+                                                <span class="label">{{'stp_management_interface' | translate}}</span>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input  class="k-textbox form-control"
+                                                        data-ng-model="switchConfigData.managementVlan"
+                                                        name="switchManagement" ng-change="enableApplybtn()"
+                                                        id="switchManagement" />
+                                                <tooltip helptext="{{'help_switch_management_VLAN' | translate}}"></tooltip>
+                                            </div>
+                                        </div>
+                                        <div class="row form-group">
+											<div class="col-sm-6 webui-centerpanel-label">
+												<span class="label">{{'com_ip_option' | translate }}</span>
+											</div>
+											<div class="col-sm-2">
+												<span class="label"> &nbsp;{{'sys_dhcp_ipv4'| translate}}</span> <input
+													type="checkbox" class="pull-left  ng-valid ng-dirty" id="ipv4"
+													name="ipv4" ng-model="iptypeipv4" checked="checked">
+											</div>
+											<div class="col-sm-2" ng-show="!hideElement">
+												<span class="label"> &nbsp;{{'iptype_ipv6'| translate}}</span> <input
+													type="checkbox" class="pull-left  ng-valid ng-dirty" id="ipv6"
+													name="ipv6" ng-model="iptypeipv6" checked="checked">										
+											</div>
+										</div>
+										<!-- IPv4 -->
+	                                  <div ng-show="iptypeipv4 == true">
+	                                    <div class=" row form-group"
+											ng-if="(iptypeipv4 == true && iptypeipv6 == true)">										
+											<div class="col-sm-4 webui-centerpanel-label">                        					
+	                           						<span class="innerheaderdesign" id="wizardTitle">{{'sys_dhcp_ipv4' | translate}}</span>                        					
+	                     					</div>							
+									   </div>
+		                                <div class="row form-group">
+		                                    <div class="col-sm-1"></div>
+		                                    <div class="col-sm-5 text-right">
+		                                        <span class="label pl-mandatory">{{'portconfig_port_ipv4_ip' | translate}}</span>
+		                                    </div>
+		                                    <div class="col-sm-5">
+		                                        <input  class="k-textbox form-control"
+		                                                data-ng-model="switchConfigData.switchIp" ng-change="enableApplybtn()"
+		                                                name="switchIp"
+		                                                checkreq data-checkreq-msg="{{'mgmt_vlan_int_msg' | translate}}" 
+		                                                id="switchIp" numeric-dot-only data-validate-ip="" data-validateip-msg="{{'switch_ip_invalid' | translate}}"/>
+		                                    </div>
+		                                </div>
+		                                <div class="row form-group">
+		                                    <div class="col-sm-1"></div>
+		                                    <div class="col-sm-5 text-right">
+		                                        <span class="label pl-mandatory">{{'portconfig_port_ipv4_subnet' | translate}}</span>
+		                                    </div>
+		                                    <div class="col-sm-5">
+		                                        <input  class="k-textbox form-control"
+		                                                data-ng-model="switchConfigData.subnetMask"
+		                                                name="subnetMask" ng-change="enableApplybtn()"
+		                                                id="subnetMask" cusreq data-cusreq-msg="{{'switch_subnet_msg' | translate}}" numeric-dot-only 
+		                                                data-validate-ip="" data-validateip-msg="{{'switch_ip_invalid' | translate}}"
+		                                                />
+		                                    </div>
+		                                </div>  
+	                                </div>
+	                                 <!-- IPv6 address -->                           
+		                            <div ng-show="iptypeipv6 == true">	                            
+		                                <div class=" row form-group"
+												ng-if="(iptypeipv4 == true && iptypeipv6 == true)">
+												<div class="col-sm-4 webui-centerpanel-label">                        					
+		                           						<span class="innerheaderdesign" id="wizardTitle">{{'iptype_ipv6' | translate}}</span>                        					
+		                     					</div>							
+										</div>							
+										<div class="row form-group">									
+											<div class="col-sm-6 webui-centerpanel-label">
+											    <span class="label">{{'com_ipaddress_static' | translate}} </span>
+											</div>
+											<div class="col-sm-6">							
+												<select kendo-drop-down-list name="ipv6SubType" id="ipv6SubType"
+													ng-model="logicalInterface.port.ipv6SubType"
+													k-data-source="ipv6TypeOptions" k-data-text-field="'ipv6Text'"
+													k-data-value-field="'ipv6Value'" k-ng-delay="logicalInterface.port.ipv6SubType"></select>
+											</div>	
+										</div>
+										
+										<div class="row form-group">									
+											<div class="col-sm-6 webui-centerpanel-label">
+											    <span class="label">{{'portconfig_port_ipv4_ip' | translate}}</span>
+											</div>
+											<div class="col-sm-6">							
+												<input ng-if="logicalInterface.port.ipv6SubType !='link-local'"
+													class="k-textbox form-control" name="ipv6AddressRoute" placeholder="X:X:X:X:X:X:X:X/X"
+													id="ipv6AddressRoute" ng-model="logicalInterface.port.vlanIPV6Address" 											
+													data-ipv6 data-ipv6-msg="{{'com_invalidIpv6' | translate }}">	
+																			
+												<input ng-if="logicalInterface.port.ipv6SubType =='link-local'"
+													class="k-textbox" name="layer3linklocal" id="layer3linklocal"
+													ng-model="logicalInterface.port.vlanIPV6Address" placeholder="fe80::x" 											
+													data-ipv6linklocal	data-ipv6linklocal-msg="{{'com_invalidIpv6' | translate }}">
+													
+												<a ng-click="addIpv6Address()"
+													style="font-size: 23px; vertical-align: middle"><i
+													class="fa fa-plus-square-o"></i></a>
+											</div>	
+										</div>		
+																
+										<div class="row form-group" style="margin-left: 10px">									
+											<div class="col-sm-6 webui-centerpanel-label">									
+											</div>
+											<div class="col-sm-5 svibox">						
+												<div id="rowIpv6List" 
+													ng-repeat="rowData in logicalInterface.port.listIpb6Address">
+													<div>
+														{{rowData.name}} <a ng-click="removeIpv6Address(rowData)"
+															style="float: right; color: red"><i class="fa fa-times"></i></a>
+													</div>
+												</div>
+											</div>	
+										</div>
+										
+										<div class="row form-group" style="margin-right: -370px">
+											<div class="col-sm-4 webui-centerpanel-label"></div>
+											<div class="col-sm-2">
+												<span class="label"> &nbsp;{{'staticrouting_dhcp' | translate
+													}}</span> <input type="checkbox" class="pull-left ng-valid ng-dirty"
+													id="dhcp" name="dhcp" ng-model="logicalInterface.port.dhcp"
+													checked="checked" ng-click="diableApplyButton = false">
+											</div>
+											<div class="col-sm-2" ng-show="logicalInterface.port.dhcp">
+												<span class="label">
+													&nbsp;{{'portconfig_port_ipv6_rapidcommit' | translate }}</span> <input
+													type="checkbox" name="rapid" value="rapidCommit"
+													class="pull-left  ng-valid ng-dirty" id="rapid"
+													ng-model="logicalInterface.port.rapid" ng-click="diableApplyButton = false">								
+											</div>
+										</div>
+										
+										<div class="row form-group" style="margin-left: -14px">
+											<div class="col-sm-6 webui-centerpanel-label"></div>
+											<div class="col-sm-6">
+												<span class="label"> &nbsp;{{'common_ipv6types_autoconfig' | translate
+													}}</span> <input type="checkbox" class="pull-left ng-valid ng-dirty"
+													id="autoconfig" name="autoconfig" value="autoconfig" ng-model="logicalInterface.port.autoconfig"
+													checked="checked" ng-click="diableApplyButton = false">
+											</div>									
+										</div>						      							
+									</div>
+	                                
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="row form-group" ng-show="forL3Device">
+                        <div>
+                        <div class="row form-group">
+                            <div class="col-sm-3"></div>
+                            <div class="col-sm-6">
+                                <fieldset ng-class="{'stpfieldset': tabI == true}">
+                                    <legend class="stpLegend">
+                                        <div class="stpLegendSec"  ng-model="tabI" ng-click="tabI = !tabI">{{'stp_management_interface' | translate}}</div>
+                                    </legend>
+                                    <div ng-show="tabI">
+	                                    <div class="row form-group">
+	                                        <div class="col-sm-1"></div>
+	                                        <div class="col-sm-5 text-right">
+	                                            <h1 class="label">{{'stp_management_interface' | translate}} :</h1>
+	                                        </div>
+	                                        <div class="col-sm-6">
+	                                            <h1 class="label">
+	                                                {{mgmInterface}}
+	                                            </h1>
+	                                        </div>	                                        
+	                                    </div>
+                                        <div class="row form-group">
+											<div class="col-sm-6 webui-centerpanel-label">
+												<span class="label">{{'com_ip_option' | translate }}</span>
+											</div>
+											<div class="col-sm-2">
+												<span class="label"> &nbsp;{{'sys_dhcp_ipv4'| translate}}</span> <input
+													type="checkbox" class="pull-left  ng-valid ng-dirty" id="ipv4id1"
+													name="ipv4" ng-model="iptypeipv4Fa" checked="checked">
+											</div>
+											<div class="col-sm-2">
+												<span class="label"> &nbsp;{{'iptype_ipv6'| translate}}</span> <input
+													type="checkbox" class="pull-left  ng-valid ng-dirty" id="ipv6id1"
+													name="ipv6" ng-model="iptypeipv6Fa" checked="checked">										
+											</div>
+									   </div>
+									<!-- IPv4 Address -->
+	                                <div ng-show="iptypeipv4Fa == true">
+	                                    <div class=" row form-group"
+											ng-if="(iptypeipv4 == true && iptypeipv6 == true)">										
+											<div class="col-sm-4 webui-centerpanel-label">                        					
+	                           						<span class="innerheaderdesign" id="wizardTitle">{{'sys_dhcp_ipv4' | translate}}</span>                        					
+	                     					</div>							
+									   </div>
+		                                <div class="row form-group">
+		                                    <div class="col-sm-1"></div>
+		                                    <div class="col-sm-5 text-right">
+		                                        <span class="label" ng-class="{'pl-mandatory': mgmtIntFldDisabled==false}">{{'portconfig_port_ipv4_ip' | translate}}</span>
+		                                    </div>
+		                                    <div class="col-sm-6">
+		                                        <input class="k-textbox form-control" ng-change="enableStpApplyDelBtn('mgmtIp')" ng-model="switchConfigData.fastIntIp" name="fastIntIp" id="fastIntIp" numeric-dot-only data-validate-ip="" data-validateip-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}" modeleq="switchConfigData.fastIntIp" mandatory data-mandatory-msg="{{'aaa_ip_msg' | translate}}" placeholder="xxx.xxx.xxx.xxx" ng-disabled="mgmtIntFldDisabled">
+		                                        <tooltip helptext="{{'portconfig_port_ipv4_ip' | translate}}"></tooltip>
+		                                    </div>
+		                                </div>
+		                                <div class="row form-group">
+		                                    <div class="col-sm-1"></div>
+		                                    <div class="col-sm-5 text-right">
+		                                        <span class="label" ng-class="{'pl-mandatory': mgmtIntFldDisabled==false}">{{'portconfig_port_ipv4_subnet' | translate}} </span>
+		                                    </div>
+		                                    <div class="col-sm-6">
+		                                        <input class="k-textbox form-control" ng-change="enableStpApplyDelBtn('mgmtIp')" ng-model="switchConfigData.fastIntSubnet" name="fastIntSubnet" id="fastIntSubnet" numeric-dot-only data-validate-subnet="" data-validatesubnet-msg="{{'staticroute_subnet_invalid_msg' | translate}}" mandsub data-mandsub-msg="{{'staticroute_subnet_req_msg' | translate}}" placeholder="xxx.xxx.xxx.xxx" ng-disabled="mgmtIntFldDisabled">
+		                                        <tooltip helptext="{{'help_portConfig_subnetMask' | translate}}"></tooltip>
+		                                    </div>
+		                                </div>
+		                             </div>
+		                         <!-- IPv6 address -->                            
+		                            <div ng-show="iptypeipv6Fa == true">	                            
+		                                <div class=" row form-group"
+												ng-if="(iptypeipv4Fa == true && iptypeipv6Fa == true)">
+												<div class="col-sm-4 webui-centerpanel-label">                        					
+		                           						<span class="innerheaderdesign" id="wizardTitle">{{'iptype_ipv6' | translate}}</span>                        					
+		                     					</div>							
+										</div>							
+										<div class="row form-group">									
+											<div class="col-sm-6 webui-centerpanel-label">
+											    <span class="label">{{'com_ipaddress_static' | translate}} </span>
+											</div>
+											<div class="col-sm-6">							
+												<select kendo-drop-down-list name="ipv6SubType" id="ipv6SubType1"
+													ng-model="logicalInterface.port.ipv6SubTypeFa"
+													k-data-source="ipv6TypeOptionsFa" k-data-text-field="'ipv6Text'"
+													k-data-value-field="'ipv6Value'" k-ng-delay="logicalInterface.port.ipv6SubTypeFa"></select>
+											</div>	
+										</div>
+										
+										<div class="row form-group">									
+											<div class="col-sm-6 webui-centerpanel-label">
+											    <span class="label">{{'portconfig_port_ipv4_ip' | translate}}</span>
+											</div>
+											<div class="col-sm-6">							
+												<input ng-if="logicalInterface.port.ipv6SubTypeFa !='link-local'"
+													class="k-textbox form-control" name="ipv6AddressRoute" placeholder="X:X:X:X:X:X:X:X/X"
+													id="ipv6AddressRoute1" ng-model="logicalInterface.port.vlanIPV6AddressFa" 											
+													data-ipv6 data-ipv6-msg="{{'com_invalidIpv6' | translate }}">	
+																			
+												<input ng-if="logicalInterface.port.ipv6SubTypeFa =='link-local'"
+													class="k-textbox" name="layer3linklocal" id="layer3linklocal"
+													ng-model="logicalInterface.port.vlanIPV6AddressFa" placeholder="fe80::x" 											
+													data-ipv6linklocal	data-ipv6linklocal-msg="{{'com_invalidIpv6' | translate }}">
+													
+												<a ng-click="addIpv6AddressFa()"
+													style="font-size: 23px; vertical-align: middle"><i
+													class="fa fa-plus-square-o"></i></a>
+											</div>	
+										</div>		
+																
+										<div class="row form-group" style="margin-left: 10px">									
+											<div class="col-sm-6 webui-centerpanel-label">									
+											</div>
+											<div class="col-sm-5 svibox">						
+												<div id="rowIpv6List" 
+													ng-repeat="rowData in logicalInterface.port.listIpb6AddressFa">
+													<div>
+														{{rowData.name}} <a ng-click="removeIpv6AddressFa(rowData)"
+															style="float: right; color: red"><i class="fa fa-times"></i></a>
+													</div>
+												</div>
+											</div>	
+										</div>
+										
+										<div class="row form-group" style="margin-right: -370px">
+											<div class="col-sm-4 webui-centerpanel-label"></div>
+											<div class="col-sm-2">
+												<span class="label"> &nbsp;{{'staticrouting_dhcp' | translate
+													}}</span> <input type="checkbox" class="pull-left ng-valid ng-dirty"
+													id="dhcp1" name="dhcp" ng-model="logicalInterface.port.dhcpFa"
+													checked="checked" ng-click="diableApplyButton = false">
+											</div>
+											<div class="col-sm-2" ng-show="logicalInterface.port.dhcpFa">
+												<span class="label">
+													&nbsp;{{'portconfig_port_ipv6_rapidcommit' | translate }}</span> <input
+													type="checkbox" name="rapid" value="rapidCommit"
+													class="pull-left  ng-valid ng-dirty" id="rapid1"
+													ng-model="logicalInterface.port.rapidFa" ng-click="diableApplyButton = false">								
+											</div>
+										</div>
+										
+										<div class="row form-group" style="margin-left: -14px">
+											<div class="col-sm-6 webui-centerpanel-label"></div>
+											<div class="col-sm-6">
+												<span class="label"> &nbsp;{{'common_ipv6types_autoconfig' | translate
+													}}</span> <input type="checkbox" class="pull-left ng-valid ng-dirty"
+													id="autoconfig1" name="autoconfig" value="autoconfig" ng-model="logicalInterface.port.autoconfigFa"
+													checked="checked" ng-click="diableApplyButton = false">
+											</div>									
+										</div>						      							
+									</div>
+                                   </div>
+                                </fieldset>
+                            </div>
+                        </div>                       
+                        </div>                        
+                    </div> 					<div class="row form-group">					                        <div>													<div class="row form-group">															<div class="col-sm-3"></div>									<div class="col-sm-6">										<fieldset class="stpfieldset">											<legend class="stpLegend">												<div class="stpLegendSec">{{'switch_global_configuration' | translate}}</div>											</legend>											<div>												<div class="row form-group">																								    <div class="col-sm-1"></div>													<div class="col-sm-5 text-right">														<span class="label pl-mandatory">{{'switch_default' | translate}}</span>													</div>													<div class="col-sm-6">														<input  class="k-textbox form-control"																data-ng-model="switchConfigData.defaultGateway"																name="defaultGateway" ng-change="enableApplybtn()"																id="defaultGateway" numeric-dot-only required data-required-msg="{{'switch_default_msg' | translate}}" data-validate-ip="" data-validateip-msg="{{'switch_ip_invalid' | translate}}"/>													</div>																		</div>																	<div class="row form-group" ng-hide="checkCdb">																									<div class="col-sm-1"></div>													<div class="col-sm-5 text-right">														<span class="label pl-mandatory">{{'switch_mtusize' | translate}}</span>													</div>													<div class="col-sm-6" ng-if="mtusizetype=='1'">                         														<select kendo-drop-down-list																name="mtuSize" id="mtuSize" class="mtuSize" ng-disabled="mtuSizeStatus"																ng-model="switchConfigData.mtuSize" required data-required-msg="{{'switch_mtu_msg' | translate}}"																k-data-source="mtuSizeDataSource" k-data-text-field="'mtuSizeText'"																k-data-value-field="'mtuSizeValue'" k-ng-delay="switchConfigData.mtuSize" ng-change="switchmtuSizeOnchange()">														</select>                                														<tooltip helptext="{{'help_switch_MTU_size' | translate}}"></tooltip>													</div>													<div class="col-sm-6" ng-if="mtusizetype=='2'">                         														<input class="k-textbox form-control" ng-model="switchConfigData.mtuSize"  																name="switchmtuSize" ng-change="switchmtuSizeOnchange()"	 id="switchmtuSize"																placeholder="1500-1998" num-comma-hyphen-only required data-required-msg="{{'switch_mtu_msg' | translate}}"																data-range data-range-msg="{{'switch_stpmtusize' | translate}}"																min="1500" max="1998"/>														<tooltip helptext="{{'help_switch_MTU_size' | translate}}"></tooltip>													</div>												</div> 																	<div class="row form-group">																								    <div class="col-sm-1"></div>                         													<div class="col-sm-5 text-right">														<span class="label">{{'port_config_cdp' | translate}} </span>													</div>													<div class="col-sm-6">																											<span class="toggleClass">															<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"																			ng-model="switchConfigData.cdp" ng-change="enableApplybtn()"></toggle-button>														</span>                     													</div>																									</div>																								<div class="row form-group">																								    <div class="col-sm-1"></div>                         													<div class="col-sm-5 text-right">														<span class="label">{{'port_config_lldp' | translate}} </span>													</div>																										<div class="col-sm-6">																											<span class="toggleClass">																<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"																				ng-model="switchConfigData.ldp" ng-change="enableApplybtn()"></toggle-button>														</span>                     													</div>																									</div>                              											</div>										</fieldset>									</div>							</div>                        </div>                    </div>
+                    <!-- add coap config for selecon-->                    
+					<div class="row form-group" ng-show="showSeleconDetails">
+						<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+							<span class="label ">{{'switch_coap' | translate}}</span>
+						</div>
+						<div class="col-sm-1">
+					          <input type="checkbox" class="pull-left  ng-valid ng-dirty" id="coap"
+							  name="coap" ng-disabled="coapStatus" ng-model="switchConfigData.switchCOAP" checked="checked" ng-change="enableApplybtn()">
+							  <tooltip helptext="{{'help_switch_coap' | translate}}"></tooltip>
+					    </div>													
+					</div>		
+				 <!--STACKING Type-->
+                    <div ng-hide="clusterConfigHidingStatus" ng-init="stackingInit()">
+                        <div class="row form-group">
+                            <div class="col-sm-3 col-sm-offset-2 webui-centerpanel-label">
+                                <span class="label">{{'switch_stacking' | translate}} </span>
+                            </div>
+                            <div class="col-sm-3">
+                                <select kendo-drop-down-list 
+                                    ng-model="stpStackModeType"
+                                    k-data-source="stpStackModeDataSource" id="stpStackType" name="stpStackType"
+                                    k-data-text-field="'stpStackText'"
+                                    k-data-value-field="'stpStackValue'"
+                                    ng-change="updateStacking(stpStackModeType)"
+                                    k-ng-delay="stpStackModeType"></select>
+                                <tooltip ng-if="!isSelecon" helptext="{{'help_stacking' | translate}}"></tooltip>
+                                <tooltip ng-if="isSelecon" helptext="{{'help_stacking_selecon' | translate}}"></tooltip>
+                                <div ng-init="loadStackingOptions()"></div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div ng-show="stpStackModeType == 'CLUSTER'">
+                                <div class="row form-group">
+                                    <div class="col-sm-3 col-sm-offset-2 webui-centerpanel-label">
+                                        <span class="label pl-mandatory">{{'stack_virtual_domain' | translate}} </span>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <input class="k-textbox form-control" ng-model="cluster.virtualDomainName"
+                                        ng-change="enableApplybtn()"
+                                        domain data-domain-msg="{{'stack_domain_invalid' | translate}}"
+										domainspace data-domainspace-msg="{{'stack_domain_space' | translate}}"
+                                        name="virtualDomainName" id="virtualDomainName">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>  
+					 <!--End STACKING Type-->
+					 <div ng-show="stpLedTab">
+						<div class="row form-group" ng-show="stpLedTab">
+							<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+								<span class="label">{{'switch_led_status' | translate}}</span>
+							</div>
+							<div class="col-sm-7">
+								<div class="col-sm-1 imgWidth" ng-click="toggleImage()">
+									<button type="button" class="btn-default imgOn" ng-show="imageON"></button>
+									<button type="button" class="btn-default imgOff" ng-show="imageOFF"></button>
+								</div>
+								<div class="col-sm-1 toolTipwidth">
+									<tooltip helptext="{{'help_switch_status' | translate}}" position="bottom" class="toolTip"></tooltip>
+								</div>								
+							</div>
+						</div>	
+						<div class="row form-group">
+							<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+							</div>
+							<div class="row col-sm-4 col-sm-offset-0">
+								<span>
+									<span class="label">{{'switch_led_status_day' | translate}} </span>
+									<select kendo-drop-down-list 
+										ng-model="ledDayType"
+										k-data-source="ledDayDataSource" id="ledDayType" name="ledDayType"
+										k-data-text-field="'ledDayText'"
+										k-data-value-field="'ledDayValue'"
+										k-ng-delay="ledDayType" ng-change="ledStatusChange()" class="ledSelectWidth" ng-disabled="ledstatusDisable"></select>
+								</span>								
+								<span>
+									<span class="label">{{'switch_led_status_hr' | translate}} </span>
+									<select kendo-drop-down-list 
+										ng-model="ledHrType"
+										k-data-source="ledHrDataSource" id="ledHrType" name="ledHrType"
+										k-data-text-field="'ledHrText'"
+										k-data-value-field="'ledHrValue'"
+										k-ng-delay="ledHrType" ng-change="ledStatusChange()" class="ledSelectWidth" ng-disabled="ledstatusDisable"></select>
+								</span>								
+								<span>
+									<span class="label">{{'switch_led_status_min' | translate}} </span>
+									<select kendo-drop-down-list 
+										ng-model="ledMinType"
+										k-data-source="ledMinDataSource" id="ledMinType" name="ledMinType"
+										k-data-text-field="'ledMinText'"
+										k-data-value-field="'ledMinValue'"
+										k-ng-delay="ledMinType" ng-change="ledStatusChange()" class="ledSelectWidth" ng-disabled="ledstatusDisable"></select>
+								</span>	
+							</div>						
+						</div>
+					</div>	
+					<div class="row form-group"></div>
+					<div class="formActionButtons fieldinput-center">
+                        <button kendo-button="saveBtn" class="btn btn-primary"
+                                ng-disabled="diableApplyButton"
+                                ng-click= "redirection()">
+                            <span class="fa pl-apply"></span> {{'com_apply' | translate}}
+                        </button>
+                        <button kendo-button="cancelBtn" class="btn btn-primary" ng-disabled="cancelButton"
+                                ng-click="cancelSwitchConfig()">
+                            <span class="fa pl-cancel"></span> {{'com_cancel' | translate}}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+
+        <!--STP Type-->
+        <div ng-show="!stpTab">
+            <div class="well">
+                <div class="webui-centerpanel-subtitle col-sm-11">
+                    <span><label>{{'stp_protocolconf' | translate}}</label></span>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'stp_stpmode' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <select kendo-drop-down-list="stpType"  ng-model="stpModeType"
+                                k-data-source="stpModeDataSource" id="stpType" name="stpType"
+                                k-data-text-field="'stpText'"
+                                k-data-value-field="'stpValue'"
+                                k-ng-delay="stpModeType"
+                                ng-change="updateStpMode()"></select>
+                        <tooltip helptext="{{'help_STP_mode' | translate}}"></tooltip>                        
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'stp_port_type' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <select kendo-drop-down-list="stpPort"  ng-model="stpPortType"
+                                k-data-source="stpPortTypeList" id="stpPort" name="stpPort"
+                                k-data-text-field="'stpPortText'"
+                                k-data-value-field="'stpPortValue'"
+                                k-ng-delay="stpPortType"
+                                ng-change="updateStpMode()"></select>
+                        <tooltip helptext="{{'help_STPport_type' | translate}}"></tooltip>                        
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'stp_bpdufilter' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="toggleClass">
+								<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+													   ng-model="stpBpdufilter" ng-change="updateStpMode()"></toggle-button>
+						</span>
+                        <tooltip helptext="{{'help_stp_bpdufilter' | translate}}"></tooltip>                        
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'stp_bpduguard' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="toggleClass">
+								<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+													   ng-model="stpBpduguard" ng-change="updateStpMode()"></toggle-button>
+						</span>
+                        <tooltip helptext="{{'help_stp_bpduguard' | translate}}"></tooltip>                        
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'stp_loopguard' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <span class="toggleClass">
+								<toggle-button  button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"
+													   ng-model="stpLoopGuard" ng-change="updateStpMode()"></toggle-button>
+						</span>
+                        <tooltip helptext="{{'help_stp_loopguard' | translate}}"></tooltip>                        
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'stp_transmit_holdcount' | translate}} </span>
+                    </div>
+                    <div class="col-sm-3">
+                        <select kendo-drop-down-list="transCount"  ng-model="transHeadCount"
+                                k-data-source="transCountList" id="transCount" name="transCount"
+                                k-data-text-field="'stpTransText'"
+                                k-data-value-field="'stpTransValue'"
+                                k-ng-delay="transHeadCount"
+                                ng-change="updateStpMode()"></select>
+                        <tooltip helptext="{{'help_stp_transmit_holdcount' | translate}}"></tooltip>                        
+                    </div>
+                </div>
+                
+                <div>
+                    <div kendo-grid="stpInstanceGrid" id="stpInstanceGrid"
+                         k-options="stpInstanceGridOptions"
+                         k-data-source="stpInstancedataSource"></div>
+                </div>
+
+                <div>
+                    <div class="formActionButtons fieldinput-center">
+                        <button kendo-button="applyBtn" class="btn btn-primary"
+                                ng-click="apply()" ng-disabled="disableApplyButton()">
+                            <span class="fa pl-apply"></span>{{'com_apply' | translate}}
+                        </button>
+                        <button kendo-button="cancelBtn" class="btn btn-primary"
+                                ng-click="cancel()" ng-disabled="disableCancelButton()">
+                            <span class="fa pl-cancel"></span> {{'com_cancel' | translate}}
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div></div>
+        </div>
+        
+        <!-- VTP Tab -->
+		<div>
+		    <div>
+		         <form name="vtpForm" id="vtpForm" kendo-validator="vtpValidator" k-options="vtpValidations">	
+							  <div class="row form-group">
+			                        <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+			                            <span class="label pl-mandatory">{{'stack_virtual_domain' | translate}}</span>
+			                        </div>
+			                        <div class="col-sm-5">
+			                            <input  class="k-textbox form-control"
+			                                    data-ng-model="vtpDomainName" placeholder="Text"
+			                                    name="vtpDomainName" ng-change="enableVTPApplybtn()"
+			                                    id="vtpDomainName" required data-required-msg="{{'switch_vtp_domain_required' | translate}}" 
+			                                    data-checkVTPName data-checkVTPName-msg="{{'stack_domain_invalid' | translate}}" maxlength ="32"/>
+			                             <tooltip helptext="{{'help_vtp_domain_name' | translate}}"/>
+			                         </div>
+			                    </div>
+								
+								<div class="row form-group">
+			                        <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+			                            <span class="label">{{'user_administration_password' | translate}}</span>
+			                        </div>
+									 <div class="col-sm-5">   
+										<input  class="k-textbox form-control" type="password" data-ng-model="vtpPassword" name="vtpPassword" id="vtpPassword" ng-change="enableVTPApplybtn()"
+										  placeholder="word" data-checkVTPPw data-checkVTPPw-msg="{{'switch_vtppassword_invalid' | translate}}" maxlength ="32"/>																																	
+									  </div>
+			                    </div>              
+								
+								<div class="row form-group">
+									<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+										<span class="label">{{'management_snmp_host_version' | translate}}</span>
+									</div>
+									<div class="col-sm-3">
+										<select kendo-drop-down-list name="vtpVersionType" id="vtpVersionType" ng-model="vtpVersions" k-data-source="vtpVersionTypeList" 
+										   k-data-text-field="'vtpVersionName'" k-data-value-field="'vtpVersionValue'" k-ng-delay="vtpVersions" ng-change="enableVTPApplybtn()"></select>	
+										<tooltip helptext="{{'help_vtp_version' | translate}}"/>
+									</div>
+								</div>
+								
+								<div class="row form-group">
+									<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+										<span class="label">{{'switch_vtp_mode_vlan' | translate}}</span>
+									</div>
+									<div class="col-sm-3 vlanSelect">
+										<select kendo-drop-down-list name="vtpModeVlan" id="vtpModeVlan" ng-model="vtpModesVlan" k-data-source="vtpModeVlanList" 
+										   k-data-text-field="'vtpModeName'" k-data-value-field="'vtpModeValue'" k-ng-delay="vtpModesVlan" ng-change="enableVTPApplybtn()"></select>											
+										   <tooltip helptext="{{'help_vtp_mode_vlan' | translate}}"/>
+									</div>									
+									<div ng-hide="primaryVlan" class="row col-sm-3">
+										<div class="col-sm-6">
+											<span class="label">{{'vtp_primary' | translate}}</span>
+										</div>
+										<div class="col-sm-6">
+									        <input type="checkbox" class="pull-left  ng-valid ng-dirty" id="vlan"
+										    name="vlan" ng-disabled="vlanPrimaryStatus" ng-model="checkboxVlan" checked="checked" ng-change="enableVTPApplybtn()">
+										    <tooltip helptext="{{'vtp_help_primary_vlan' | translate}}"></tooltip>
+								        </div>										
+									</div>								
+								</div>
+								
+							<div class="row form-group">							
+									<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+										<span class="label">{{'switch_vtp_mode_mst' | translate}}</span>
+									</div>								
+									<div class="col-sm-3 vlanSelect">
+										<select kendo-drop-down-list name="vtpModeMst" id="vtpModeMst" ng-model="vtpModesMst" k-data-source="vtpModeMstList" 
+										   k-data-text-field="'vtpModeName'" k-data-value-field="'vtpModeValue'" ng-disabled="transparentDisable" k-ng-delay="vtpModesMst" ng-change="enableVTPApplybtn()"></select>	
+										<tooltip helptext="{{'help_vtp_mode_mst' | translate}}"/>								
+    								</div>								
+									<div ng-hide="primaryMst" class="row col-sm-3">
+										<div class="col-sm-6">
+											<span class="label">{{'vtp_primary' | translate}}</span>
+										</div>
+										<div class="col-sm-6">
+									        <input type="checkbox" class="pull-left  ng-valid ng-dirty" id="mst"
+										    name="mst" ng-disabled="mstPrimaryStatus" ng-model="checkboxMst" checked="checked" ng-change="enableVTPApplybtn()">
+										    <tooltip helptext="{{'vtp_help_primary_mst' | translate}}"></tooltip>
+								        </div>										
+									</div>			
+					 	    </div>						 
+							
+							<div class="row form-group" ng-hide="forceCheck">
+			                          <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+										<span class="label">{{'vtp_force' | translate}}</span>
+									 </div>
+			                          <div class="col-sm-1">
+									        <input type="checkbox" class="pull-left  ng-valid ng-dirty" id="force"
+										    name="force" ng-model="checkboxForce" checked="checked" ng-change="enableVTPApplybtn()">
+										    <tooltip helptext="{{'vtp_primary_help_force' | translate}}"></tooltip>
+								      </div>
+							</div>
+							<div class="row form-group">
+			                          <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+										<span class="label">{{'vtp_pruning_mode' | translate}}</span>
+									 </div>
+			                          <div class="col-sm-1">
+									        <input type="checkbox" class="pull-left  ng-valid ng-dirty" id="pruningMode"
+										    name="pruningMode" ng-disabled="disablePruningMode" ng-model="pruningMode" checked="checked" ng-change="enableVTPApplybtn()">
+										    <tooltip helptext="{{'vtp_pruning_mode_help' | translate}}"></tooltip>
+								      </div>
+							</div>
+						    <div class="ng-hide" ng-init="loadVTPConfigOptions()"></div>
+									
+								<div class="form-group">
+									<div class="formActionButtons fieldinput-center">
+										<!-- <button kendo-button="saveBtn" class="btn btn-primary"
+												ng-disabled="applyVTPButton"
+												ng-click= "saveVTPConfig()">
+											<span class="fa pl-apply"></span> {{'com_apply' | translate}}
+										</button> -->
+										<button type="button" class="btn btn-primary" ng-disabled="applyVTPButton" ng-class="{'pl-apply' : showTick == true}"
+											ng-click="saveVTPConfig($event)" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> {{'com_loading_applying' | translate}} ">
+												{{'com_apply' | translate}}
+										</button>
+										<button kendo-button="cancelBtn" class="btn btn-primary" ng-disabled="cancelVTPButton"
+												ng-click="cancelVTPConfig()">
+											<span class="fa pl-cancel"></span> {{'com_cancel' | translate}}
+										</button>
+									</div>
+								</div>
+				</form>	
+				</div>
+			  </div>
+
+		
+	<!-- Bluetooth Tab -->
+		<div>
+			<form name="btForm" id="btForm" kendo-validator="btValidator" k-options="btValidations">
+			<div class="form-group" ng-show="showBluetoothDetails">
+				<div class="form-group">
+					<div class="row form-group">
+						<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+							<span class="label">{{'switch_bluetooth' | translate}}</span>
+						</div>
+						<div class="col-sm-5">
+							<span class="toggleClass">
+							<toggle-button button-options="{{'toggle_on' | translate}},{{'toggle_off' | translate}}"
+							ng-model="switchConfigData.bluetoothstatus" ng-change="togglebluechange()"></toggle-button></span>
+							<tooltip helptext="{{'help_switch_Bluetooth' | translate}}" position="top"></tooltip>
+						</div>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="row form-group">
+						<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+							<span class="label">{{'switch_bluetooth_interface_status' | translate}}</span>							
+						</div>
+						<div class="col-sm-5">
+							<span class="label">{{switchConfigData.bluetoothIntstatus}}</span>
+							<tooltip helptext="{{'help_switch_Bluetooth_intstattus' | translate}}" position="bottom"></tooltip>
+						</div>
+					</div>
+				</div>				<div class="row text-center">							<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label"></div>							<div class="col-sm-2 text-left"><span class="label">{{'toggle_network' | translate}} </span></div>							<div class="col-sm-2 text-left"><span class="label">{{'portconfig_port_ipv4_subnet' | translate}}</span></div>							<div class="col-sm-3"></div>						</div>						<div class="row text-center">								<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label"><span class="label">{{'stp_blu_interface' | translate}}</span></div>								<div class="col-sm-2 text-left">									<input class="k-textbox form-control" ng-change="togglebluechange()" ng-model="bt.blueConfigIp" name="blueConfigIpid" id="blueConfigIpid" cusreq data-cusreq-msg="{{'aaa_ip_msg' | translate}}" numeric-dot-only 									data-validate-ip="" data-validateip-msg="{{'com_invalidIp' | translate}}" ng-disabled="blueConfigIpDisabled" placeholder="xxx.xxx.xxx.xxx">								</div>								<div class="col-sm-2 text-left">									<input class="k-textbox form-control" ng-change="togglebluechange()" ng-model="bt.blueConfigSubnet" name="blueConfigSubnet" id="blueConfigSubnet" ng-disabled="blueConfigSubnetDisabled" numeric-dot-only data-validate-subnet="" data-validatesubnet-msg="{{'acl_subnet_invalid' | translate}}" btsubreq data-btsubreq-msg="{{'staticroute_subnet_req_msg' | translate}}" data-subeq="bt.blueDHCPSubnet" data-subeq-msg="{{'stp_bludhcp_same_msg' | translate}}" placeholder="xxx.xxx.xxx.xxx">								</div>							<div class="col-sm-3"></div>						</div>						<div class="row text-center">							<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label"></div>							<div class="col-sm-2 text-left"><span class="label">{{'toggle_network' | translate}} </span></div>							<div class="col-sm-2 text-left"><span class="label">{{'portconfig_port_ipv4_subnet' | translate}}</span></div>							<div class="col-sm-3"></div>						</div>						<div class="row text-center">									<div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label"><span class="label">{{'stp_bludhcp_clients' | translate}}</span></div>									<div class="col-sm-2 text-left">										<input class="k-textbox form-control" ng-change="togglebluechange()" ng-model="bt.blueDHCPIp" name="blueDHCPIp" id="blueDHCPIpId" numeric-dot-only data-validate-ip="" data-validateip-msg="{{'com_invalidIp_network' | translate}}" cusdhcpreq data-cusdhcpreq-msg="{{'aaa_ip_msg' | translate}}" ng-disabled="blueConfigIpDisabled" placeholder="xxx.xxx.xxx.xxx">									</div>									<div class="col-sm-2 text-left">										<input class="k-textbox form-control" ng-change="togglebluechange()" ng-model="bt.blueDHCPSubnet" name="blueDHCPSubnet" id="blueDHCPSubnetId" ng-disabled="blueConfigSubnetDisabled" numeric-dot-only data-validate-subnet="" data-validatesubnet-msg="{{'acl_subnet_invalid' | translate}}" dhcpsubreq data-dhcpsubreq-msg="{{'staticroute_subnet_req_msg' | translate}}" data-subeq="bt.blueConfigSubnet" data-subeq-msg="{{'stp_bludhcp_same_msg' | translate}}" placeholder="xxx.xxx.xxx.xxx">									</div>								<div class="col-sm-3"></div>							</div>                 <div ng-hide=true>						<div class="row form-group">							<div class="col-sm-5 webui-centerpanel-label">								<span class="label">{{'com_ip_option' | translate }}</span>							</div>							<div class="col-sm-1">								<span class="label"> &nbsp;{{'sys_dhcp_ipv4'| translate}}</span> <input									type="checkbox" class="pull-left  ng-valid ng-dirty" id="ipv4id2"									name="ipv4" ng-model="iptype.ipv4" checked="checked">							</div>							<div class="col-sm-2">								<span class="label"> &nbsp;{{'iptype_ipv6'| translate}}</span> <input									type="checkbox" class="pull-left  ng-valid ng-dirty" id="ipv6id2"									name="ipv6" ng-model="iptype.ipv6" checked="checked">																	</div>						</div>						<!-- IPv4 -->							 <div ng-show="(iptype.ipv4 == true)">								<div class=" row form-group"									ng-if="(iptype.ipv4 == true && iptype.ipv6 == true)">																			<div class="col-sm-4 webui-centerpanel-label">                        																<span class="innerheaderdesign" id="wizardTitle">{{'sys_dhcp_ipv4' | translate }}</span>                        														</div>															</div>								<div class="row form-group" ng-if="iptype.ipv4 == true">									<div class="col-sm-5 webui-centerpanel-label">										<span class="label pl-mandatory">{{'portconfig_port_ipv4_ip' | translate }}</span>									</div>									<div class="col-sm-4">										<input class="k-textbox form-control" ng-change="togglebluechange()" ng-model="bt.blueConfigIp" name="blueConfigIpid" id="blueConfigIpid" cusreq data-cusreq-msg="{{'aaa_ip_msg' | translate}}" numeric-dot-only 										data-validate-ip="" data-validateip-msg="{{'com_invalidIp' | translate}}" ng-disabled="blueConfigIpDisabled" placeholder="xxx.xxx.xxx.xxx">									</div>								</div>								<div class="row form-group" ng-if="iptype.ipv4 == true">									<div class="col-sm-5 webui-centerpanel-label">										<span class="label pl-mandatory">{{'portconfig_port_ipv4_subnet' | translate }}</span>									</div>									<div class="col-sm-4">										<input class="k-textbox form-control" ng-change="togglebluechange()" ng-model="bt.blueConfigSubnet" name="blueConfigSubnet" id="blueConfigSubnet" ng-disabled="blueConfigSubnetDisabled" numeric-dot-only data-validate-subnet="" data-validatesubnet-msg="{{'acl_subnet_invalid' | translate}}" btsubreq data-btsubreq-msg="{{'staticroute_subnet_req_msg' | translate}}" data-subeq="bt.blueDHCPSubnet" data-subeq-msg="{{'stp_bludhcp_same_msg' | translate}}" placeholder="xxx.xxx.xxx.xxx">									</div>								</div>															  </div>						<!-- IPv6 address --> 						<div ng-hide=true>								<div class=" row form-group"									ng-if="(iptype.ipv4 == true && iptype.ipv6 == true)">									<div class="col-sm-4 webui-centerpanel-label">                        																<span class="innerheaderdesign" id="wizardTitle">{{'iptype_ipv6' | translate }}</span>                        														</div>														</div>														<div class="row form-group">																	<div class="col-sm-5 webui-centerpanel-label">									<span class="label">{{'com_ipaddress_static' | translate }}</span>								</div>								<div class="col-sm-2">																<select kendo-drop-down-list name="ipv6SubType" id="ipv6SubType2"										ng-model="logicalInterface.vlan.ipv6SubType"										k-data-source="ipv6TypeOptions" k-data-text-field="'ipv6Text'"										k-data-value-field="'ipv6Value'"></select>								</div>								</div>														<div class="row form-group">																	<div class="col-sm-5 webui-centerpanel-label">									<span class="label">{{'portconfig_port_ipv4_ip' | translate}}</span>								</div>								<div class="col-sm-3">																<input ng-if="logicalInterface.vlan.ipv6SubType !='link-local'"										class="k-textbox form-control" name="vlanIpAddress"										id="vlanIPAddress" ng-model="logicalInterface.vlan.vlanIPV6Address"										data-ipv6										data-ipv6-msg="{{::'com_invalidIpv6' | translate }}"										placeholder="X:X:X:X:X:X:X:X/X" data-reservedIp										data-reservedIp-msg="{{::'common_invalidipv6address' | translate }}">															<input ng-if="logicalInterface.vlan.ipv6SubType =='link-local'"										class="k-textbox" name="layer3linklocal" id="layer3linklocal"										ng-model="logicalInterface.vlan.vlanIPV6Address"										data-ipv6linklocal										data-ipv6linklocal-msg="{{::'com_invalidIpv6' | translate }}"										data-duplicatipv6										data-duplicatipv6-msg="{{::'physicalinterface_duplicateipv6address' | translate }}"										placeholder="fe80::x">									<a ng-click="addIpv6AddressBluetooth()"										style="font-size: 23px; vertical-align: middle"><i										class="fa fa-plus-square-o"></i></a>								</div>								</div>														<div class="row form-group">																	<div class="col-sm-5 webui-centerpanel-label">																	</div>								<div class="col-sm-2 svibox" style="margin-left: 15px">															<div id="rowIpv6List" 										ng-repeat="rowData in logicalInterface.vlan.listIpb6Address">										<div>											{{rowData.name}} <a ng-click="removeIpv6AddressBluetooth(rowData)"												style="float: right; color: red"><i class="fa fa-times"></i></a>										</div>									</div>								</div>								</div>							<div class="row form-group">								<div class="col-sm-5 webui-leftpanel-label">																	</div>								<div class="col-sm-1 vlanipv6 webui-leftpanel-label">								<span class="label"> &nbsp;{{::'staticrouting_dhcp' | translate }}</span>									<input type="checkbox" class="pull-left ng-valid ng-dirty" id="dhcp2"										   name="dhcp"  ng-model="logicalInterface.vlan.dhcp"  checked="checked" ng-change="togglebluechange()">								</div>											<div class="col-sm-2 webui-leftpanel-label" ng-if="logicalInterface.vlan.dhcp" >											<span class="label"> &nbsp;{{::'portconfig_port_ipv6_rapidcommit' | translate }}</span>																			<input type="checkbox" name="rapid" value="rapidCommit"  class="pull-left  ng-valid ng-dirty" id="rapid2" 											ng-model="logicalInterface.vlan.rapid" ng-change="togglebluechange()">																						 								</div>							</div>							<div class="row form-group">								<div class="col-sm-5 webui-leftpanel-label">																	</div>								<div class="col-sm-5 vlanipv6 webui-leftpanel-label">								<span class="label"> &nbsp;{{::'common_ipv6types_autoconfig' | translate }}</span>												<input type="checkbox" name="autoconfig" value="rapidCommit"  class="pull-left ng-valid ng-dirty" id="autoconfig2" 											ng-model="logicalInterface.vlan.autoconfig" ng-change="togglebluechange()">								</div>							</div>													</div> 				</div>
+				
+			</div>
+			<div class="form-group">
+				<div class="formActionButtons fieldinput-center">
+					<button kendo-button="saveBtn" class="btn btn-primary"
+							ng-disabled="diableblueApplyButton"
+							ng-click= "saveBluetoothConfig()">
+						<span class="fa pl-apply"></span> {{'com_apply' | translate}}
+					</button>
+					<button kendo-button="cancelBtn" class="btn btn-primary" ng-disabled="cancelblueButton"
+							ng-click="cancelBluetoothConfig()">
+						<span class="fa pl-cancel"></span> {{'com_cancel' | translate}}
+					</button>
+				</div>
+			</div>
+		</form>
+		</div>
+		
+	<!-- H-Stack -->
+	<div class="btnView">
+		<div>
+			<div class="pageContent">				
+				<div kendo-grid="hstackGrid" id="hstackGrid" name="hstackGrid"
+					k-options="hstackGridOptions"
+					k-data-source="hstackDataSource">
+				</div>
+			</div>
+		</div>
+	<div kendo-window="hstackWindow" k-title="'hstack_window_title' | translate" k-visible="false" k-width="800" k-modal="true" id="hstackPopup" >
+		<div>
+			<form name="hstackForm" id="hstackForm" kendo-validator="hstackValidator"	k-options="hstackValidations">
+				<div class="well">
+					<div class="row form-group"></div> 
+					 <div class="row form-group">
+                        <div class="col-sm-3 col-sm-offset-2 webui-centerpanel-label">
+                            <span class="label ng-binding">{{'switch_hstack' | translate}}</span>
+                        </div>
+                        <div class="col-sm-5">
+                            <span class="toggleClass">
+                                <toggle-button button-options="{{'com_enable' | translate}},{{'com_disable' | translate}}"                                
+                                ng-model="hstackStatus" ng-click="changeStackStatus()"></toggle-button>
+                            </span>                        
+                        </div>
+                    </div>                    
+					<div class="row form-group">
+                        <div class="col-sm-3 col-sm-offset-2 webui-centerpanel-label">
+                            <span class="label pl-mandatory">{{'hstack_switchnumber' | translate}}</span>
+                        </div>                        
+						 <div class="col-sm-5">                         
+                             <input class="k-textbox form-control" ng-model="hstackSwitchNumber"  ng-disabled="hstackSwitchNumberStatus"
+							 name="hstackSwitchNumber" ng-change="enableApplybtn()"" id="hstackSwitchNumber" placeholder="1-8" num-only required data-required-msg="{{'hstack_switchnumber_required' | translate}}"
+                             data-range data-range-msg="{{'hstack_switchnumber_invalid' | translate}}"
+                             min="1" max="8"/>
+                             <tooltip helptext="{{'hstack_switchnumber_help' | translate}}"></tooltip>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-sm-3 col-sm-offset-2 webui-centerpanel-label">
+                            <span class="label pl-mandatory">{{'hstack_stack_port' | translate}}</span>
+                        </div>                        
+						 <div class="col-sm-5">                         
+                             <input class="k-textbox form-control" ng-model="hstackStackPort"  ng-disabled="hstackStackPortStatus"
+							 name="hstackStackPort" id="hstackStackPort" placeholder="1-2" num-only required data-required-msg="{{'hstack_stack_port_required' | translate}}"
+                             data-range data-range-msg="{{'hstack_stack_port_invalid' | translate}}"
+                             min="1" max="2"/>
+                           </div>
+                    </div>                   
+                    <div class="row form-group">
+                       <div class="col-sm-3 col-sm-offset-2 webui-centerpanel-label">
+                           <span class="label pl-mandatory">{{'hstack_uplink_port' | translate}}</span>
+                       </div>
+                       <div class="col-sm-5">
+                           <select kendo-drop-down-list disabled="true"
+                                   name="hstackUplinkPort" id="hstackUplinkPort"
+                                   ng-model="hstackUplinkPort"
+                                   ng-change="enableApplybtn()"
+                                   k-data-source="hstackUplinkPortOptions" k-data-text-field="'hstackUplinkPortText'"
+                                   k-data-value-field="'hstackUplinkPortValue'" k-ng-delay="hstackUplinkPort">
+                           </select>                  
+                       </div>
+                    </div>
+                    <!-- <div class="row form-group">
+                        <div class="col-sm-3 col-sm-offset-2 webui-centerpanel-label">
+                            <span class="label">{{'Stack Port Speed' | translate}}</span>
+                        </div>                        
+						 <div class="col-sm-5">                         
+                             <input class="k-textbox form-control" ng-model="hstackStackPortSpeed"  
+							 name="hstackStackPortSpeed" id="hstackStackPortSpeed" placeholder="1-10" 
+                             data-range data-range-msg="{{'switch_stpmtusize' | translate}}"
+                             min="1" max="10"/>
+                             <tooltip helptext="{{'' | translate}}"></tooltip>
+                        </div>
+                    </div> -->
+                    <div class="row form-group">
+                        <div class="col-sm-3 col-sm-offset-2 webui-centerpanel-label">
+                            <span class="label pl-mandatory">{{'hstack_switch_priority' | translate}}</span>
+                        </div>                        
+						 <div class="col-sm-5">                         
+                             <input class="k-textbox form-control" ng-model="hstackStackPriority"  
+							 name="hstackStackPriority" id="hstackStackPriority" placeholder="1-15" num-only required data-required-msg="{{'hstack_switch_priority_required' | translate}}"
+                             data-range data-range-msg="{{'hstack_switch_priority_range' | translate}}"
+                             min="1" max="15"/>
+                             <tooltip helptext="{{'hstack_switch_priority_help' | translate}}"></tooltip>
+                        </div>                   
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="confirm ng-scope windowButtonContainer marginWindowButtons">
+			<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveHstackData()">
+			<i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button>
+			<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="reset()">
+			<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+		</div>
+	</div>
+	<!-- POP UP FOR ADDING/EDITING USERADMIN ENDS -->	
+</div>
+		
+    </div>
+</div>

@@ -1,0 +1,22 @@
+###
+show inventory 
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show inventory </Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowInventory">
+<Container name="NAME" alias="name" dynamic="true">
+<Property name = "NAME:" alias="interfaceName" distance = "1" length = "1" type = "String"/>
+<Property name = "DESCR:" alias="sfpInfo" distance = "1" length = "1" type = "String"/>
+<Property name = "PID:" alias="pid" distance = "1" length = "1" type = "String"/>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

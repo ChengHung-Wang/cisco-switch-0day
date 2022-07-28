@@ -1,0 +1,57 @@
+/**
+ Description: CSS for Typography
+ June 2015
+ Copyright (c) 2015 by Cisco Systems, Inc.
+ All rights reserved.
+ */
+
+.maintitle-light-left {
+
+	display: inline-block;
+	font-size: 1.3em;
+	font-family: 'SourceSansPro-Light';
+	padding-top: 10px;
+	padding-left: 75px;
+	position: relative
+}
+
+.maintitle-light-right {
+
+	display: inline-block;
+	font-size: 1.3em;
+	font-family: 'SourceSansPro-Light';
+	padding-top: 10px;
+	padding-left: 45px;
+	position: relative
+}
+
+.label-bold {
+	font-family: 'SourceSansPro-Bold';
+	font-size: 1.1em;
+}
+.label-bold-vertical-align {
+	font-family: 'SourceSansPro-Bold';
+	font-size: 1.1em;
+	line-height: 28px;
+}
+.label-normal-350 {
+	font-family: 'Source Sans Pro';
+	font-style: normal;
+	font-weight: 350;
+}
+.top-buffer {
+	margin-top: 10px;
+}
+
+.label-italic-300 {
+	font-family: 'Source Sans Pro';
+	font-style: italic;
+	font-weight: 300;
+}
+
+.label-italic-300-small {
+	font-family: 'Source Sans Pro';
+	font-style: italic;
+	font-weight: 300;
+	font-size: 1em;
+}

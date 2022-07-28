@@ -1,0 +1,133 @@
+<div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+<div class="btnView"> 
+    <!--
+    Description:NetFlow page
+    Copyright (c) 2016 by Cisco Systems, Inc.
+    All rights reserved.
+    -->
+
+    <div class="pageTitle" >
+        {{'title_netflow' | translate}}
+    </div>
+    <div>
+        <div class="well">
+            <form name="netFlowForm" id="netFlowForm" kendo-validator="netFlowFormValidator"    k-options="netFlowFormValidations">
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'nf_template' | translate}}</span>
+                    </div>
+                    <div class="col-sm-5">
+                        <select kendo-drop-down-list="nfTemplateType" ng-model="netFlowTemplateType"
+                        k-data-source="netFlowTemplateDataSource" id="netFlowTemplateType" name="nfTemplateType"
+                        k-data-text-field="'nftText'"
+                        k-data-value-field="'nftValue'"
+                        k-ng-delay="netFlowTemplateType" ></select>
+                        <tooltip helptext="{{'help_netflow_Template' | translate}}"></tooltip>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label pl-mandatory">{{'nf_collectorIPAddress' | translate}}</span>
+                    </div>
+                    <div class="col-sm-5">
+                        <input  class="k-textbox form-control"
+                        ng-model="collectorIpAddress"
+                        name="collectorIpAddress"
+                        ng-change="diableCreateButton=diableCancelButton=false"												placeholder="X.X.X.X / X:X:X:X::X"
+                        id="collectorIpAddress" required data-required-msg="{{'netFlow_collector_ip_msg' | translate}}" data-validate-ip="" data-validateip-msg="{{'netFlow_collector_ip_msg' | translate}}"/>
+                        <tooltip helptext="{{'help_collector_IP_Address' | translate}}"></tooltip>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'nf_switchExportAddress' | translate}}</span>
+                    </div>
+                    <div class="col-sm-5">                        
+                        <select kendo-drop-down-list ng-model="switchExportAddType"
+                        k-data-source="switchExportAddress" id="switchExportAddType" name="nfSwitchExportAddType"
+                        k-data-text-field="'text'"
+                        k-data-value-field="'text'"
+                        k-ng-delay="switchExportAddType" ></select>
+                        <tooltip helptext="{{'help_switch_Export_Address' | translate}}"></tooltip>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'nf_samplingMethod' | translate}}</span>
+                    </div>
+                    <div class="col-sm-5 row">
+                        <div class="col-sm-6">
+                            <select kendo-drop-down-list="nfSamplingMethodType" ng-model="samplingMethodType"
+                            k-data-source="samplingMethodDataSource" id="samplingMethodType" name="nfSamplingMethodType"
+                            k-data-text-field="'samplingMethodText'"
+                            k-data-value-field="'samplingMethodValue'"
+                            k-ng-delay="samplingMethodType" ></select>
+                            <tooltip helptext="{{'help_sampling_Method' | translate}}"></tooltip>
+                        </div>
+                        <div class="col-sm-4 row ">
+                            <div class="col-sm-1" ng-if="samplingMethodType != 'fullnetflow'">
+                                <span class="label pl-mandatory">1:</span>
+                            </div>
+                            <div class="col-sm-3" id="samplerRangeContainer" ng-if="samplingMethodType != 'fullnetflow'">
+                                <input kendo-auto-complete ng-model="samplingMethodRangeType" 
+                                k-data-source="samplerMethodRange" required 
+                                data-required-msg="{{'netFlow_sampler_range_msg' | translate}}"
+                                ng-change="diableCreateButton=diableCancelButton=false"
+                                num-only min="32" max="1032" data-range="" 
+                                data-range-msg="{{'netFlow_sampler_range_msg' | translate}}" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-sm-5 col-sm-offset-2 webui-centerpanel-label">
+                        <span class="label">{{'nf_inputCaptureInterface' | translate}}</span>
+                    </div>
+                    <div class="col-sm-5">
+                        <select kendo-drop-down-list="inputCapIntType" ng-model="inputCapIntType"
+                        k-data-source="inputCaptureInterface" id="inputCapIntType" name="inputCapIntType"
+                        k-data-text-field="'interfaceName'"
+                        k-data-value-field="'interfaceName'"
+                        k-ng-delay="inputCapIntType"></select>
+                        <tooltip helptext="{{'help_input_Capture_Interface' | translate}}" ></tooltip>
+                    </div>
+                </div>
+                <div class=" formActionButtons fieldinput-center">
+                    <button kendo-button="saveBtn" class="btn btn-primary pl-apply" ng-click="createNetFlow()" ng-disabled="diableCreateButton">
+                        {{'com_create' | translate}}
+                    </button>
+
+                    <button kendo-button="cancelBtn" class="btn btn-primary pl-cancel" ng-disabled="diableCancelButton" ng-click="fnCancel()">
+                        {{'com_cancel' | translate}}
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="editSection1">
+            <div class="title">
+                {{'nf_netFlowMonitor' | translate}}
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div kendo-grid="netFlowMonitorsGrid" id="netFlowMonitorsGrid" name="netFlowMonitorsGrid"
+                    k-options="netFlowMonitorsGridOptions"
+                    k-data-source="netFlowMonitorsGridDataSource"
+                    ng-click="rowSelected()"
+                    ></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="gridActionButtons">
+            <span>
+                <button kendo-button="deleteBtn" class="k-button btn btn-primary pl-delete"
+                ng-click="deleteConfirmation()"
+                ng-disabled="enableDeleteBtn">
+                    {{'com_delete' | translate}}
+                </button>
+            </span>
+        </div>
+    </div>    
+</div>

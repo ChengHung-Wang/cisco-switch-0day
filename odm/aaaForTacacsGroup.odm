@@ -1,0 +1,28 @@
+###
+show running-config aaa group server tacacs+
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show running-config aaa</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowRunningconfigAaa">
+<Container name="wnwebdata">
+
+<Container name="aaa group server tacacs+" alias = "entry" dynamic = "true">
+<Property name="aaa group server tacacs+" alias = "name" distance = "1" length = "1" type = "String"/>
+<Container name="server name" alias="list" dynamic = "true">
+<Property name="server name" alias = "list" distance = "1" length = "1" type = "String"/>
+</Container>
+</Container>
+
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+
+<!--
+Copyright (c) 2014,2015 by Cisco Systems, Inc.
+All rights reserved.
+-->

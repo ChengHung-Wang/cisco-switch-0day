@@ -1,0 +1,56 @@
+<!--
+Description: CPU and Memory Utilization html
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+<div class="bg-white" ng-controller="CpuAndMemoryUtilizationCtrl">
+	<div class="memoryCPUDashlet">
+
+		<div class="row memorySlot">
+			<span class="col-sm-5"> </span>
+		</div>
+
+		<div class="memoryCPUContainer">
+			<div class="row">
+				<!-- CPU UTILIZATION -->
+				<div class="col-sm-6">
+					<fieldset class="cpuUtilizationfieldset">
+						<legend>
+							<div class="cpuUtilization" ng-bind="'db_cpu_utilization' | translate"></div>
+						</legend>
+						<div class="text-center">
+							<span class="memoryCPUChartHeader" ng-bind="'db_cpu_devicetime' | translate"></span>
+						</div>
+						<div id="cpuHint">
+							<div class="kendoUIChart" kendo-chart="cpuUtilizationChart"
+								k-options="cpuUtilizationOptions"
+								k-data-source="cpuUtilizationChartData"
+								k-rebind="cpuUtilizationOptions"></div>
+						</div>
+					</fieldset>
+				</div>
+				
+				<!-- MEMORY UTILIZATION -->
+				<div class="col-sm-6">
+					<fieldset class="cpuUtilizationfieldset">
+						<legend>
+							<div class="cpuUtilization" ng-bind="'db_memory_utilization' | translate"></div>
+						</legend>
+						<div class="text-center">
+							<span class="memoryCPUChartHeader" ng-bind="'db_memory_devicetime' | translate"></span>
+						</div>
+						<div id="memoryHint">
+							<div class="kendoUIChart" kendo-chart="memoryUtilizationChart"
+								k-options="memoryUtilizationOptions"
+								k-data-source="memoryUtilizationChartData"
+								k-rebind="memoryUtilizationOptions"></div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
+		</div>
+		<div class="row memorySlot">
+			<span class="col-sm-5"> </span>
+		</div>
+	</div>
+</div>

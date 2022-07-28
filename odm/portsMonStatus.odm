@@ -1,0 +1,27 @@
+###
+show interfaces status
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show interfaces status</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="Port">
+<Table  name="InterfaceStatus">
+<Header name = "Port" start = "0" end = "9" type = "String"/>
+<Header name = "Name" start = "10" end = "28" type = "String"/>
+<Header name = "Status" start = "29" end = "40" type = "String"/>
+<Header name = "Vlan" start = "42" end = "51" type = "String"/>
+<Header name = "Duplex" start = "52" end = "58" type = "String"/>
+<Header name = "Speed" start = "60" end = "66" type = "String"/>
+<Header name = "Type" start = "67" end = "90" type = "String"/>
+
+</Table>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

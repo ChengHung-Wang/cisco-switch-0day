@@ -1,0 +1,28 @@
+###
+show ntp config
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>sh ntp config</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowNtp">
+<Container name="ntp" alias="entry" dynamic ="true">
+<Property name="ntp server" alias="hostName" distance = "1" length = "1" type = "String"/>
+<Property name="ntp server" alias="hostNameIP" distance = "2" length = "1" type = "String"/>
+<Property name="ntp server" alias="hostNameIPv6" distance = "2" length = "1" type = "String"/>
+<Property name="ntp server" alias="hostNameIP2" distance = "3" length = "1" type = "String"/>
+<Property name="ntp server" alias="hostNameIPv62" distance = "3" length = "1" type = "String"/>
+<Property name="ntp server" alias="IPInterface" distance = "4" length = "1" type = "String"/>
+<Property name="ntp server" alias="IPv6Interface" distance = "4" length = "1" type = "String"/>
+
+
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

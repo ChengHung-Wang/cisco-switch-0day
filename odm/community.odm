@@ -1,0 +1,26 @@
+###
+show running-config partition snmp
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show snmp</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowSnmp">
+<Container name="SNMPCommunity">
+<Container name="snmp-server community" alias = "entry" dynamic = "true">
+<Property name="snmp-server community " alias = "Name" distance = "1" length = "1" type = "String"/>
+<Property name="snmp-server community " alias="AccessMode" distance = "2" length = "1" type = "String"/>
+<Property name="snmp-server community " alias="AccessNumber" distance = "3" length = "1" type = "String"/>
+<Property name="snmp-server tftp-server-list " alias="tftp-server" distance = "1" length = "1" type = "String"/>
+</Container>
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>i
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+

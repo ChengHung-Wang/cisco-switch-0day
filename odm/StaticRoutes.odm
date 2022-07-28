@@ -1,0 +1,25 @@
+###                                                                             
+show running-config                                                    
+<?xml version='1.0' encoding='utf-8'?>                                          
+<ODMSpec>                                                                       
+	<Command>                                                                       
+		<Name>show running-config</Name>                                                       
+	</Command>                                                                      
+	<OS>ios</OS>                                                                    
+	<DataModel>                                                                     
+		<Container name="ipRoute">                                                   
+			<Container name="wnwebdata">
+				<Container name="ip route" alias="entry" dynamic="true">
+					<Property name="ip route" alias="prefix" distance = "1" length = "1" type = "String"/>
+					<Property name="ip route" alias="prefixMask" distance = "2" length = "1" type = "String"/>
+					<Property name="ip route" alias="routePath" distance = "3" length = "1" type = "String"/>
+					<Property name="ip route" alias="metric" distance = "4" length = "2" type = "String"/>
+				</Container>                                                                    
+			</Container>                                                                    
+		</Container>                                                                    
+	</DataModel>                                                                    
+</ODMSpec>  
+<!--
+Copyright (c) 2015 by Cisco Systems, Inc.
+All rights reserved.
+-->                                                                    

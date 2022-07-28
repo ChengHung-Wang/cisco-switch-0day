@@ -1,0 +1,184 @@
+<div class="row"  ng-controller="step2Ctrl" style="margin: 0 auto;">
+	<div class="col-sm-8" style="margin-bottom: 20px;" >
+		<div  align="" style="height: 520px;color:#706868;overflow-y: auto;">
+			<div style="padding: 20px; padding-top:5px">
+				<div class="row">
+					<div class="col-sm-5 webui-centerpanel-label-latest">
+						<h2 class="stepTitle">
+							<span class="ccpexpCSSReplaceClass331">{{'day0_wizard_interface_config' | translate}}</span>
+						</h2>
+					</div>
+				</div>
+				<form kendo-validator="basicScreenValidator"  k-options="wizardValidations">
+						<div class="row">
+							<div class="col-sm-3 webui-centerpanel-label">
+								<span class="label labelcustom">{{'switch_mgmt' | translate}} *</span>
+							</div>
+							<div class="col-sm-9">
+								<div class="row col-sm-12 pad-right-zero pad-left-zero">
+									<div class="col-sm-2 fieldinput wizardinputcustom line-height-zero pad-left-zero pad-right-zero">
+										<!-- <label>{{'portconfig_general_interface' | translate}} </label> -->
+										<input class="k-textbox form-control" type="text" name="vlan" id="vlan" required data-required-msg="{{'vlan_id_req_msg' | translate}}" 
+												ng-model="dayzero.vlan"  min="1" max="4094" k-state-disabled disabled/>
+									</div>
+									<div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero">
+										<!-- <label>{{'portconfig_port_ipv4_ip' | translate}} </label> -->
+										<input class="k-textbox form-control" type="text" id="newIpAddress" name="newIpAddress" placeholder="IPV4/IPV6 Prefix" required data-required-msg="{{'aaa_ip_msg' | translate}}"
+											ng-model="dayzero.newIpAddress" id="newIpAddress" numeric-dot-colon-only data-routevalidate  data-routevalidate-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}" ng-change="ipv6Status()"/>
+									</div>
+									<div ng-hide="mgmtVlanSubnetStatus"  class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero">
+										<!-- <label>{{'switch_subnet' | translate}} </label> -->
+										<input class="k-textbox form-control" type="text" name="subnetMask" placeholder="{{'switch_subnet' | translate}} " data-customreqmgmt="vlan" data-customreqmgmt-msg="{{'switch_subnet_msg' | translate}}"
+												ng-model="dayzero.subnetMask" id="subnetMask" numeric-dot-only data-submaskvalidatemgmt data-submaskvalidatemgmt-msg="{{'day0_wizard_subnet_invalid_msg' | translate}}"/>
+									</div>									
+								</div>
+							</div>
+						</div>		
+					<div class="row">
+						<div class="col-sm-3 webui-centerpanel-label">
+							<span class="label labelcustom"> {{'day0_wizard_interface_config_datavlan' | translate}}</span>
+						</div>
+						<div class="col-sm-9">
+							<div class="row col-sm-12 pad-right-zero pad-left-zero">
+								<div class="col-sm-2 fieldinput wizardinputcustom line-height-zero pad-left-zero pad-right-zero">
+									<input class="k-textbox form-control" type="text" id="dataVlan" name="dataVlan"
+											ng-blur="dataVlanUpdated()" ng-model="dayzero.dataVlan" min="1" max="4094" placeholder="1-4094"
+											data-checkdupvlan data-checkdupvlan-msg="{{'vlan_id_exist_msg' | translate}}"/>
+								</div>
+								<div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero">
+									<input class="k-textbox form-control" type="text" name="dataVlanIpAddress" placeholder="IPV4/IPV6 Prefix"
+										ng-model="dayzero.dataVlanIpAddress" id="dataVlanIpAddress" numeric-dot-colon-only data-customreq="dataVlan" data-customreq-msg="{{'aaa_ip_msg' | translate}}" data-routevalidate data-routevalidate-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}" ng-change="ipv6Status()"/>
+								</div>
+								<div ng-hide="dataVlanSubnetStatus" class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero">
+									<input class="k-textbox form-control" type="text" name="dataVlanSubnetMask" placeholder="{{'switch_subnet' | translate}}"
+											ng-model="dayzero.dataVlanSubnetMask" id="dataVlanSubnetMask" numeric-dot-only data-customreqdata="dataVlan" data-customreqdata-msg="{{'staticroute_subnet_req_msg' | translate}}" data-submaskvalidatedata data-submaskvalidatedata-msg="{{'day0_wizard_subnet_invalid_msg' | translate}}"/>
+								</div>
+								<div class="row col-sm-4" ng-hide="dataVlanDhcpStatus">
+									<div class="col-sm-8 webui-centerpanel-label">
+										<span class="label labelcustom">{{'day0_enable_dhcp' | translate}} </span>
+									</div>
+									<div class="col-sm-4">
+									    <input type="checkbox" id="datavlanDhcpEnable"  name="datavlanDhcpEnable" ng-model="dayzero.vlanDhcpEnable" checked="checked">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3 webui-centerpanel-label">
+							<span class="label labelcustom"> {{'day0_wireless_vlan' | translate}}</span>
+						</div>
+						<div class="col-sm-9">
+							<div class="row col-sm-12 pad-right-zero pad-left-zero">
+								<div class="col-sm-2 fieldinput wizardinputcustom line-height-zero pad-left-zero pad-right-zero">
+										<input class="k-textbox form-control" name="wirelessVlan"  ng-model="dayzero.wirelessVlan" id="wirelessVlan" ng-blur="wirelessVlanUpdated()" 
+										placeholder="1-4094" min="1" max="4094" data-checkdupvlan data-checkdupvlan-msg="{{'vlan_id_exist_msg' | translate}}" num-only data-range="" data-range-msg="{{'vlan_id_invalid_msg' | translate}}">
+								</div>
+								<div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero customIpToolTip">
+										<input class="k-textbox form-control" type="text" name="vlanIpAddress" placeholder="IPV4/IPV6 Prefix"
+										ng-model="dayzero.vlanIpAddress" id="vlanIpAddress" numeric-dot-colon-only data-customreq="wirelessVlan" data-customreq-msg="{{'aaa_ip_msg' | translate}}" data-routevalidate  data-routevalidate-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}" ng-change="ipv6Status()"/>
+								</div>
+								<div ng-hide="wirelessVlanSubnetStatus" class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero customIpToolTip customSubnetToolTip">
+										<input class="k-textbox form-control" type="text" name="vlanSubnetMask" placeholder="{{'switch_subnet' | translate}}"
+										ng-model="dayzero.vlanSubnetMask" id="vlanSubnetMask" numeric-dot-only data-customreqwireless="wirelessVlan" data-customreqwireless-msg="{{'staticroute_subnet_req_msg' | translate}}" data-submaskvalidatewireless data-submaskvalidatewireless-msg="{{'day0_wizard_subnet_invalid_msg' | translate}}"/>            
+								</div>
+								<div class="row col-sm-4" ng-hide="wirelessVlanDhcpStatus">
+									<div class="col-sm-8 webui-centerpanel-label">
+										<span class="label labelcustom">{{'day0_enable_dhcp' | translate}} </span>
+									</div>
+									<div class="col-sm-4">
+									    <input type="checkbox" id="wirelessDhcpEnable"  name="wirelessDhcpEnable" ng-model="dayzero.wirelessDhcpEnable" checked="checked">
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="row form-group">
+						<div class="col-sm-3 webui-centerpanel-label">
+							<span class="label labelcustom">{{'day0_wizard_interface_config_access_port' | translate}} </span>
+						</div>
+						<div class="row col-sm-5 fieldinput wizardinputcustom wizardCustomMultiSelect" style="margin-left: -15px;">
+							<select kendo-multi-select  ng-model="dayzero.accessPorts"
+									k-auto-close=false
+									k-data-source="accessPortsDataSource" id="accessPorts" name="accessPorts"
+									k-data-text-field="'accessPortsText'"
+									k-data-value-field="'accessPortsValue'"
+									k-options="selectOptions"
+									k-value-primitive="true"
+									ng-change="accessPortToolTip()"
+									ng-blur="accessPortToolTipHide()"
+									>
+							</select>
+						</div>
+						<div class="row col-sm-3" style="margin-left: 65px;">
+								<div class="col-sm-8 webui-centerpanel-label">
+									<span class="label labelcustom">{{'day0_wizard_interface_config_portfast' | translate}} </span>
+								</div>
+								<div class="col-sm-4">
+								    <input type="checkbox" id="portfast"  name="portfast" ng-model="dayzero.portfast" checked="checked">
+								</div>
+						</div> 
+					</div>	
+					<div class="row">
+						<div class="col-sm-3 webui-centerpanel-label ">
+							<span class="label labelcustom">{{'day0_wizard_interface_config_uplinkport' | translate}} *</span>
+						</div>
+						<div class="col-sm-4 wizardinputcustom wizardCustomSelect" style="margin-left: -15px;">
+							<select kendo-drop-down-list="uplinkPort"  ng-model="dayzero.uplinkPort"
+									k-data-source="uplinkPortDataSource" id="uplinkPort" name="uplinkPort"
+									k-data-text-field="'uplinkPortText'"
+									k-data-value-field="'uplinkPortValue'"
+									ng-change="uplinkToolTip()"
+									ng-blur="uplinkToolTipHide()"
+									k-ng-delay="dayzero.uplinkPort">
+							</select>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3 webui-centerpanel-label">
+							<span class="label labelcustom">{{'day0_wizard_layer3_config_default_gateway' | translate}} *</span>
+						</div>
+						<div class="col-sm-4 fieldinput wizardinputcustom" style="margin-left: -15px;">
+							<input class="k-textbox form-control" name="defaultGateway"  ng-model="dayzero.defaultGateway" id="defaultGatewayInt"
+									required data-required-msg="{{'day0_wizard_default_gateway_req_msg' | translate}}" numeric-dot-only data-validate-ip="" data-validateip-msg="{{'day0_wizard_default_gateway_invalid_msg' | translate}}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3 webui-centerpanel-label">
+							<span class="label labelcustom">{{'day0_wizard_layer3_config_default_route' | translate}} </span>
+						</div>
+						<div class="col-sm-4 fieldinput wizardinputcustom" style="margin-left: -15px;">
+							<input class="k-textbox form-control" type="text" name="defaultRoute" id="defaultRoute" placeholder="IPV4/IPV6"
+									ng-disabled='iprouteDisable' ng-model="dayzero.defaultRoute"  numeric-dot-colon-only data-routevalidate1  data-routevalidate1-msg="{{'day0_wizard_default_route_invalid_msg' | translate}}"/>
+						</div>
+					</div>
+					
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-4" style="margin-bottom: 20px;">
+		<div  align="center" style="height: 450px;color:#706868;background: #EBFAFF">
+			<div  style="margin-top:10px;height:99%;">
+				<div class="wizardhelpcontentheader" >
+					<i class="fa fa-question-circle" style="font-size: 18px;" ng-click="openOnlineHelpWindow()" /></i> {{'day0_wizard_help_tips' | translate}}
+				</div>
+				<div class="descriptionhelp">
+					<div ng-show="interConfigToolTip">{{'dayzero_wizard_inter_con_def_tip' | translate}}</div>
+					<div ng-show="ipAddressAssignTip">{{'help_day0_IP_address_assignment' | translate}} {{'day0_wizard_ip_req_msg' | translate}}</div>
+					<div ng-show="dataVlanTip">{{'help_day0_data_VLAN' | translate}}</div>					
+					<div ng-show="accessPortsTip">{{'help_day0_access_ports' | translate}}</div>
+					<div ng-show="uplinkPortTip">{{'help_day0_uplink_port' | translate}}</div>
+					<div ng-show="portfastTip">{{'help_day0_portfast_enable' | translate}}</div>
+					<div ng-show="eveClassTip">{{'help_port_config_eventclassification' | translate}}</div>
+					<div ng-show="poeTip">{{'help_port_config_poe' | translate}}</div>
+					<div ng-show="defaultGatewayTip">{{'help_day0_default_gateway' | translate}}</div>
+					<div ng-show="defaultRouteTip">{{'help_day0_default_route' | translate}}</div>
+					<div ng-show="wirelessVlanTip">{{'day0help_wireless_vlan' | translate}}</div>
+					<div ng-show="enableDhcpTip">{{'day0help_enable_dhcp' | translate}}</div>					
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	

@@ -1,0 +1,74 @@
+<div class="row"  ng-controller="step3Ctrl" style="margin: 0 auto;">
+	<div class="col-sm-8" style="margin-bottom: 20px;" >
+		<div  align="center" style="height: 450px;color:#706868;overflow-y: auto;">
+			<div style="padding: 20px;">
+				<div><div class="stepTitle" style="text-align:left;">{{'day0_wizard_layer3_config' | translate}}</div></div>
+				<form kendo-validator="basicScreenValidator"  k-options="wizardValidations">
+					<div class="row">
+						<div class="col-sm-3 webui-centerpanel-label">
+							<span class="label labelcustom">{{'day0_wizard_layer3_config_default_gateway' | translate}} *</span>
+						</div>
+						<div class="col-sm-5 fieldinput wizardinputcustom">
+							<input class="k-textbox form-control" name="defaultGateway"  ng-model="dayzero.defaultGateway" id="defaultGateway"
+								   required data-required-msg="{{'day0_wizard_default_gateway_req_msg' | translate}}" numeric-dot-only data-validate-ip="" data-validateip-msg="{{'day0_wizard_default_gateway_invalid_msg' | translate}}">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3 webui-centerpanel-label">
+							<span class="label labelcustom">{{'day0_wizard_layer3_config_default_route' | translate}} </span>
+						</div>
+						<div class="col-sm-5 fieldinput wizardinputcustom">
+							<input class="k-textbox form-control" type="text" name="defaultRoute" id="defaultRoute"
+								   ng-disabled='iprouteDisable' ng-model="dayzero.defaultRoute"  numeric-dot-only data-validateSubnetMask  data-validateSubnetMask-msg="{{'day0_wizard_default_route_invalid_msg' | translate}}"/>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-3 webui-centerpanel-label">
+							<span class="label labelcustom">{{'day0_wizard_layer3_config_ipaddress' | translate}}</span>
+						</div>
+						<div class="col-sm-9 pad-right-zero" id="dynamicInterface">
+							<div class="col-sm-12 pad-right-zero pad-left-zero">
+								<div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-left-zero pad-right-zero">
+									<label>{{'portconfig_general_interface' | translate}} </label>
+									<input class="k-textbox form-control" type="text" name="vlan"
+										   ng-model="dayzero.vlan"  min="1" max="4094" k-state-disabled disabled/>
+								</div>
+								<div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero">
+									<label>{{'day0_wizard_existing_ip' | translate}} </label>
+									<input class="k-textbox form-control" type="text" name="ipAddress"
+										   ng-model="dayzero.ipAddress"  k-state-disabled disabled/>
+								</div>
+								<div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero customIpToolTip">
+									<label>{{'day0_wizard_new_ip' | translate}} </label>
+									<input class="k-textbox form-control" type="text" name="newIpAddress"
+									   ng-model="dayzero.newIpAddress" id="newIpAddress" numeric-dot-only data-routevalidate  data-routevalidate-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}"/>
+								</div>
+								<div class="col-sm-3 fieldinput wizardinputcustom line-height-zero pad-right-zero customIpToolTip customSubnetToolTip">
+									<label>{{'switch_subnet' | translate}} </label>
+									<input class="k-textbox form-control" type="text" name="subnetMask"
+										   ng-model="dayzero.subnetMask" id="subnetMask" numeric-dot-only data-submaskvalidate data-submaskvalidate-msg="{{'day0_wizard_subnet_invalid_msg' | translate}}"/>
+								</div>
+							</div>
+						 <div my-custom-url></div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-4" style="margin-bottom: 20px;">
+		<div  align="center" style="height: 450px;color:#706868;background: #EBFAFF">
+			<div  style="margin-top:10px;height:99%;">
+				<div class="wizardhelpcontentheader" >
+					<i class="fa fa-question-circle" style="font-size: 18px;" ng-click="openOnlineHelpWindow()" /></i> {{'day0_wizard_help_tips' | translate}}
+				</div>
+				<div class="descriptionhelp">
+					<div ng-show="layerConfigToolTip">{{'dayzero_wizard_layer_con_def_tip' | translate}}</div>
+					<div ng-show="defaultGatewayTip">{{'help_day0_default_gateway' | translate}}</div>
+					<div ng-show="defaultRouteTip">{{'help_day0_default_route' | translate}}</div>
+					<div ng-show="ipAddressAssignTip">{{'help_day0_IP_address_assignment' | translate}} {{'day0_wizard_ip_req_msg' | translate}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

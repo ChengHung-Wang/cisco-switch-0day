@@ -1,0 +1,105 @@
+<!--
+Description: User Administration html
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->
+<div class="pageTitle"  ng-bind="'menu_useradministration' | translate">		
+</div>
+<div class="btnView">
+	<div>
+		<div class="pageContent">
+			<div class="gridActionButtons">
+				<button kendo-button="addBtn" class="btn btn-primary " ng-click="addUser()">
+					<span class="fa pl-add"></span> {{'com_add' | translate}}
+				</button>
+				<button kendo-button="deleteBtn" class="btn btn-primary "
+				ng-click="deleteConfirmation()"
+				ng-disabled="disableDelete">
+					<span class="fa pl-delete"></span> {{'com_delete' | translate}}
+				</button>
+			</div>
+			<div kendo-grid="userGrid" id="userGrid" name="userGrid"
+				k-options="userGridOptions"
+				k-data-source="userDataSource">
+			</div>
+		</div>
+	</div>
+	<!-- POP UP FOR ADDING/EDITING USERADMIN STARTS -->
+	<div kendo-window="userAdminWindow" k-title="'user_administration_editsection' | translate" k-visible="false" k-width="700" k-modal="true" id="userAdminPopup" >
+		<div>
+			<form name="userForm" id="userForm" kendo-validator="userValidator"	k-options="userValidations">
+				<div class="well">
+					<div class="row form-group"></div> 
+					<div class="row form-group"> 
+						<div class="col-sm-4 webui-centerpanel-label">
+							<span class="label pl-mandatory">{{'user_administration_user_name' | translate}}</span>
+						</div>
+						<div class="col-sm-6">
+							<input class="k-textbox form-control"
+							name="userName"
+							ng-model="userAdministration.userName"
+							ng-disabled="disableUserName"
+							required data-required-msg="{{'user_administration_username_required' | translate}}"
+							data-maximum="65" data-maximum-msg="{{'user_administration_username_length' | translate}}"
+							data-check="" data-check-msg="{{'user_administration_username_special' | translate}}"								
+							data-existing data-existing-msg="{{'user_administration_username_exist' | translate}}">
+							<tooltip helptext="{{'help_admin_username' | translate}}" position="top"></tooltip>
+						</div>
+					</div>			
+					<div class="row form-group"> 
+						<div class="col-sm-4 webui-centerpanel-label">
+							<span class="label pl-mandatory">{{'user_administration_priv' | translate}}</span>
+						</div>
+						<div class="col-sm-6">
+							<select kendo-drop-down-list
+							  name="privilege" id="privilege"
+							  ng-model="userAdministration.privilege"
+							  k-data-source="privilegeOptions" k-data-text-field="'privilegeText'"
+							  k-data-value-field="'privilegeValue'" k-ng-delay="userAdministration.privilege">
+							</select>
+							<tooltip helptext="{{'help_admin_privilege' | translate}}" position="top"></tooltip>
+						</div>
+					</div>
+					<div class="row form-group"> 
+						<div class="col-sm-4 webui-centerpanel-label">
+							<span class="label pl-mandatory">{{'user_administration_password' | translate}}</span>
+						</div>
+						<div class="col-sm-6">
+							<input class="k-textbox form-control" type="password" name="password"
+							ng-model="userAdministration.password" 
+							required data-required-msg="{{'user_administration_password_required' | translate}}"
+							data-maximum="25" data-maximum-msg="{{'user_administration_password_max' | translate}}"
+							data-minimum="5"  data-minimum-msg="{{'user_administration_password_min' | translate}}">
+							<tooltip helptext="{{'help_admin_password' | translate}}" position="top"></tooltip>
+						</div>
+					</div>
+					<div class="row form-group"> 
+						<div class="col-sm-4 webui-centerpanel-label">
+							<span class="label pl-mandatory">{{'user_administration_confirm_password' | translate}}</span>
+						</div>
+						<div class="col-sm-6">
+							<input class="k-textbox form-control" type="password" name="confirmPassword"
+							ng-model="userAdministration.confirmPassword"
+							data-matches="password" data-matches-msg="{{'user_administration_password_confirm' | translate}}">
+							<tooltip helptext="{{'help_admin_confirm_password' | translate}}" position="top"></tooltip>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+		<div ng-show="!isEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+			<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveUserData()">
+			<i class="icon-save-device"></i> {{'com_save_and_apply' | translate}}</button>
+			<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="reset()">
+			<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+		</div>
+
+		<div ng-show="isEditModeFlag" class="confirm ng-scope windowButtonContainer marginWindowButtons">
+			<button class="btn btn-primary k-button btnClr" type="button" ng-click="saveUserData()">
+			<i class="icon-save-device"></i> {{'com_update_and_apply' | translate}}  </button>
+			<button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="reset()">
+			<i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button>
+		</div>
+	</div>
+	<!-- POP UP FOR ADDING/EDITING USERADMIN ENDS -->	
+</div>

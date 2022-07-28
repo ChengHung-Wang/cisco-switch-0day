@@ -1,0 +1,17 @@
+###
+show cluster members detail
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show cluster members detail</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="ShowClusterMember">
+<Container name="member number" alias = "data" dynamic = "true">
+<Property name="Device type:" alias="deviceType" distance = "2" length = "1" type = "String" />
+</Container>
+</Container>
+</DataModel>
+</ODMSpec>
+<!-- Copyright (c) 2017 by Cisco Systems, Inc. All rights reserved. -->

@@ -1,0 +1,214 @@
+<!--
+Description: View for Static Routing
+January 2017
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->
+<div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+<div class="btnView">
+	<div class="pageTitle" ng-bind="'menu_static_routing' | translate"></div>
+    <div class="form-group">
+        <div>
+            <button kendo-button="addStaticRouteButton" class="btn btn-primary margin-right-10" ng-click="addStaticRoute()"><span class="fa pl-add"></span> {{'com_add' | translate}}</button>
+            <button kendo-button="deleteStaticRouteButton" class="btn btn-primary" ng-click="showDeleteWindow(true)" ng-disabled="disableDeleteButton"><span class="fa pl-delete"></span> {{'com_delete' | translate}}</button>
+
+            <button kendo-button="applyButton" class="btn btn-primary pull-right"
+                    ng-disabled="disableApplyButton" ng-click="applyStaticRoute()">
+               <span class="fa pl-apply"></span> {{'com_apply' | translate}}
+            </button>
+        </div>
+    </div>
+    <div class="form-group">
+        <div>
+            <div kendo-grid="staticRoutingGrid" id="staticRoutingGrid" name="staticRoutingGrid"
+                 k-options="staticRoutingGridOptions"
+                 k-data-source="staticRoutingDataSource"
+                 k-on-change="onSelectStaticRouteHandler(data)" >
+            </div>
+        </div>
+        <div kendo-window="deleteStaticRouteWindow" k-title= "'staticrouting_delete_static_route' | translate"
+             k-modal="true"
+             k-width="500" k-visible="false" class="static_deleteWindow"
+                >{{'staticroute_delete_popup' | translate}}
+            <div class="margin-top-05">
+
+                <button kendo-button="deleteCancelBtn" class="btn btn-primary margin-top-14px  pull-right"
+                        ng-click="showDeleteWindow(false)">
+                   {{'com_cancel' | translate}} 
+                </button>
+                <button kendo-button="deleteOkBtn"
+                        class="btn btn-primary margin-top-14px margin-right-07px pull-right"
+                        ng-click="deleteStaticRoutes()"> {{'com_ok' | translate}}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="window">
+<div>
+        <form name="staticRouteForm" id="staticRouteForm" kendo-validator="staticRoutingValidations" k-options="staticRoutingValidations" data-role="validator" novalidate="novalidate">
+		<div class="row form-group"></div>
+		<div class="row form-group">
+		    <div class="col-sm-4 webui-centerpanel-label">
+			<span class="label">{{'staticrouting_ip_type' | translate}}</span>
+		    </div>
+		    <div class="col-sm-2">
+				<div class="radio">
+				    <label><input ng-disabled="editStatus" type="radio" ng-model="staticRouteModel.ipType" ng-change="onIpTypeChange()" name="ipType" value="IPV4">{{'sys_dhcp_ipv4' | translate}}</label>
+				</div>
+				<div class="radio">
+				    <label><input ng-disabled="editStatus" type="radio" ng-model="staticRouteModel.ipType" ng-change="onIpTypeChange()" name="ipType" value="IPV6">{{'iptype_ipv6' | translate}}</label>
+				</div>				
+		    </div>		   
+		</div>
+		<!-- IPV4 route -->
+		<div ng-if="ipv4Status">
+			<div class="row form-group">
+			    <div class="col-sm-4 webui-centerpanel-label">
+				<span class="label">{{'staticrouting_prefix' | translate}}</span>
+			    </div>
+			    <div class="col-sm-5">
+				<input class="k-textbox form-control" ng-model="staticRouteModel.prefix" name="prefix" id="prefix" numeric-dot-only required data-validate-ip="" data-validateip-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}" data-required-msg="{{'aaa_ip_msg' | translate}}" placeholder="xxx.xxx.xxx.xxx">
+				<tooltip helptext="{{'help_static_route_prefix' | translate}}"></tooltip>
+			    </div>
+			</div>
+			<div class="row form-group">
+			    <div class="col-sm-4 webui-centerpanel-label">
+				<span class="label">{{'staticrouting_prefix_mask' | translate}} </span>
+			    </div>
+			    <div class="col-sm-5">
+				<input class="k-textbox form-control" ng-model="staticRouteModel.prefixMask" name="prefixMask" id="prefixMask" numeric-dot-only required data-validate-subnet="" data-validatesubnet-msg="{{'staticroute_subnet_invalid_msg' | translate}}" required="" data-required-msg="{{'staticroute_subnet_req_msg' | translate}}" placeholder="xxx.xxx.xxx.xxx">
+				<tooltip helptext="{{'help_static_route_prefixmask' | translate}}"></tooltip>
+			    </div>
+			</div>
+			<div class="row form-group">
+			    <div class="col-sm-4 webui-centerpanel-label">
+					<span class="label">{{'staticrouting_metric' | translate}} </span>
+			    </div>
+			    <div class="col-sm-5">
+					<span>
+						<input class="k-textbox form-control" ng-model="staticRouteModel.metric" name="metric" id="metric" placeholder="1-255" min="1" max="255" data-range="" data-range-msg="{{'staticroute_metric_range_msg' | translate}}">
+					</span>
+					<tooltip helptext="{{'help_static_route_metric' | translate}}"></tooltip>
+				</div>
+			</div>
+		</div>
+		<!-- IPV6 route -->
+		<div ng-if="ipv6Status">
+			<div class="row form-group">
+			    <div class="col-sm-4 webui-centerpanel-label">
+				<span class="label">{{'staticrouting_prefix' | translate}}</span>
+			    </div>
+			    <div class="col-sm-5">
+				<input class="k-textbox form-control" ng-model="staticRouteModel.prefix" name="prefix" id="prefix" numeric-colon-only required data-required-msg="{{'aaa_ip_msg' | translate}}" data-ipv6 data-ipv6-msg="{{::'com_invalidIpv6'|translate}}" placeholder="x:x:x:x:x:x:x:x">
+				<tooltip helptext="{{'help_static_route_prefix' | translate}}"></tooltip>
+			    </div>
+			</div>
+			<div class="row form-group">
+			    <div class="col-sm-4 webui-centerpanel-label">
+				<span class="label">{{'ipv6_prefix_length' | translate}} </span>
+			    </div>
+			    <div class="col-sm-5">
+				      <input class="k-textbox form-control" ng-model="staticRouteModel.prefixMask" name="prefixMask" id="prefixMask" numeric-only required data-required-msg="{{'ipv6_staticroute_prefix_length_required' | translate}}" placeholder="0-128" min="0" max="128" data-range="" data-range-msg="{{'ipv6_staticroute_prefix_length_range' | translate}}">
+			   </div>
+			</div>
+			<div class="row form-group">
+			    <div class="col-sm-4 webui-centerpanel-label">
+					<span class="label">{{'ipv6_admin_distance' | translate}} </span>
+			    </div>
+			    <div class="col-sm-5">
+					<span>
+						<input class="k-textbox form-control" ng-model="staticRouteModel.metric" name="metric" id="metric" placeholder="1-254" min="1" max="254" data-range="" data-range-msg="{{'ipv6_staticroute_admindistance_length_range' | translate}}">
+					</span>					
+				</div>
+			</div>
+		</div>
+		<div class="row form-group">
+		    <div class="col-sm-4 webui-centerpanel-label">
+			<span class="label">{{'staticrouting_route_path' | translate}}</span>
+		    </div>
+		    <div class="col-sm-3">
+			<div class="radio">
+			    <label><input type="radio" ng-model="staticRouteModel.routeType" ng-change="onFormRadioChange(staticRouteModel.routeType)" name="routeType" value="INTERFACE">{{'portconfig_general_interface' | translate}}</label>
+			</div>
+			<div class="radio">
+			    <label><input type="radio" ng-model="staticRouteModel.routeType" ng-change="onFormRadioChange(staticRouteModel.routeType)" name="routeType" value="IP">{{'staticrouting_next_hop_ip' | translate}}</label>
+			</div>
+			<div class="radio" ng-show="ipv4Status">
+			    <label><input type="radio" ng-model="staticRouteModel.routeType" ng-change="onFormRadioChange(staticRouteModel.routeType)" name="routeType" value="DHCP">{{'staticrouting_dhcp' | translate}}</label>
+			</div>
+		    </div>
+		    <div class="col-sm-1 text-center mTop8" ng-show="ipv4Status">
+		    	<tooltip helptext="{{'help_static_route_path' | translate}}"></tooltip>
+		    </div>
+		    <div class="col-sm-1 text-center mTop8" ng-show="ipv6Status">
+		    	<tooltip helptext="{{'help_static_route_path_ipv6' | translate}}"></tooltip>
+		    </div>
+		</div>
+		<div ng-if="ipv4Status">
+			<div class="row form-group" ng-if="staticRouteModel.routeType==='IP'">
+			    <div class="col-sm-4 webui-centerpanel-label">
+				<span class="label">{{'staticrouting_next_hop_ip' | translate}}</span>
+			    </div>
+			    <div class="col-sm-5">
+				<input class="k-textbox form-control" ng-model="staticRouteModel.ip" name="NextHopIP" id="NextHopIP" numeric-dot-only required data-validate-ip="" data-validateip-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}" required="" data-required-msg="{{'aaa_ip_msg' | translate}}">
+				<tooltip helptext="{{'help_static_route_hopip' | translate}}"></tooltip>
+			    </div>
+			</div>
+			<div class="row form-group" ng-show="staticRouteModel.routeType==='INTERFACE'">
+			    <div class="col-sm-4 webui-centerpanel-label">
+				<span class="label">{{'portconfig_general_interface' | translate}}</span>
+			    </div>
+			    <div class="col-sm-4">
+				<select kendo-drop-down-list name="Interface_dropdown" id="Interface_dropdown" ng-model="staticRouteModel.interface1" k-data-source="interfaceData" k-data-text-field="'interfaceName'" k-data-value-field="'interfaceValue'" k-ng-delay="staticRouteModel.interface1"></select>
+				<tooltip helptext="{{'help_static_route_interface' | translate}}"></tooltip>
+			    </div>			
+			</div>
+			<div class="row form-group" ng-if="staticRouteModel.routeType=='INTERFACE'">
+			    <div class="col-sm-4 webui-centerpanel-label">
+				<span class="label">{{'staticrouting_next_hop_ip' | translate}}</span>
+			    </div>
+			    <div class="col-sm-5">
+				<input class="k-textbox form-control" ng-model="staticRouteModel.nextHopIp2" name="nextHopIp2" id="nextHopIp2" numeric-dot-only required data-validate-ip="" data-validateip-msg="{{'day0_wizard_ip_address_invalid_msg' | translate}}" required="" data-required-msg="{{'aaa_ip_msg' | translate}}">
+				<tooltip helptext="{{'help_static_route_hopip' | translate}}"></tooltip>
+			    </div>
+			</div>
+		</div>	
+		
+		<div ng-if="ipv6Status">
+			<div class="row form-group" ng-if="staticRouteModel.routeType==='IP'">
+			    <div class="col-sm-4 webui-centerpanel-label">
+				<span class="label">{{'staticrouting_next_hop_ip' | translate}}</span>
+			    </div>
+			    <div class="col-sm-5">
+				<input class="k-textbox form-control" ng-model="staticRouteModel.ip" name="NextHopIP" id="NextHopIP" numeric-colon-only required data-required-msg="{{'aaa_ip_msg' | translate}}" data-ipv6 data-ipv6-msg="{{::'com_invalidIpv6'|translate}}" placeholder="x:x:x:x:x:x:x:x">
+				<tooltip helptext="{{'help_static_route_hopip' | translate}}"></tooltip>
+			    </div>
+			</div>
+			<div class="row form-group" ng-show="staticRouteModel.routeType==='INTERFACE'">
+			    <div class="col-sm-4 webui-centerpanel-label">
+				<span class="label">{{'portconfig_general_interface' | translate}}</span>
+			    </div>
+			    <div class="col-sm-4">
+				<select kendo-drop-down-list name="Interface_dropdown" id="Interface_dropdown" ng-model="staticRouteModel.interface1" k-data-source="interfaceData" k-data-text-field="'interfaceName'" k-data-value-field="'interfaceValue'" k-ng-delay="staticRouteModel.interface1"></select>
+				<tooltip helptext="{{'help_static_route_interface' | translate}}"></tooltip>
+			    </div>			
+			</div>
+			<div class="row form-group" ng-if="staticRouteModel.routeType=='INTERFACE'">
+			    <div class="col-sm-4 webui-centerpanel-label">
+				<span class="label">{{'staticrouting_next_hop_ip' | translate}}</span>
+			    </div>
+			    <div class="col-sm-5">
+				<input class="k-textbox form-control" ng-model="staticRouteModel.nextHopIp2" name="nextHopIp2" id="nextHopIp2" numeric-colon-only required data-required-msg="{{'aaa_ip_msg' | translate}}" data-ipv6 data-ipv6-msg="{{::'com_invalidIpv6'|translate}}" placeholder="x:x:x:x:x:x:x:x">
+				<tooltip helptext="{{'help_static_route_hopip' | translate}}"></tooltip>
+			    </div>
+			</div>
+		</div>	
+</form>   
+</div>
+	<div ng-show="kendoWindow.isEditMode" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="doneAddEditKendoWindow()"><i class="icon-save-device"></i> {{'com_save' | translate}}</button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelAddEditKendoWindow()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+	
+	<div ng-show="!kendoWindow.isEditMode" class="confirm ng-scope windowButtonContainer marginWindowButtons"><button class="btn btn-primary k-button btnClr" type="button" ng-click="updateStaticRouteChange()"><i class="icon-save-device"></i> {{'staticrouting_update_apply' | translate}}  </button><button class="btn btn-primary k-button pull-left btnClr" type="button" ng-click="cancelAddEditKendoWindow()"><i class="fa pl-cancel"></i> {{'com_cancel' | translate}}</button></div>
+
+</div>
+

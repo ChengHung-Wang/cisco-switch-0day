@@ -1,0 +1,573 @@
+<!--
+Description: ACL View
+August 2017
+Copyright (c) 2017 by Cisco Systems, Inc.
+All rights reserved.
+-->
+<div class="pageLoader"><span class="spinner fa fa-spin fa-spinner"></span></div>
+<div>
+		<div class="pageTitle" ng-if="displayLater">
+			<span ng-show="inAceView"><i class="fa fa-arrow-circle-left pointer" aria-hidden="true" ng-click="flipBackToAcls()"></i></span><span ng-class="inAceView?'aclTitle':''" ng-click="inAceView?flipBackToAcls():''" ng-bind="'acl_access_control_list'|translate"> </span><span ng-show="inAceView">| <span class="aceTitle" ng-bind="currentAclName"></span></span>
+		</div>
+		<div class="flip-container">
+		<div class="flipper" ng-class="flipperClasses">
+		<div class="front">
+			<div class="gridActionButtons" ng-if="displayLater">
+				<button kendo-button="addAclBtn" class="btn btn-primary pl-add ng-binding k-button" ng-click="addNewAcl()">
+					<span  ng-bind="'com_add'|translate"></span>
+				</button>
+				<button kendo-button="deleteAclBtn" class="btn btn-primary pl-delete ng-binding k-button" ng-click="confirmAclDelete()"
+						ng-disabled="selectedAcls.length===0">
+					<span  ng-bind="'com_delete'|translate"></span>
+				</button>
+			</div>
+			<div kendo-grid="aclMainGrid"
+				k-options="aclGridOptions"
+				k-data-source="aclMainGridDataSource"
+				k-scrollable="false"
+				k-sortable="true"
+				k-selectable="true" id="aclMainGrid" ng-if="displayLater">
+			</div>
+		</div>
+		<div class="back">
+			<div class="gridActionButtons ">
+				<button kendo-button="addAceBtn" class="k-button btn btn-primary margin-top-none" ng-click="addNewAce()">
+					<span class="fa pl-add"></span> {{::'com_add'|translate}}
+				</button>
+
+				<button kendo-button="deleteAceBtn" class="k-button btn btn-primary margin-top-none" ng-click="confirmAceDelete()"
+						ng-disabled="selectedAces.length===0">
+					<span class="fa pl-delete"></span> {{::'com_delete'|translate}}
+				</button>
+			</div>
+			<div style="overflow:auto" kendo-grid="aceGrid"
+				k-options="aceGridOptions"
+				k-data-source="aceGridDataSource"
+				k-scrollable="false"
+				k-sortable="true"
+				k-selectable="true" id="aceGrid">
+			</div>
+		</div>
+		<div grid-id="aclMainGrid" kendo-window="aclMainWindow" class="cloakVisiblility" add-edit-window window-done="applyNewAcl" k-visible="false" k-width="800" window-buttons="aclMainButtons" style="height:507px;">
+			<div class="windowContainer">
+				<div class="row form-group"></div>
+				<form name="aclQuicksetupForm" id="aclQuicksetupForm" name="aclQuicksetupForm" kendo-validator="aclValidator" k-options="aclValidations">
+					<div class="container" style="height:436px;overflow:auto;overflow-x:hidden">
+						<div class="row form-group" ng-if="inAclView">
+							<div class="col-sm-4 webui-leftpanel-label">
+								<span class="label pl-mandatory">{{::'acl_acl_name'|translate}}</span>
+							</div>
+							<div class="col-sm-5 ">
+								<input class="k-textbox form-control" name="aclName" id="aclName"
+									ng-model="acl.aclName" required data-required-msg="{{::'com_field_mandatory'|translate}}"
+									data-space-msg="{{::'acl_space_name'|translate}}"
+									data-aclnamevalidation-msg="{{::'acl_name_exists'|translate}}"
+									data-maximum="256" data-maximum-msg="{{::'acl_name256'|translate}}" ng-disabled="!displayACLFields">
+								<tooltip helptext="{{'acl_help_name' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-if="inAclView">
+							<div class="col-sm-4 webui-leftpanel-label">
+								<span class="label">{{'acl_acl_type'|translate}}</span>
+							</div>
+							<div class="col-sm-5 ">
+								<select kendo-drop-down-list name="aclTypeDropDown" id="aclTypeDropDown" ng-change="changeAclType(true, acl.aclType)"
+                                    ng-model="acl.aclType" k-data-source="aclTypeOptions" k-data-text-field="'text'" k-data-value-field="'value'" k-ng-delay="acl.aclType" ng-disabled="!displayACLFields">
+								</select>
+								<tooltip helptext="{{'acl_help_type' | translate}}"></tooltip>
+							</div>
+							<div ng-init="loadAclTypeOptions()"></div>
+						</div>
+						<div class="row form-group" ng-if="inAceView && !hideSequence">
+							<div class="col-sm-4 webui-leftpanel-label">
+								<span class="label pl-mandatory">{{::'acl_sequence'|translate}}</span>
+							</div>
+							<div class="col-sm-5 ">
+								<input class="k-textbox form-control" name="Sequence" id="Sequence"
+									ng-model="acl.Sequence" placeholder="1-2147483647" required data-required-msg="{{::'com_field_mandatory'|translate}}"
+									data-aclsequencevalidation-msg="{{::'acl_sequence_range'|translate}}">
+								<tooltip helptext="{{'acl_help_sequence' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields">
+							<div class="col-sm-4 webui-leftpanel-label">
+								<span class="label">{{::'acl_action'|translate}}</span>
+							</div>
+							<div class="col-sm-5 ">
+								<select kendo-drop-down-list name="aclAction" id="aclAction"
+                                    ng-model="acl.aclAction" k-data-source="aclActionOptions"  k-data-text-field="'text'" k-data-value-field="'value'" ng-change="actionChange(acl.aclAction)">
+								</select>
+								<tooltip helptext="{{'acl_help_action' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields">
+							<div class="col-sm-4 webui-leftpanel-label" ng-if="acl.aclType!='ARP'">
+								<span class="label">{{::'acl_source_type'|translate}}</span>
+							</div>							<div class="col-sm-4 webui-leftpanel-label" ng-if="acl.aclType =='ARP'">
+								<span class="label">Sender Type</span>
+							</div>
+							<div class="col-sm-5 ">
+								<select kendo-drop-down-list name="aclSourceType" id="aclSourceType"
+                                    ng-model="acl.sourceType" k-data-source="aclSourceTypeOptions"
+									k-data-text-field="'text'" k-data-value-field="'value'"
+									k-ng-delay="acl.sourceType">
+								</select>
+								<tooltip helptext="{{'acl_help_sourcetype' | translate}}"></tooltip>
+							</div>
+							<div class="ng-hide" ng-init="loadAclSourceTypeOptions()"></div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.sourceType=='IP' && acl.aclType!='IPv6'&& acl.aclType!='ARP'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                        		<span class="label pl-mandatory">{{::'acl_source_ip'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control"
+									   name="sourceIp" id="sourceIp"
+									   placeholder='xxx.xxx.xxx.xxx'
+									   ng-model="acl.sourceIp"
+									   numeric-dot-only
+									   required data-required-msg="{{::'com_field_mandatory'|translate}}"
+									   data-ip data-ip-msg="{{::'com_invalidIp'|translate}}"
+									   data-reservedIp data-reservedIp-msg="{{::'com_invalidIp'|translate}}">
+								<tooltip helptext="{{'acl_help_sourceip' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.sourceType=='IP' && acl.aclType!='IPv6'&& acl.aclType!='ARP'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'acl_source_mask'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input name="sourceMask" id="sourceMask" class="k-textbox form-control"
+										placeholder='xxx.xxx.xxx.xxx'
+										ng-model="acl.sourceMask"
+									   	numeric-dot-only
+										required data-required-msg="{{::'com_field_mandatory'|translate}}"
+										data-ip data-ip-msg="{{::'acl_subnet_invalid'|translate}}">
+								<tooltip helptext="{{'acl_help_sourceMask' | translate}}"></tooltip>
+							</div>
+						</div>						<div class="row form-group"  ng-if="acl.sourceType=='Host' && acl.aclType=='MAC'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                        		<span class="label pl-mandatory">{{::'common_mac_address'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control"
+									   name="macSourceIp" id="macSourceIp"
+									   placeholder='xxx.xxx.xxx'
+									   ng-model="acl.macSourceIp"
+									   numeric-dot-only
+									   required data-required-msg="{{::'com_field_mandatory'|translate}}"									   									   data-isvalidmacaddress data-isvalidmacaddress-msg="{{::'common_mac_address_validation'|translate}}">
+								<tooltip helptext="{{'acl_help_sourceip' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group"  ng-if="acl.sourceType=='Host' && acl.aclType=='MAC'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'common_mac_subnet'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input name="macSourceMask" id="macSourceMask" class="k-textbox form-control"
+										placeholder='xxx.xxx.xxx'
+										ng-model="acl.macSourceMask"
+									   	numeric-dot-only
+										required data-required-msg="{{::'com_field_mandatory'|translate}}"																				data-isvalidmacaddress data-isvalidmacaddress-msg="{{::'common_mac_subnet_validation'|translate}}">
+								<tooltip helptext="Sender Mac Subnet Mask"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.sourceType=='IP' && acl.aclType=='IPv6'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'acl_source_ip'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control"
+									   name="sourceIpv6" id="sourceIpv6"
+									   ng-model="acl.sourceIpv6"
+									   required data-required-msg="{{::'com_field_mandatory'|translate}}"
+									   data-ipv6 data-ipv6-msg="{{::'com_invalidIpv6'|translate}}"
+									   placeholder="X:X:X:X:X:X:X:X">
+								<tooltip helptext="{{'acl_help_sourceipv6' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.sourceType=='IP' && acl.aclType=='IPv6'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'acl_sourceMask_prefix'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control"
+									   name="sourceIpv6Mask" id="sourceIpv6Mask"
+									   ng-model="acl.sourceIpv6Mask"
+									   required data-required-msg="{{::'com_field_mandatory'|translate}}"
+									   min="0" max="128"
+									   data-range="" data-range-msg="{{'acl_prifix_range_msg' | translate}}"
+									   placeholder="0-128">
+								<tooltip helptext="{{'acl_help_sourceipv6Mask' | translate}}"></tooltip>
+							</div>
+						</div>						<div class="row form-group" ng-if="acl.sourceType=='IP' && acl.aclType=='ARP'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'common_sender_ip'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control"
+									   name="senderArpIp" id="senderArpIp"
+									   ng-model="acl.senderArpIp"
+									   required data-required-msg="{{::'com_field_mandatory'|translate}}"
+									   placeholder="xxx.xxx.xxx.xxx"									   									   data-ip data-ip-msg="{{::'com_invalidIp'|translate}}"									   data-reservedIp data-reservedIp-msg="{{::'com_invalidIp'|translate}}">
+								<tooltip helptext="{{'acl_help_sourceipv6' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-if="acl.sourceType=='IP' && acl.aclType=='ARP'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'common_sender_mask'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control"
+									   name="senderArpMask" id="senderArpMask"
+									   ng-model="acl.senderArpMask"
+									   required data-required-msg="{{::'com_field_mandatory'|translate}}"									   placeholder="xxx.xxx.xxx.xxx">
+								<tooltip helptext="{{'acl_help_sourceipv6Mask' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.sourceType=='Host' && acl.aclType!='MAC'">
+							<div class="col-sm-4 webui-leftpanel-label">
+								<span class="label pl-mandatory">{{::'acl_host'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control" name="hostSourceName" id="hostSourceName"
+									ng-model="acl.hostSourceName" data-space-msg="{{::'acl_space_name'|translate}}"
+									required data-required-msg="{{::'switch_hostname_msg'|translate}}"
+								    data-nameorip data-nameorip-msg="{{'hostname_invalid_msg' | translate}}"
+									data-maximum="256" data-maximum-msg="{{::'acl_host_name256'|translate}}">
+								<tooltip helptext="{{'acl_help_hostname' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="acl.aclType!='IPv4 Standard' && displayACLFields && acl.aclType!='ARP'">
+							<div class="col-sm-4 webui-leftpanel-label">
+								<span class="label">{{::'acl_destination_type'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<select kendo-drop-down-list name="aclDestinationType" id="aclDestinationType"
+                                    ng-model="acl.destinationType" k-data-source="aclSourceTypeOptions"
+									k-data-text-field="'text'" k-data-value-field="'value'"
+									k-ng-delay="acl.destinationType">
+								</select>
+								<tooltip helptext="{{'acl_help_destinationType' | translate}}"></tooltip>
+							</div>
+							
+						</div>						<div class="row form-group" ng-show="displayACLFields && acl.aclType =='ARP'">													<div class="col-sm-4 webui-leftpanel-label">								<span class="label">MAC Type</span>							</div>
+							<div class="col-sm-5">
+								<select kendo-drop-down-list name="arpDestinationType" id="arpDestinationType"
+                                    ng-model="acl.arpDestinationType" k-data-source="arpDestinationTypeOptions"
+									k-data-text-field="'text'" k-data-value-field="'value'"									>
+								</select>
+								<tooltip helptext="{{'acl_help_destinationType' | translate}}"></tooltip>
+							</div>                            <div class="ng-hide" ng-init="loadAclDestinationTypeOptions()"></div>
+						</div>
+
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.destinationType=='IP' && acl.aclType=='IPv4 Extended'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'acl_destination_ip'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control"
+									   name="destinationIp" id="destinationIp"
+									   placeholder='xxx.xxx.xxx.xxx'
+									   ng-model="acl.destinationIp"
+									   required data-required-msg="{{::'com_field_mandatory'|translate}}"
+									   data-ip data-ip-msg="{{::'com_invalidIp'|translate}}"
+									   data-reservedIp data-reservedIp-msg="{{::'com_invalidIp'|translate}}">
+								<tooltip helptext="{{'acl_help_destinationip' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.destinationType=='IP' && acl.aclType=='IPv4 Extended'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'acl_destination_mask'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input name="destinationMask" id="destinationMask" class="k-textbox form-control"
+										placeholder='xxx.xxx.xxx.xxx'
+										ng-model="acl.destinationMask"
+										required data-required-msg="{{::'com_field_mandatory'|translate}}"
+										data-ip data-ip-msg="{{::'acl_destination_maskInvalid'|translate}}">
+								<tooltip helptext="{{'acl_help_destinationmask' | translate}}"></tooltip>
+							</div>
+						</div>						<div class="row form-group"  ng-if="acl.destinationType=='IP' && acl.aclType=='ARP'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'portconfig_port_ipv4_ip'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control"
+									   name="destinationIp" id="destinationIp"
+									   placeholder='xxx.xxx.xxx.xxx'
+									   ng-model="acl.destinationIp"
+									   required data-required-msg="{{::'com_field_mandatory'|translate}}"
+									   data-ip data-ip-msg="{{::'com_invalidIp'|translate}}"
+									   data-reservedIp data-reservedIp-msg="{{::'com_invalidIp'|translate}}">
+								<tooltip helptext="{{'acl_help_destinationip' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group"  ng-if="acl.destinationType=='IP' && acl.aclType=='ARP'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'acl_destination_mask'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input name="destinationMask" id="destinationMask" class="k-textbox form-control"
+										placeholder='xxx.xxx.xxx.xxx'
+										ng-model="acl.destinationMask"
+										required data-required-msg="{{::'com_field_mandatory'|translate}}"
+										data-ip data-ip-msg="{{::'acl_destination_maskInvalid'|translate}}">
+								<tooltip helptext="{{'acl_help_destinationmask' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.destinationType=='IP' && acl.aclType=='IPv6'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'acl_destination_ip'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control"
+									   name="destinationIpv6" id="destinationIpv6"
+									   ng-model="acl.destinationIpv6"
+									   required data-required-msg="{{::'com_field_mandatory'|translate}}"
+									   data-ipv6 data-ipv6-msg="{{::'com_invalidIpv6'|translate}}"
+									   placeholder="X:X:X:X:X:X:X:X">
+								<tooltip helptext="{{'acl_help_destinationIpv6' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.destinationType=='IP' && acl.aclType=='IPv6'">
+							<div class="col-sm-4 webui-leftpanel-label">
+                            	<span class="label pl-mandatory">{{::'acl_destinationMask_prefix'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control"
+									   name="destinationIpv6Mask" id="destinationIpv6Mask"
+									   ng-model="acl.destinationIpv6Mask"
+									   required data-required-msg="{{::'com_field_mandatory'|translate}}"
+									   min="0" max="128"
+									   data-range="" data-range-msg="{{'acl_prifix_range_msg' | translate}}"
+									   placeholder="0-128">
+								<tooltip helptext="{{'acl_help_destinationIpv6Mask' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.destinationType=='Host' && acl.aclType!='IPv4 Standard' && acl.aclType!='MAC' && acl.aclType!='ARP'">
+							<div class="col-sm-4 webui-leftpanel-label">
+								<span class="label pl-mandatory">{{::'acl_host' | translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input class="k-textbox form-control" name="hostDestinationName" id="hostDestinationName"
+									ng-model="acl.hostDestinationName" data-space-msg="{{::'acl_space_name'|translate}}"
+									required data-required-msg="{{::'com_field_mandatory'|translate}}"
+									data-maximum="256" data-maximum-msg="{{::'acl_host_name256'|translate}}">
+								<tooltip helptext="{{'acl_help_hostDestinationName' | translate}}"></tooltip>
+							</div>
+						</div>						<div class="row form-group"  ng-if="(acl.destinationType=='Host' && acl.aclType=='MAC')||(acl.arpDestinationType=='Host' && acl.aclType=='ARP') ">							<div class="col-sm-4 webui-leftpanel-label">                        		<span class="label pl-mandatory">">{{::'common_mac_address'|translate}}</</span>							</div>							<div class="col-sm-5">								<input class="k-textbox form-control"									   name="macDestinationIp" id="macDestinationIp"									   placeholder='xxx.xxx.xxx'									   ng-model="acl.macDestinationIp"									   numeric-dot-only									   required data-required-msg="{{::'com_field_mandatory'|translate}}"									   									   data-isvalidmacaddress data-isvalidmacaddress-msg="{{::'common_mac_address_validation'|translate}}">								<tooltip helptext="{{'acl_help_sourceip' | translate}}"></tooltip>							</div>						</div>						<div class="row form-group"  ng-if="(acl.destinationType=='Host' && acl.aclType=='MAC')||(acl.arpDestinationType=='Host' && acl.aclType=='ARP') ">							<div class="col-sm-4 webui-leftpanel-label">                            	<span class="label pl-mandatory">{{::'common_mac_subnet'|translate}}</span>							</div>							<div class="col-sm-5">								<input name="macDestinationMask" id="macDestinationMask" class="k-textbox form-control"										placeholder='xxx.xxx.xxx'										ng-model="acl.macDestinationMask"									   	numeric-dot-only										required data-required-msg="{{::'com_field_mandatory'|translate}}"										data-isvalidmacaddress data-isvalidmacaddress-msg="{{::'common_mac_subnet_validation'|translate}}">								<tooltip helptext="Sender Mac Subnet Mask"></tooltip>							</div>						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.aclType!='IPv4 Standard' && acl.aclType!='ARP' && acl.aclType!='MAC'">
+							<div class="col-sm-4 webui-leftpanel-label">
+								<span class="label">{{::'etherchannel_protocol'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input kendo-combo-box="aclProtocol" name="aclProtocol" id="aclProtocol" ng-change="protocolChange()"
+                                    ng-model="acl.aclProtocol" k-data-source="aclProtocolOptions" k-data-text-field="'protocolType'" k-data-value-field="'protoVal'"
+									data-aclprotocolvalidation data-aclprotocolvalidation-msg="{{::'acl_invalid_protocol_string'|translate}}">
+								<span data-for="aclProtocol" class="k-invalid-msg"></span>
+								<tooltip helptext="{{'acl_help_protocol' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields && showPortOptions && acl.aclType!='ARP' && acl.aclType!='MAC'">
+							<div class="col-sm-4 webui-leftpanel-label">
+								<span class="label">{{::'acl_source_port'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<select kendo-drop-down-list name="aclSourcePort" id="aclSourcePort"
+                                    ng-model="acl.aclSourcePort" k-data-source="aclPortOptions" k-data-text-field="'text'" k-data-value-field="'value'"
+									k-ng-delay="acl.aclSourcePort">
+								</select>
+								<tooltip helptext="{{'acl_help_SourcePort' | translate}}"></tooltip>
+							</div>
+							<div class="ng-hide" ng-init="loadAclPortOptions()"></div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="showPortOptions && acl.aclSourcePort!='None'">
+							<div class="col-sm-4 webui-leftpanel-label" ng-if="acl.aclSourcePort!='range'">
+								<span class="label">{{::'acl_select_port'|translate}}</span>
+							</div>
+                            <div class="col-sm-4 webui-leftpanel-label" ng-if="acl.aclSourcePort=='range'">
+                                <span class="label">{{::'acl_start_port'|translate}}</span>
+                            </div>
+							<div class="col-sm-5 ">
+								<input kendo-combo-box="aclSrcPortValue" name="aclSrcPortValue" id="aclSrcPortValue" k-placeholder="'0-65535'"
+                                    ng-model="acl.aclSrcPortValue" k-data-source="aclSrcPortOptions" k-data-text-field="'portType'" k-data-value-field="'portVal'"
+									data-aclsrcportvalidation data-aclsrcportvalidation-msg="{{::'acl_invalid_portString'|translate}}">
+								<span data-for="aclSrcPortValue" class="k-invalid-msg"></span>
+								<tooltip  ng-if="acl.aclSourcePort!='range'" helptext="{{'acl_help_SourcePortValue' | translate}}"></tooltip>
+								<tooltip  ng-if="acl.aclSourcePort=='range'" helptext="{{'acl_help_SourcePortValueRange' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="showPortOptions && acl.aclSourcePort=='range'">
+                            <div class="col-sm-4 webui-leftpanel-label">
+                                <span class="label">{{::'acl_end_port'|translate}}</span>
+                            </div>
+                            <div class="col-sm-5 ">
+                                <input kendo-combo-box="aclSrcPort2Value" name="aclSrcPort2Value" id="aclSrcPort2Value" k-placeholder="'0-65535'"
+                                       ng-model="acl.aclSrcPort2Value" k-data-source="aclSrcPortOptions" k-data-text-field="'portType'" k-data-value-field="'portVal'"
+                                       data-aclsrcportvalidation data-aclsrcportvalidation-msg="{{::'acl_invalid_portString'|translate}}">
+                                <span data-for="aclSrcPort2Value" class="k-invalid-msg"></span>
+								<tooltip helptext="{{'acl_help_SourcePort2Value' | translate}}"></tooltip>
+                            </div>
+                        </div>
+						<div class="row form-group" ng-show="showPortOptions && displayACLFields">
+							<div class="col-sm-4 webui-leftpanel-label">
+								<span class="label">{{::'acl_destination_port'|translate}}</span>
+							</div>
+							<div class="col-sm-5 ">
+								<select kendo-drop-down-list name="aclDestinationPort" id="aclDestinationPort"
+                                    ng-model="acl.aclDestinationPort" k-data-source="aclPortOptions"
+									k-data-text-field="'text'"
+									k-data-value-field="'value'"
+									k-ng-delay="acl.aclDestinationPort">
+								</select>
+								<tooltip helptext="{{'acl_help_destinationPort' | translate}}"></tooltip>
+							</div>
+							<div class="ng-hide" ng-init="loadAclDestPortOptions()"></div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="showPortOptions && acl.aclDestinationPort!='None'">
+							<div class="col-sm-4 webui-leftpanel-label" ng-if="acl.aclDestinationPort!='range'">
+								<span class="label">{{::'acl_select_port'|translate}}</span>
+							</div>
+                            <div class="col-sm-4 webui-leftpanel-label" ng-if="acl.aclDestinationPort=='range'">
+                                <span class="label">{{::'acl_start_port'|translate}}</span>
+                            </div>
+							<div class="col-sm-5">
+								<input kendo-combo-box="aclDestPortValue" name="aclDestPortValue" id="aclDestPortValue" k-placeholder="'0-65535'"
+                                    ng-model="acl.aclDestPortValue" k-data-source="aclSrcPortOptions" k-data-text-field="'portType'" k-data-value-field="'portVal'"
+									data-aclsrcportvalidation data-aclsrcportvalidation-msg="{{::'acl_invalid_portString'|translate}}">
+								<span data-for="aclDestPortValue" class="k-invalid-msg"></span>
+								<tooltip ng-if="acl.aclDestinationPort!='range'" helptext="{{'acl_help_destportvalue' | translate}}"></tooltip>
+								<tooltip ng-if="acl.aclDestinationPort=='range'" helptext="{{'acl_help_destinationPortValueRange' | translate}}"></tooltip>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="showPortOptions && acl.aclDestinationPort=='range'">
+                            <div class="col-sm-4 webui-leftpanel-label">
+                                <span class="label">{{::'acl_end_port'|translate}}</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <input kendo-combo-box="aclDestPort2Value" name="aclDestPort2Value" id="aclDestPort2Value" k-placeholder="'0-65535'"
+                                       ng-model="acl.aclDestPort2Value" k-data-source="aclSrcPortOptions" k-data-text-field="'portType'" k-data-value-field="'portVal'"
+                                       data-aclsrcportvalidation data-aclsrcportvalidation-msg="{{::'acl_invalid_portString'|translate}}">
+                                <span data-for="aclDestPort2Value" class="k-invalid-msg"></span>
+								<tooltip helptext="{{'acl_help_destinationPort2Value' | translate}}"></tooltip>
+                            </div>
+                        </div>
+						<div class="row form-group" ng-show="displayACLFields" ng-if="acl.aclType!='IPv4 Standard' && acl.aclType!='ARP'&& acl.aclType!='MAC'">
+							<div class="col-sm-4 webui-leftpanel-label">
+								<span class="label">{{::'acl_dscp'|translate}}</span>
+							</div>
+							<div class="col-sm-5">
+								<input kendo-combo-box="aclDSCP" name="aclDSCP" id="aclDSCP"
+                                    ng-model="acl.aclDSCP" k-data-source="aclDSCPOptions" 
+									data-dscpvalidatoinFunction data-dscpvalidationFunction-msg="{{::'acl_dscp_range'|translate}}" k-data-text-field="'text'" k-data-value-field="'value'">
+								<span data-for="aclDSCP" class="k-invalid-msg"></span>
+								<tooltip helptext="{{'acl_help_DSCP' | translate}}"></tooltip>
+							</div>
+						</div>						<div class="row form-group" ng-if="acl.aclType =='ARP'" ng-show="displayACLFields">     									<div class="col-sm-4 webui-leftpanel-label">										<span class="label pl-mandatory">{{'vlan_id' | translate}}</span>									</div>									<div class="col-sm-6">										<input class="k-textbox form-control"										   name="vlanId" 										   ng-model="acl.vlan" placeholder="2-4094" min="2" max="4094"										   required data-required-msg="{{'vlan_id_req_msg' | translate}}"										   num-only maxlength="4"  data-range data-range-msg="{{'vlan_id_invalid_msg' | translate}}">										<tooltip helptext="{{'help_VLAN_ID' | translate}}" position="top"></tooltip>									</div>						</div>
+						<!--ACL Inbound Association with Interfaces-->
+						<div ng-show="displayACLAssFields">
+							<div class="row form-group">
+								<div class="col-sm-4">
+									<span class="label">{{'inbound_acl'|translate}}</span>
+								</div>
+								<div class="col-sm-3 col-sm-offset-1">
+									<strong>{{'portconfig_general_interface' | translate}}</strong>
+								</div>
+								<div class="col-sm-3">
+									<strong>{{'acl_associated' | translate}}</strong>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="row col-sm-12 row">
+									<div class="col-sm-6 webui-centerpanel-label">
+										<select multiple name="groupsFrom" size="5" class="multiselectbox"
+												id="aclInbounds"
+												ng-model="acl.inbound.availablePorts"
+												ng-options="portsOption for portsOption in inboundAvailablePortsOption"></select>
+									</div>
+									<div class="col-sm-1">
+										<div class="row">
+											<div class="col-sm-12 margin-top-10">
+												<input type="button" id="portsMoveRight"
+													   ng-click="moveToACLInBoundAssociated()"
+													   value=">">
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12 margin-top-10">
+												<input type="button" id="portsGroupMoveLeft"
+													   ng-click="moveFromACLInBoundAssociated()"
+													   value="<">
+											</div>
+										</div>
+									</div>
+									<div class="col-sm-2">
+										<select multiple name="serverGroupsTo" size="5" class="multiselectbox"
+												id="tacacsGroupsTo"
+												ng-model="acl.inbound.selectedAssociatedPorts"
+												ng-options="inAssociateOption for inAssociateOption in acl.inboundAssociatedOptions"></select>
+									</div>
+								</div>
+							</div>
+							<!--ACL Outbound Association with Interfaces-->
+						<div ng-if="outBoundSupporting" >
+							<div class="row form-group">
+								<div class="col-sm-4">
+									<span class="label">{{'portconfig_adv_outlist'|translate}}</span>
+								</div>
+								<div class="col-sm-3 col-sm-offset-1">
+									<strong>{{'portconfig_general_interface' | translate}}</strong>
+								</div>
+								<div class="col-sm-3">
+									<strong>{{'acl_associated' | translate}}</strong>
+								</div>
+							</div>
+							<div class="row form-group">
+								<div class="col-sm-12 row">
+									<div class="col-sm-6 webui-centerpanel-label">
+										<select multiple name="groupsFrom" size="5" class="multiselectbox"
+												id="aclOutbound"
+												ng-model="acl.outbound.availablePorts"
+												ng-options="portsOption for portsOption in outboundAvailablePortsOption"></select>
+									</div>
+									<div class="col-sm-1">
+										<div class="row">											<div class="col-sm-12 margin-top-10">
+											<input type="button" id="portsMoveRight"
+												   ng-click="moveToACLOutBoundAssociated()"
+												   value=">">
+										</div>										</div>
+										<div class="row">											<div class="col-sm-12 margin-top-10">
+											<input type="button" id="portsGroupMoveLeft"
+												   ng-click="moveFromACLOutBoundAssociated()"
+												   value="<">
+										</div>										</div>
+									</div>
+									<div class="col-sm-2">
+										<select multiple name="serverGroupsTo" size="5" class="multiselectbox"
+												id="tacacsGroupsTo"
+												ng-model="acl.outbound.selectedAssociatedPorts"
+												ng-options="outAssociateOption for outAssociateOption in acl.outboundAssociatedOptions"></select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="row form-group" ng-show="acl.inboundAssociatedOptions.length > 0">
+							<div class="col-sm-3">
+								<span class="label">{{'dhcp_relay_info' | translate}}</span>
+							</div>
+							<div class="col-sm-3">
+								<span class="toggleClass">
+									<toggle-button
+											button-options="{{'toggle_up' | translate}},{{'toggle_down' | translate}}"
+											ng-model="acl.dhcpRelayInfo"></toggle-button>
+								</span>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+		</div>
+		</div>
+</div>

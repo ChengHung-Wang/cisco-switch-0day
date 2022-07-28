@@ -1,0 +1,23 @@
+###
+show interfaces * counters errors
+<?xml version='1.0' encoding='utf-8'?>
+<ODMSpec>
+<Command>
+<Name>show interfaces * counters errors</Name>
+</Command>
+<OS>ios</OS>
+<DataModel>
+<Container name="Port">
+<Table  name="InterfaceCounters1">
+<Header name = "Rcv-Err" alias="crcReceived" start = "50" end = "58" type = "String"/>
+</Table>
+<Table  name="InterfaceCounters2">
+<Header name = "Runts" alias="runtsReceived" start = "70" end = "78" type = "String"/>
+</Table>
+</Container>
+</DataModel>
+</ODMSpec>
+<!--
+Copyright (c) 2016 by Cisco Systems, Inc.
+All rights reserved.
+-->

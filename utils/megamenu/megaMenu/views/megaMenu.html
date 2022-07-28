@@ -1,0 +1,16 @@
+<div ng-cloak class="megamenu" ng-class="{'collapsed': isActive}" ng-init="isActive = false" ng-controller="megaMenuCtrl">
+	<div class="megamenu-menus">
+		<div class="megamenu-menu" ng-repeat="menu in menuData">
+			<div ng-if="menu.title" class="megamenu-menu-title">
+				<object class="icon-megamenu-menu" svg-load="" img-name="{{menu.icon}}" root-path="utils/megamenu/"></object>
+				<a ng-if="menu.url" href="{{menu.url}}" class="title">{{((menu.nlskey || menu.title) | translate)}}</a>
+				<a ng-if="!menu.url" href="javascript://" class="title">{{((menu.nlskey || menu.title) | translate)}}</a>
+			</div>
+			<!--modified for submenus-->
+			<ul class="submenus">
+				<li ng-repeat="submenu in menu.submenus" ng-init="leftPaddingCount=0" ng-include="'utils/megamenu/megaMenu/views/submenus.html'" ></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
